@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scenario": "tank",
+  "scans": 600,
+  "events": [
+    {
+      "at": 0,
+      "action": "start"
+    },
+    {
+      "at": 150,
+      "action": "fault",
+      "fault": "leak",
+      "value": true
+    },
+    {
+      "at": 240,
+      "action": "fault",
+      "fault": "leak",
+      "value": false
+    }
+  ]
+}

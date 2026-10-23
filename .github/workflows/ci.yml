@@ -1,4 +1,4 @@
-name: Core CI
+name: AB Suite CI
 on:
   push:
     branches: [main]
@@ -32,3 +32,44 @@ jobs:
         run: npm run check
       - name: Validate distribution (no bundled runtime dependencies)
         run: npm pack --dry-run
+  python:
+    name: Python engines / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r apps/bi/requirements.txt pytest==9.1.1 httpx==0.28.1
+      - run: python scripts/verify-python.py
+  browser:
+    name: Complete workspace journeys
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: node scripts/setup.mjs
+      - run: npm install --ignore-scripts
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Start suite and wait for native engines
+        run: |
+          nohup node scripts/workspace.mjs > suite.log 2>&1 &
+          node scripts/wait-workspace.mjs
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: workspace-browser-evidence
+          path: |
+            .suite-data/qa/
+            suite.log

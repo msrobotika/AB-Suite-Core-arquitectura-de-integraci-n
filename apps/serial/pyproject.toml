@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "ab-serial-analyzer"
+version = "0.1.0"
+description = "Passive industrial serial and Modbus RTU analyzer from MS ROBOTIKA"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name="MS ROBOTIKA"}]
+dependencies = []
+[project.optional-dependencies]
+serial = ["pyserial>=3.5,<4"]
+[project.scripts]
+ab-serial-analyzer = "ab_serial.server:main"
+[tool.setuptools.package-data]
+ab_serial = ["web/*"]
+[tool.setuptools.packages.find]
+include = ["ab_serial*"]

@@ -1,4 +1,6 @@
-# Contribución a AB-Suite Core
+# Contribución a AB Suite
+
+La distribución integrada se desarrolla con las reglas de [AGENTS.md](AGENTS.md), el [estándar de producto](docs/PRODUCT_STANDARD.md) y la [arquitectura de workspace](docs/WORKSPACE_ARCHITECTURE.md). Las aplicaciones bajo `apps/` conservan sus motores originales y procedencia. Las siguientes normas de Core siguen rigiendo el transporte de eventos; la entrada web y la gestión de herramientas se implementan en módulos separados.
 
 Requisitos: Node.js 20+ y Git. No hay dependencias externas de ejecución.
 
