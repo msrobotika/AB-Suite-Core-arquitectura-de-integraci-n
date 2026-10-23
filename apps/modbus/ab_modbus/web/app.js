@@ -203,10 +203,11 @@ $("quick-demo").addEventListener("click", () => {
 });
 action("demo", async () => {
   if (busy) throw new Error("Espera a que termine la lectura en curso.");
-  if (!state?.simulator_port) await startLocalSimulator();
+  const simulatorPort = state?.simulator_port ?? (await startLocalSimulator()).port;
+  const simulatorUnit = state?.simulator_unit ?? Number($("sim-unit").value);
   await refresh();
-  fillProfile({name: "Laboratorio local", host: "127.0.0.1", port: state.simulator_port,
-    unit: state.simulator_unit, function: 3, address: 0, count: 8, timeout_ms: 1500});
+  fillProfile({name: "Laboratorio local", host: "127.0.0.1", port: simulatorPort,
+    unit: simulatorUnit, function: 3, address: 0, count: 8, timeout_ms: 1500});
   await readOnce();
 });
 action("memory-edit", async () => {
