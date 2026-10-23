@@ -42,12 +42,19 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
   const choose = async (id) => {
     await hmi.locator('#layers button[data-widget="' + id + '"]').click();
   };
-  const upload = async (p, selector, project) =>
-    p.locator(selector).setInputFiles({
+  const upload = async (p, selector, project) => {
+    await p.locator(selector).setInputFiles({
       name: 'qa.json',
       mimeType: 'application/json',
       buffer: Buffer.from(JSON.stringify(project))
     });
+    // File.text() is asynchronous. Both editors reset the picker after applying
+    // or rejecting the complete file; inspect the result only once that finishes.
+    await p.waitForFunction(
+      (selector) => document.querySelector(selector).files.length === 0,
+      selector
+    );
+  };
   try {
     await kop.goto(base + '/apps/kop/');
     await hmi.goto(base + '/apps/scada/');
