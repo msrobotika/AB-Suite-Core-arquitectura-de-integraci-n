@@ -14,6 +14,10 @@ Este repositorio es la fuente de la distribución integrada. `apps/sources.json`
 - Los errores de validación se explican junto a la operación. Un botón visible tiene que funcionar; si una capacidad no existe, no anunciarla.
 - Mantener los formatos y las licencias. No copiar interfaces, código, marcas ni activos de productos comerciales. Las referencias funcionales se documentan como investigación, no como diseño para calcar.
 
+- En editores, el lienzo ocupa el centro y la altura útil. Herramientas, propiedades y diagnóstico van alrededor o en paneles plegables; evitar cabeceras y métricas que desplacen el trabajo.
+- Las figuras y los símbolos HMI son originales y no imponen una instalación de demostración. Vincular señales no equivale a simular el proceso representado.
+- La difusión del perfil y la publicación en redes siguen aplazadas. No automatizar ni ejecutar anuncios; consultar `docs/RELEASE_READINESS.md` antes de proponer un lanzamiento.
+
 ## Verificación
 
 Ejecutar `node scripts/check-workspace.mjs` y las pruebas Python de los motores afectados. Ante cambios de navegación, proyecto, integración o estilos, ejecutar los recorridos de navegador correspondientes y revisar capturas de escritorio y móvil.

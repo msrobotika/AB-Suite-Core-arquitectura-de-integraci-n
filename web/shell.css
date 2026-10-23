@@ -16,3 +16,8 @@ body[data-suite-app] :is(aside.rail,.sidebar,.side) nav button{background:transp
 @media(max-width:1150px){.suite-bar{gap:10px;padding:0 15px}.suite-bar .suite-status{display:none}.suite-bar>strong{font-size:11px}.suite-bar select{max-width:150px}.suite-bar .suite-action{padding:8px 9px;font-size:11px}}
 @media(max-width:800px){.suite-bar{height:110px;flex-wrap:wrap;gap:7px;padding:9px 12px;align-content:center}.suite-bar .suite-brand{margin-right:4px}.suite-bar .suite-divider{display:none}.suite-bar>strong{margin-right:0}.suite-bar select{margin-left:auto;max-width:145px}.suite-bar .suite-action{min-height:30px}.suite-bar .suite-primary{margin-left:auto}body[data-suite-app]{padding-top:110px!important}body[data-suite-app] :is(.sidebar,.side,aside.rail){position:static!important;top:auto!important;height:auto!important}html{scroll-padding-top:130px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Dense editors use a continuous drawing surface, with the common AB chrome around it. */
+body[data-suite-app] .kop-studio .kop-paper .rung{background-color:transparent!important;border-radius:0!important;border-color:transparent!important;border-bottom-color:#39506366!important;box-shadow:none!important}
+body[data-suite-app] .kop-studio .kop-paper .rung.selected{border-left-color:var(--suite-accent)!important;background-color:#77dfc706!important}
+body[data-suite-app] .kop-studio .kop-inspector{border-radius:0!important}

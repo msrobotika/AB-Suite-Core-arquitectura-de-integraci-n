@@ -6,10 +6,10 @@ Revisión de las nueve aplicaciones de la suite y el núcleo, sobre las revision
 | --- | --- | --- | --- |
 | Entrada general | Repositorios, HTML portables, URLs y lanzadores distintos; tres motores Python no eran HTML autónomos | Un lanzador, catálogo y origen; servicios gestionados; separación Abrir/Exportar | Apertura de las nueve herramientas y recursos de navegador |
 | PLC | La demo clásica y el laboratorio tenían CPUs distintas; editor y telemetría podían referirse a ejecuciones diferentes | Entrada centrada en una CPU de servidor; editor KOP y JSON cargan esa CPU; persistencia de configuración | Pruebas de CPU/red y comparación con Modbus |
-| KOP | Integración por archivo y restauraciones/importaciones que borraban el historial de edición | Transferencia al PLC y señales HMI; importación y ejemplo recuperables con Deshacer | Ejecución de red real, motor y transferencia |
+| KOP | Integración por archivo y restauraciones/importaciones que borraban el historial de edición | Editor industrial con paneles plegables, programa vacío, redes vectoriales, orden y copia; transferencia al PLC, señales HMI e historial recuperable | Ejecución de red real, motor y transferencia |
 | SCL | Conversor limitado, sin borrador persistente ni transferencia integrada | Guardado de borrador, verificación previa, exportación/transferencia del KOP y señales HMI | Equivalencia de motor e importación en PLC |
 | GRAFCET | Publicación mediante conector aparte; restaurar proyecto descartaba recuperación | Señales de etapas/acciones en navegador e historial al reemplazar proyecto | Motor, etapas publicadas y pruebas del adaptador anterior |
-| SCADA | Sinóptico fijo de ocho estaciones, varias sin correspondencia con la telemetría | Editor de pantallas desde vacío; componentes vinculables; calidad, umbrales, tendencias y proyecto versionado | Vinculación a KOP, cambios, caducidad, deshacer, persistencia e importación inválida |
+| SCADA | Sinóptico fijo de ocho estaciones, varias sin correspondencia con la telemetría | Lienzo libre desde vacío; 14 tipos de objetos, figuras y símbolos propios, geometría, capas y navegación entre pantallas; señales vinculadas y proyecto recuperable | Vinculación a KOP, cambios, caducidad, deshacer, persistencia e importación inválida |
 | Modbus | Motor local separado y configuración manual para enlazar con el PLC | Arranque común, puertos automáticos independientes y botón que configura lecturas de la CPU de la suite; resultado fallido invalidado | Lectura FC03 auténtica y comparación FC01 con CPU |
 | Serial | Arranque y sesión independientes | Motor gestionado, misma barra, captura/exportación y contadores para HMI | Captura de laboratorio, decodificación y CSV; pruebas de protocolo/red |
 | Vision | Entrada estática podía mostrar funciones IP sin el servicio requerido | Adaptador IP gestionado por el acompañante; inspección local y resultados para HMI | Inspección de imagen, núcleo de visión y pruebas del adaptador HTTP simulado |
@@ -23,7 +23,7 @@ Los motores de programación, protocolo, metrología y análisis son los origina
 ## Límites que siguen siendo explícitos
 
 - SCL es BOOL combinacional; KOP/GRAFCET implementan sus subconjuntos educativos. No son compiladores de fabricantes.
-- El HMI nuevo ofrece cuatro componentes, rejilla adaptable, pantallas, propiedades y tendencias; no pretende incluir aún toda una biblioteca de gráficos vectoriales, animaciones o scripting HMI.
+- El HMI ofrece 14 tipos de objetos y navegación entre pantallas. No incluye grupos, rotación libre, scripting, tuberías autoenlazadas, librerías SVG externas ni escritura de consignas. Los símbolos supervisan señales; no simulan una instalación física.
 - Las señales de navegador requieren origen y almacenamiento comunes. No son un broker industrial distribuido.
 - Serial físico, cámaras reales y equipos de red requieren validación específica. Las pruebas aquí usan laboratorio y dobles controlados.
 - Los espacios BI se seleccionan en un motor local de un usuario. Una pestaña con otro espacio no puede escribir silenciosamente sobre el activo. No se ofrece colaboración multiusuario.

@@ -1,8 +1,307 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SCADA Studio · AB Suite</title><link rel="stylesheet" href="src/workspace.css"><script type="module" src="src/workspace.js"></script></head><body>
-<div class="hmi-layout"><aside class="hmi-rail"><p class="hmi-caption">EXPLORADOR</p><h2>Tu interfaz,<br>tus señales.</h2><label>Proyecto<input id="project-name" maxlength="90"></label><div class="hmi-panel-head"><h3>Pantallas</h3><button id="add-screen" title="Añadir pantalla" aria-label="Añadir pantalla">＋</button></div><nav id="screens" aria-label="Pantallas del proyecto"></nav><div class="rail-help"><span>01 · Diseña</span><p>Añade componentes y vincula las señales de tu programa.</p><span>02 · Comprueba</span><p>Abre el programa en otra pestaña. Pasa a vista previa y observa el resultado.</p></div><a href="/apps/plc/" target="_blank" rel="noopener" class="open-plc">Abrir CPU virtual ↗</a></aside>
-<main class="hmi-main"><header class="hmi-title"><div><p class="hmi-caption">INTERFACES / SCADA STUDIO</p><h1>Construye lo que necesitas ver<span>.</span></h1><p>Un lienzo para practicar HMI. Sin procesos impuestos.</p></div><span class="hmi-version">HMI · v1</span></header>
-<div class="hmi-toolbar"><div class="mode-switch" role="group" aria-label="Modo de pantalla"><button id="design-mode" aria-pressed="true">Diseñar</button><button id="preview-mode" aria-pressed="false">Vista previa</button></div><button id="undo" title="Deshacer" disabled>↶ Deshacer</button><button id="redo" title="Rehacer" disabled>↷ Rehacer</button><span class="toolbar-space"></span><button id="export-project">Exportar proyecto</button><label class="hmi-file">Importar<input type="file" id="import-project" accept=".json,application/json"></label></div>
-<div id="hmi-notice" class="hmi-notice" role="status">Proyecto nuevo. Añade tu primer componente.</div>
-<div class="hmi-workspace"><section class="hmi-canvas-panel"><div class="hmi-canvas-head"><div><p class="hmi-caption">LIENZO DE TRABAJO</p><h2 id="screen-title">Pantalla 1</h2></div><span id="component-count">0 componentes</span></div><div id="canvas" class="hmi-canvas"></div><div class="hmi-canvas-footer"><span id="save-state">Autoguardado local</span><span>Señales caducan a los 5 s · Sin escritura a equipos</span></div></section>
-<aside class="hmi-inspector" id="inspector"><div class="hmi-palette"><p class="hmi-caption">AÑADIR COMPONENTE</p><div><button data-type="indicator"><b>◉</b>Indicador</button><button data-type="value"><b>42</b>Valor</button><button data-type="trend"><b>⌁</b>Tendencia</button><button data-type="alarm"><b>△</b>Alarma</button></div></div><div class="hmi-properties"><p class="hmi-caption">PROPIEDADES DE PANTALLA</p><label>Nombre de pantalla<input id="screen-name" maxlength="60"></label><button id="rename-screen">Renombrar</button><button id="remove-screen" class="hmi-danger">Eliminar pantalla vacía</button></div>
-<form id="properties" class="hmi-properties" hidden><p class="hmi-caption">COMPONENTE SELECCIONADO</p><label>Título<input id="widget-label" maxlength="90" required></label><label>Origen<select id="widget-source"><option value="plc">PLC Simulator</option><option value="kop">KOP Studio</option><option value="scl">SCL Studio</option><option value="grafcet">GRAFCET Studio</option><option value="vision">Vision Inspector</option><option value="modbus">Modbus Studio</option><option value="serial">Serial Analyzer</option><option value="bi">BI Studio</option></select></label><label>Señal disponible<select id="available-tags"><option value="">Seleccionar una señal…</option></select></label><label>Nombre de señal<input id="widget-tag" placeholder="outputs.Q0.0" maxlength="100" list="tag-names"></label><datalist id="tag-names"></datalist><p class="field-help">Abre el origen en otra pestaña para descubrir sus señales. También puedes escribir el nombre y configurarlo sin conexión.</p><label>Unidad de visualización<input id="widget-unit" maxlength="20" placeholder="%, ms, ciclos…"></label><div id="alarm-fields"><label>Condición de alarma<select id="widget-comparison"><option value="gte">Mayor o igual que</option><option value="lte">Menor o igual que</option><option value="eq">Igual a</option></select></label><label>Umbral<input id="widget-threshold" type="number" step="any" required value="1"></label></div><button class="hmi-primary" type="submit">Aplicar propiedades</button><div class="hmi-inline"><button id="move-up" type="button" aria-label="Mover antes">↑</button><button id="move-down" type="button" aria-label="Mover después">↓</button><button id="duplicate-widget" type="button">Duplicar</button><button id="delete-widget" class="hmi-danger" type="button">Eliminar</button></div></form></aside></div></main></div></body></html>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SCADA Studio · AB Suite</title>
+    <link rel="stylesheet" href="src/workspace.css" />
+    <script type="module" src="src/workspace.js"></script>
+  </head>
+  <body>
+    <main class="hmi-studio">
+      <header class="hmi-toolbar">
+        <div class="hmi-product">
+          <small>INTERFACES / HMI</small>
+          <h1>SCADA Studio</h1>
+        </div>
+        <div class="mode-switch" role="group" aria-label="Modo de pantalla">
+          <button id="design-mode" aria-pressed="true">Diseñar</button
+          ><button id="preview-mode" aria-pressed="false">▶ Probar</button>
+        </div>
+        <button id="undo" title="Deshacer (Ctrl+Z)" disabled>↶</button
+        ><button id="redo" title="Rehacer (Ctrl+Mayús+Z)" disabled>↷</button
+        ><button id="toggle-library" aria-expanded="true">Biblioteca</button
+        ><button id="toggle-properties" aria-expanded="true">Inspector</button
+        ><span class="toolbar-space"></span
+        ><button id="export-project">Exportar proyecto</button
+        ><label class="hmi-file"
+          >Importar<input
+            type="file"
+            id="import-project"
+            accept=".json,application/json"
+        /></label>
+      </header>
+      <div id="hmi-notice" class="hmi-notice" role="status">
+        Lienzo vacío. Añade figuras y señales para crear tu propia interfaz.
+      </div>
+      <div class="hmi-layout">
+        <aside class="hmi-library" id="library">
+          <details open>
+            <summary>Pantallas del proyecto</summary>
+            <div class="hmi-padding">
+              <label>Proyecto<input id="project-name" maxlength="90" /></label>
+              <nav id="screens" aria-label="Pantallas del proyecto"></nav>
+              <button id="add-screen">＋ Pantalla</button>
+            </div>
+          </details>
+          <details open>
+            <summary>Figuras y componentes</summary>
+            <div class="hmi-palette">
+              <button data-type="rectangle" title="Añadir Rectángulo">
+                <b>▭</b>Rectángulo</button
+              ><button data-type="ellipse" title="Añadir Elipse">
+                <b>◯</b>Elipse</button
+              ><button data-type="line" title="Añadir Línea">
+                <b>╱</b>Línea</button
+              ><button data-type="text" title="Añadir Texto">
+                <b>T</b>Texto</button
+              ><button data-type="pipe" title="Añadir Tubería">
+                <b>━</b>Tubería</button
+              ><button data-type="tank" title="Añadir Depósito">
+                <b>▱</b>Depósito</button
+              ><button data-type="pump" title="Añadir Bomba">
+                <b>◉</b>Bomba</button
+              ><button data-type="valve" title="Añadir Válvula">
+                <b>⋈</b>Válvula</button
+              ><button data-type="motor" title="Añadir Motor">
+                <b>Ⓜ</b>Motor</button
+              ><button data-type="indicator" title="Añadir Indicador">
+                <b>●</b>Indicador</button
+              ><button data-type="value" title="Añadir Valor">
+                <b>42</b>Valor</button
+              ><button data-type="trend" title="Añadir Tendencia">
+                <b>⌁</b>Tendencia</button
+              ><button data-type="alarm" title="Añadir Alarma">
+                <b>△</b>Alarma</button
+              ><button
+                data-type="navigation"
+                title="Añadir navegación entre pantallas"
+              >
+                <b>↗</b>Navegación
+              </button>
+            </div>
+            <p class="field-help hmi-padding">
+              Añade, arrastra y ajusta el tamaño. Las flechas desplazan 1 px;
+              Mayús, 10 px.
+            </p>
+          </details>
+          <details open>
+            <summary>Capas · fondo a frente</summary>
+            <nav
+              id="layers"
+              aria-label="Capas de la pantalla"
+              class="hmi-padding"
+            ></nav>
+          </details>
+          <details>
+            <summary>Guía de práctica</summary>
+            <p class="field-help hmi-padding">
+              Compón un sinóptico con figuras y tuberías. Vincula un motor a KOP
+              o un depósito a una señal numérica. Abre el origen en otra pestaña
+              y pulsa Probar. Sin señal se muestra «—», nunca un cero inventado.
+              Las figuras no simulan un proceso físico.
+            </p>
+          </details>
+        </aside>
+        <section class="hmi-canvas-panel">
+          <div class="hmi-canvas-head">
+            <h2 id="screen-title">Pantalla 1</h2>
+            <span id="component-count">0 componentes</span
+            ><label class="snap-control"
+              ><input id="snap-grid" type="checkbox" checked /> Ajustar a 10
+              px</label
+            ><button id="zoom-out" aria-label="Reducir zoom">−</button
+            ><span id="zoom-level">100 %</span
+            ><button id="zoom-in" aria-label="Ampliar zoom">＋</button
+            ><button id="fit-canvas">Encajar</button>
+          </div>
+          <div id="canvas-viewport" class="hmi-viewport">
+            <div id="canvas" class="hmi-canvas" aria-label="Lienzo HMI"></div>
+          </div>
+          <div class="hmi-canvas-footer">
+            <span id="save-state">Autoguardado local</span
+            ><span id="canvas-size">1600 × 1000</span
+            ><span>Señales virtuales · caducidad 5 s</span>
+          </div>
+        </section>
+        <aside class="hmi-inspector" id="inspector">
+          <details open class="hmi-screen-properties">
+            <summary>Configuración de pantalla</summary>
+            <div class="hmi-padding">
+              <label>Nombre<input id="screen-name" maxlength="60" /></label>
+              <div class="property-grid">
+                <label
+                  >Ancho<input
+                    id="screen-width"
+                    type="number"
+                    min="640"
+                    max="3840"
+                    step="1" /></label
+                ><label
+                  >Alto<input
+                    id="screen-height"
+                    type="number"
+                    min="400"
+                    max="2160"
+                    step="1"
+                /></label>
+              </div>
+              <label>Fondo<input id="screen-background" type="color" /></label
+              ><button id="rename-screen">Aplicar pantalla</button
+              ><button id="remove-screen" class="hmi-danger">
+                Eliminar pantalla vacía
+              </button>
+            </div>
+          </details>
+          <form id="properties" class="hmi-properties" hidden>
+            <p class="hmi-caption">COMPONENTE SELECCIONADO</p>
+            <label
+              >Título<input id="widget-label" maxlength="90" required /></label
+            ><label id="navigation-field"
+              >Pantalla de destino<select id="widget-target-screen"></select
+            ></label>
+            <div id="signal-fields">
+              <label
+                >Origen<select id="widget-source">
+                  <option value="plc">PLC Simulator</option>
+                  <option value="kop">KOP Studio</option>
+                  <option value="scl">SCL Studio</option>
+                  <option value="grafcet">GRAFCET Studio</option>
+                  <option value="vision">Vision Inspector</option>
+                  <option value="modbus">Modbus Studio</option>
+                  <option value="serial">Serial Analyzer</option>
+                  <option value="bi">BI Studio</option>
+                </select></label
+              ><label
+                >Señal disponible<select id="available-tags">
+                  <option value="">Seleccionar una señal…</option>
+                </select></label
+              ><label
+                >Nombre de señal<input
+                  id="widget-tag"
+                  placeholder="outputs.Q0.0"
+                  maxlength="100"
+                  list="tag-names" /></label
+              ><datalist id="tag-names"></datalist>
+              <p class="field-help">
+                Abre el origen en otra pestaña para descubrir sus señales.
+                También puedes escribir el nombre y configurarlo sin conexión.
+              </p>
+              <label
+                >Unidad de visualización<input
+                  id="widget-unit"
+                  maxlength="20"
+                  placeholder="%, ms, ciclos…"
+              /></label>
+              <div id="alarm-fields">
+                <label
+                  >Condición de alarma<select id="widget-comparison">
+                    <option value="gte">Mayor o igual que</option>
+                    <option value="lte">Menor o igual que</option>
+                    <option value="eq">Igual a</option>
+                  </select></label
+                ><label
+                  >Umbral<input
+                    id="widget-threshold"
+                    type="number"
+                    step="any"
+                    required
+                    value="1"
+                /></label>
+              </div>
+            </div>
+            <div class="property-grid">
+              <label
+                >X<input
+                  id="widget-x"
+                  type="number"
+                  min="0"
+                  step="1"
+                  required /></label
+              ><label
+                >Y<input
+                  id="widget-y"
+                  type="number"
+                  min="0"
+                  step="1"
+                  required /></label
+              ><label
+                >Ancho<input
+                  id="widget-width"
+                  type="number"
+                  min="40"
+                  step="1"
+                  required /></label
+              ><label
+                >Alto<input
+                  id="widget-height"
+                  type="number"
+                  min="30"
+                  step="1"
+                  required /></label
+              ><label>Relleno<input id="widget-fill" type="color" /></label
+              ><label>Trazo<input id="widget-stroke" type="color" /></label
+              ><label
+                >Grosor<input
+                  id="widget-strokeWidth"
+                  type="number"
+                  min="1"
+                  max="12"
+                  required
+              /></label>
+            </div>
+            <label id="direction-field"
+              >Dirección<select id="widget-direction">
+                <option value="horizontal">Horizontal</option>
+                <option value="vertical">Vertical</option>
+                <option value="diagonal">Diagonal</option>
+              </select></label
+            >
+            <div id="scale-fields" class="property-grid">
+              <label
+                >Escala mín.<input
+                  id="widget-min"
+                  type="number"
+                  step="any"
+                  required /></label
+              ><label
+                >Escala máx.<input
+                  id="widget-max"
+                  type="number"
+                  step="any"
+                  required
+              /></label>
+            </div>
+            <button class="hmi-primary" type="submit">
+              Aplicar propiedades
+            </button>
+            <div class="hmi-inline">
+              <button
+                id="move-up"
+                type="button"
+                aria-label="Bajar una capa"
+                title="Bajar una capa"
+              >
+                ↑</button
+              ><button
+                id="move-down"
+                type="button"
+                aria-label="Subir una capa"
+                title="Subir una capa"
+              >
+                ↓</button
+              ><button id="duplicate-widget" type="button">Duplicar</button
+              ><button id="delete-widget" class="hmi-danger" type="button">
+                Eliminar
+              </button>
+            </div>
+          </form>
+          <p id="selection-hint" class="field-help hmi-padding">
+            Selecciona un objeto en el lienzo o en Capas. Puedes moverlo,
+            cambiar sus propiedades y vincular sus señales.
+          </p>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>

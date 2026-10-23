@@ -42,3 +42,13 @@ Crear `apps/<id>` con su licencia, fuentes y pruebas; registrar su procedencia; 
 ## Investigación funcional
 
 Las fuentes sirven para estudiar principios, no para copiar pantallas. Se consultaron documentación oficial sobre [vinculación de propiedades a señales](https://www.docs.inductiveautomation.com/docs/8.1/ignition-modules/perspective/working-with-perspective-components/bindings-in-perspective), [comunicación entre contextos del mismo origen](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) y accesibilidad W3C. El editor HMI, sus componentes y la biblioteca de espacios AB BI están implementados en este repositorio.
+
+## Área de trabajo de los editores
+
+KOP y HMI usan toda la altura útil después de la barra común y los controles compactos. El centro es el documento; los paneles laterales son plegables y el diagnóstico inferior se despliega cuando hace falta. El trabajo extenso se desplaza dentro del editor, sin ensanchar la página. En móvil se conservan las operaciones mediante paneles y desplazamiento interno.
+
+Las figuras HMI son primitivas y símbolos vectoriales propios. Se pueden editar sin una instalación impuesta. El estado proviene del contrato de señales; ni el color ni el nivel de un depósito inventan mediciones. La navegación entre pantallas funciona en el mismo modo Probar que presenta los datos.
+
+Como investigación funcional se consultó también la [documentación oficial sobre redes y contactos Ladder](https://content.helpme-codesys.com/en/CODESYS%204/_c4ld_basics.html). Se tomaron conceptos de programación industrial —redes ordenadas, barras, contactos y bobinas—; la composición, los controles y los gráficos de AB son propios.
+
+El estándar de calidad previo a cualquier difusión se detalla en [RELEASE_READINESS.md](RELEASE_READINESS.md).

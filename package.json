@@ -1,6 +1,6 @@
 {
   "name": "@msrobotika/ab-suite-core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "private": false,
   "description": "AB Suite · laboratorio local de programación, HMI, comunicaciones y datos",
@@ -21,7 +21,7 @@
     "bus": "node scripts/serve.mjs",
     "setup": "node scripts/setup.mjs",
     "test:workspace": "node --test tests/workspace*.test.mjs",
-    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs"
+    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs && node scripts/verify-editors-browser.cjs"
   },
   "files": [
     "src/",

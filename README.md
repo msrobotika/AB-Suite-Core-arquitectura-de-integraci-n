@@ -23,11 +23,11 @@ Abre **[AB Suite local](http://127.0.0.1:4170)**. Ctrl+C detiene la suite. `AB_S
 
 | Herramienta | Trabajo propio | Conexión integrada |
 | --- | --- | --- |
-| KOP Studio | Redes, bobinas y TON, simulación por ciclos | Transferencia validada al PLC; señales para HMI |
+| KOP Studio | Editor industrial de redes, bobinas y TON, paneles plegables | Transferencia validada al PLC; señales para HMI |
 | SCL Studio | Expresiones BOOL verificadas y conversión KOP | Transferencia al PLC; señales para HMI; borrador local |
 | GRAFCET Studio | Etapas, transiciones y acciones editables | Etapas y acciones publicadas para HMI |
 | PLC Simulator | Programa KOP/JSON, escenarios y diagnóstico | Una CPU para editor, laboratorio, Modbus y captura BI |
-| SCADA Studio | Pantallas y componentes creados por el usuario | Vinculación de señales, tendencias y alarmas de umbral |
+| SCADA Studio | Lienzo libre, figuras, símbolos industriales y navegación | Vinculación de señales, tendencias y alarmas de umbral |
 | Modbus Studio | Lecturas FC01–04 y examen de tramas TCP | «Leer CPU de la suite» consulta la CPU residente |
 | Serial Analyzer | Captura RTU de laboratorio, CRC y filtros | Estado de sesión para HMI; exportación CSV para BI |
 | Vision Inspector | Imágenes, regiones, umbrales y recetas | Resultados para HMI; CSV para BI; adaptador IP opcional |
@@ -45,7 +45,11 @@ AB BI tiene identidad y motor de expresiones propios. La gramática incluye comp
 
 ## Crear tu pantalla HMI
 
-Abre PLC, KOP, SCL o GRAFCET en otra pestaña. En SCADA añade un indicador, valor, tendencia o alarma; selecciona origen y señal; ajusta propiedades y pasa a **Vista previa**. Puedes crear varias pantallas, cambiar su orden de componentes, duplicar, deshacer e importar/exportar el proyecto HMI.
+Abre PLC, KOP, SCL o GRAFCET en otra pestaña. En SCADA compón un lienzo libre con rectángulos, elipses, líneas, texto y tuberías. Añade depósitos, bombas, válvulas, motores, indicadores, valores, tendencias o alarmas y selecciona sus señales. Las figuras no introducen una simulación física adicional.
+
+Mueve y redimensiona con el ratón o escribe coordenadas y dimensiones en el inspector. Ajusta rejilla, colores, trazo, escala del depósito y capas. Los paneles se pueden plegar para ampliar el trabajo; **Encajar** considera ancho y alto. Las flechas mueven 1 px y Mayús+flecha, 10 px. Duplicar, eliminar, importar y editar admiten deshacer/rehacer.
+
+Crea pantallas independientes y usa el componente **Navegación** para abrirlas en modo **Probar**. Exporta el proyecto `.hmi.json`; los proyectos v1 de tarjetas se adaptan al lienzo sin perder sus señales. Consulta la [guía de editores](docs/EDITORS.md).
 
 No se impone una línea de producción. Si una fuente no actualiza sus señales durante cinco segundos, se muestran como caducadas. Mantén abiertas las pestañas que publican señales.
 
@@ -69,9 +73,12 @@ El segundo comando debe usar el Python preparado de `.venv` y requiere las depen
 ```sh
 node scripts/verify-browser.cjs
 node scripts/verify-bi-browser.cjs
+node scripts/verify-editors-browser.cjs
 ```
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
+
+La versión 0.3.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 
