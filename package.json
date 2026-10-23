@@ -1,0 +1,33 @@
+{
+  "name": "@msrobotika/ab-suite-core",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "description": "Local versioned event bus for MS ROBOTIKA industrial simulation apps",
+  "exports": {
+    ".": "./src/index.js",
+    "./protocol": "./src/protocol.js",
+    "./client": "./src/client.js",
+    "./bridge": "./src/plc-bridge.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test",
+    "check": "node --check src/protocol.js && node --check src/bus.js && node --check src/server.js && node --check src/client.js && node --check src/plc-bridge.js && node --check scripts/serve.mjs && node --test"
+  },
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md",
+    "docs/PROTOCOL.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n.git"
+  }
+}

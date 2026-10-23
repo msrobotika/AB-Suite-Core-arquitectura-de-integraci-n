@@ -1,0 +1,22 @@
+name: Error reproducible
+description: Incidencia del contrato, SDK o bus
+title: "[Bug] "
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos reproducibles y versión
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado real
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
