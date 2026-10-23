@@ -65,13 +65,13 @@ El código de los ejemplos está incluido; **no son conectores nativos** de los 
 
 ## Integración con AB-PLC Simulator y AB-BI
 
-La primera integración efectiva mantiene una **única CPU virtual** que abastece a la HMI, Modbus y el bus. Mientras se migra a una dependencia publicada, la aplicación AB-PLC Simulator conserva temporalmente una copia compatible del paquete. El comando del simulador es:
+La primera integración efectiva mantiene una **única CPU virtual** que abastece a la HMI, Modbus y el bus. AB-PLC Simulator consume este repositorio mediante una dependencia Git fijada a una revisión, sin copiar las fuentes del bus dentro del simulador. El comando del simulador es:
 
 ```bash
 npm run suite:core
 ```
 
-El conector de AB-BI Studio, desarrollado por separado, transforma los eventos SSE en CSV importable. No añade streaming nativo al dashboard.
+El receptor de AB-BI Studio ya convierte eventos SSE en CSV importable, sin streaming nativo dentro de su dashboard. No añade streaming nativo al dashboard.
 
 Consulta [arquitectura](docs/ARCHITECTURE.md), [matriz de integraciones](docs/INTEGRATIONS.md), [contratos](docs/PROTOCOL.md) y [límites de seguridad](SECURITY.md).
 
@@ -82,3 +82,9 @@ Ejecuta `npm run check` para validación de sintaxis y batería de pruebas. GitH
 El bus no es un broker MQTT, ni Modbus TCP, ni servidor OPC UA, ni componente certificado IEC 61508/62443. No ofrece acceso a equipos físicos, no dispone de persistencia tras reinicio, ACK distribuido ni garantía de entrega exactamente una vez. Solo escucha en **127.0.0.1**.
 
 **Licencia:** MIT · MS ROBOTIKA.
+
+### Evidencias de integración
+
+- [Prueba HTTP → CPU virtual → Modbus → bus en AB-PLC Simulator](https://github.com/msrobotika/AB-PLC-Simulator/blob/main/tests/suite-core-integration.test.mjs)
+- [Conector SSE → CSV de AB-BI Studio](https://github.com/msrobotika/AB-BI-Studio/blob/main/scripts/ab_suite_telemetry.py)
+- [Captura auténtica del simulador compartido](https://github.com/msrobotika/AB-PLC-Simulator/blob/main/docs/screenshots/lab-suite-live.png), que pertenece al simulador y **no** representa una interfaz gráfica del bus

@@ -26,3 +26,7 @@ El puente integrado con la CPU real de AB-PLC Simulator se prueba en su reposito
 ## Limitaciones
 
 No se certifica equivalencia con sistemas IEC ni interoperabilidad industrial. Los mensajes no tienen garantía exactly-once ni retención durable. Las credenciales son efímeras. La captura real de la HMI compartida pertenece al simulador y puede verse en https://github.com/msrobotika/AB-PLC-Simulator/blob/main/docs/screenshots/lab-suite-live.png; no se presenta como una interfaz gráfica nativa de este bus.
+
+## Pruebas entre repositorios
+
+AB-PLC Simulator consume este paquete fijado a un SHA Git y ejecuta tests/suite-core-integration.test.mjs en su CI. AB-BI Studio ejecuta tests/test_ab_suite_telemetry.py en su propia CI. Ambos proyectos deben permanecer en verde antes de actualizar la revisión fijada.
