@@ -50,7 +50,7 @@
  window.uploadFiles=files=>{if(!files.length)return;pendingFiles=[...files];fileList.textContent=pendingFiles.map(f=>f.name).join(' · ');destination.value='new';importNameLabel.hidden=false;importName.required=true;importName.value=pendingFiles[0].name.replace(/\.[^.]+$/,'').slice(0,90);importError.textContent='';importDialog.showModal();importName.focus()};
  importForm.onsubmit=async event=>{event.preventDefault();importSubmit.disabled=true;importError.textContent='';try{
   const body=new FormData();for(const file of pendingFiles)body.append('files',file);body.append('destination',destination.value);body.append('name',importName.value);body.append('workspace_id',F.model.workspace_id);
-  await stopCapture();const result=await req('/api/data/import',{method:'POST',body});await loadModel();show('data');importDialog.close();toast(`Importadas ${result.added.length} tablas en ${F.model.name}`);
+  await stopCapture();const result=await req('/api/data/import',{method:'POST',body});await loadModel();show('data');await renderData();importDialog.close();toast(`Importadas ${result.added.length} tablas en ${F.model.name}`);
  }catch(failure){importError.textContent=failure.message}finally{importSubmit.disabled=false}};
  $('resetDemo').textContent='Abrir ejemplo';$('resetDemo').onclick=()=>open('demo');
  setTheme('dark');$('themeToggle').hidden=true;
