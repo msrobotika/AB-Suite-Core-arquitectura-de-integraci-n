@@ -15,7 +15,7 @@ python -m pip install pytest==9.1.1 httpx==0.28.1
 python scripts/verify-python.py
 ```
 
-Usar el intérprete preparado de `.venv`. Se ejecutan **129 pruebas Python**: 43 Modbus, 14 Serial, 13 Vision y 59 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
+Usar el intérprete preparado de `.venv`. Se ejecutan **130 pruebas Python**: 44 Modbus, 14 Serial, 13 Vision y 59 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
 
 Las pruebas Python históricas de navegador no se incluyen en este comando. La nueva distribución se recorre mediante las pruebas de navegador comunes; no se contabilizan pruebas omitidas como aprobadas. FastAPI/Starlette emite un aviso de deprecación de su adaptador httpx de pruebas; no produjo fallos.
 

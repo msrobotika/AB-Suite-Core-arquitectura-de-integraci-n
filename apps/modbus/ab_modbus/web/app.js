@@ -192,14 +192,18 @@ $("function").addEventListener("change", updateCountLimit);
 document.addEventListener("visibilitychange", () => {if (document.hidden) stopPolling();});
 action("sim-toggle", async () => {
   if (state?.simulator_port) {stopPolling(); await api("/api/simulator/stop", {}); firstReadComplete = false; notice("Simulador detenido.");}
-  else {await api("/api/simulator/start", {port: Number($("sim-port").value), unit: Number($("sim-unit").value)}); notice("Simulador iniciado. Puedes leerlo desde el cliente.");}
+  else {await startLocalSimulator(); notice("Simulador iniciado. Puedes leerlo desde el cliente.");}
 });
+async function startLocalSimulator(){
+  if(window.ABSuite&&Number($("sim-port").value)===0)return api("/api/simulator/auto",{unit:Number($("sim-unit").value)});
+  return api("/api/simulator/start", {port:Number($("sim-port").value),unit:Number($("sim-unit").value)});
+}
 $("quick-demo").addEventListener("click", () => {
   if (!$("demo").disabled && !busy && !closed) $("demo").click();
 });
 action("demo", async () => {
   if (busy) throw new Error("Espera a que termine la lectura en curso.");
-  if (!state?.simulator_port) await api("/api/simulator/start", {port: Number($("sim-port").value), unit: Number($("sim-unit").value)});
+  if (!state?.simulator_port) await startLocalSimulator();
   await refresh();
   fillProfile({name: "Laboratorio local", host: "127.0.0.1", port: state.simulator_port,
     unit: state.simulator_unit, function: 3, address: 0, count: 8, timeout_ms: 1500});
@@ -239,6 +243,7 @@ action("shutdown", async () => {
   document.querySelectorAll("button,input,select").forEach(node => {node.disabled = true;});
   notice("Aplicación cerrada. Ya puedes cerrar esta pestaña.");
 });
+if(window.ABSuite){$("sim-port").min="0";$("sim-port").value="0";const hint=element("small","0 elige automáticamente un puerto libre de este laboratorio.");$("sim-port").parentElement.append(hint);const link=document.querySelector('a[href="scada.html"]');if(link){link.href="/apps/scada/";link.textContent="SCADA Studio ↗";}}
 window.addEventListener('ab-suite:read-plc',event=>{
   $("host").value="127.0.0.1";$("port").value=event.detail.port;$("unit").value="1";
   $("function").value="1";$("address").value="0";$("count").value="3";$("allow-lan").checked=false;

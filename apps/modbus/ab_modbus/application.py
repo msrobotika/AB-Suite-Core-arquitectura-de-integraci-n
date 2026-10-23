@@ -44,6 +44,10 @@ class Application:
             integer(body["port"], 1024, 65535, "Puerto del simulador")
             self.simulator.start(**body)
             return {"port": self.simulator.port}
+        if path == "/api/simulator/auto" and set(body) == {"unit"}:
+            integer(body["unit"], 0, 255, "Unidad TCP")
+            self.simulator.start(port=0, unit=body["unit"])
+            return {"port": self.simulator.port}
         if path == "/api/simulator/stop" and not body:
             self.simulator.stop()
             return {"ok": True}

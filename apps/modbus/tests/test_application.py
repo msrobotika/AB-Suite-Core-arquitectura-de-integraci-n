@@ -76,6 +76,18 @@ class ApplicationTests(unittest.TestCase):
         self.assertEqual(self.request("POST", "/api/monitor/clear", "x" * 65537)[0], 413)
         self.assertEqual(self.request("POST", "/api/write", {})[0], 400)
 
+    def test_automatic_laboratories_use_independent_ports(self):
+        self.assertEqual(self.request("POST", "/api/simulator/auto", {"unit": 1}, token=False)[0], 401)
+        status, _, raw = self.request("POST", "/api/simulator/auto", {"unit": 1})
+        self.assertEqual(status, 200)
+        second = Application(Path(self.directory.name) / "second")
+        try:
+            result = second.action("/api/simulator/auto", {"unit": 1})
+            self.assertNotEqual(json.loads(raw)["port"], result["port"])
+            self.assertEqual(second.client.read(port=result["port"], function=3)["values"][0], 230)
+        finally:
+            second.simulator.stop()
+
     def test_memory_api_is_local(self):
         self.app.simulator.start(0)
         self.assertEqual(self.request("POST", "/api/simulator/memory", {"function": 3, "address": 0, "value": 234})[0], 200)
