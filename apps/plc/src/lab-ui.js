@@ -108,6 +108,7 @@ function suiteCards() {
 export function mountLabSimulator({ notify = (message)=>window.alert(message) } = {}) {
   let cpu = new VirtualPLC("conveyor");
   let remote = null;
+  let remoteHealthy = false;
   let ready = Promise.resolve();
   let pollClock = null;
   let lastViewScenario = cpu.scenario;
@@ -273,7 +274,7 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
   if(window.ABSuitePLC || location.hash.includes("suite=")) {
     ready=connectSuiteLive().then(shared=>{
       if(!shared)return;
-      remote=shared;cpu=shared;
+      remote=shared;cpu=shared;remoteHealthy=true;
       $("global-runtime-mode").textContent="Suite Live activa";
       $("global-runtime-description").textContent="CPU compartida en localhost · Modbus solo lectura.";
       lastViewScenario="";
@@ -285,8 +286,9 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
       pollClock=setInterval(async()=>{
         try {
           const changed=await shared.poll();
-          if(changed)frameRender();
+          if(changed){remoteHealthy=true;frameRender();}
         } catch(err) {
+          remoteHealthy=false;
           $("lab-connection").textContent="SUITE LIVE · SIN CONEXIÓN";
           $("lab-connection").className="lab-disconnected";
         }
@@ -301,7 +303,7 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
     });
   }
   window.ABSuite?.register({
-    snapshot:()=>{if(window.ABSuitePLC&&!remote)return null;const f=cpu.snapshot();return Object.fromEntries([
+    snapshot:()=>{if(window.ABSuitePLC&&(!remote||!remoteHealthy))return null;const f=cpu.snapshot();return Object.fromEntries([
       ...['inputs','outputs','memory','analog'].flatMap(group=>Object.entries(f.cpu[group]??{}).map(([key,value])=>[group+'.'+key,value])),
       ['scan',f.scan],['simulatedMs',f.simulatedMs],['running',f.mode==='RUN'],
       ...Object.entries(f.plant).filter(([,v])=>typeof v==='number'||typeof v==='boolean').map(([key,value])=>['process.'+key,value])]);},

@@ -88,7 +88,7 @@ function drawGraph(){const svg=$('traffic-chart');svg.replaceChildren();const gr
 }
 let suiteStats=null;
 window.ABSuite?.register({snapshot:()=>suiteStats});
-function renderState(state){suiteStats={frames:state.events?.length??0,capturing:state.mode!=="detenido",crcErrors:(state.events??[]).filter(e=>e.crc_ok===false).length};const active=state.mode!=='detenido';working=active;
+function renderState(state){suiteStats={frames:state.events?.length??0,capturing:state.mode!=="detenido",crcErrors:(state.events??[]).filter(e=>e.crc_ok===false).length};$('mode-badge').classList.remove('error');const active=state.mode!=='detenido';working=active;
  $('mode-badge').classList.toggle('active',active);$('mode-badge').textContent=active?(state.mode==='laboratorio'?'● LABORATORIO ACTIVO':'● PUERTO RX ABIERTO'):'● EN ESPERA';
  $('start').disabled=active;$('stop').disabled=!active;
  $('demo-mode').disabled=active;$('serial-mode').disabled=active;
@@ -102,7 +102,7 @@ function renderState(state){suiteStats={frames:state.events?.length??0,capturing
  else renderTable();
 }
 async function refresh(){try{const state=await api('/api/state');renderState(state);hasError=false;}
- catch(error){if(!hasError){message('No se pudo consultar el servicio: '+error.message,true);hasError=true;}$('mode-badge').textContent='● SIN SERVICIO';$('mode-badge').classList.add('error');}}
+ catch(error){suiteStats=null;if(!hasError){message('No se pudo consultar el servicio: '+error.message,true);hasError=true;}$('mode-badge').textContent='● SIN SERVICIO';$('mode-badge').classList.add('error');}}
 function download(name,text,mime){const blob=new Blob([text],{type:mime});const uri=URL.createObjectURL(blob);const a=el('a');a.href=uri;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(uri),1200);}
 const csvcell=x=>'"'+String(x??'').replaceAll('"','""')+'"';
 $('export-json').addEventListener('click',()=>{download('AB-Serial-capturas.json',JSON.stringify({schema:1,created_utc:new Date().toISOString(),events},null,2),'application/json');message(`${events.length} eventos exportados a JSON.`);});

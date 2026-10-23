@@ -28,7 +28,7 @@ node scripts/verify-browser.cjs
 node scripts/verify-bi-browser.cjs
 ```
 
-El primer script verifica **13 recorridos**: apertura de las nueve herramientas, ejecución KOP, HMI vinculado/caducidad/persistencia/errores, transferencia SCL a PLC, etapas GRAFCET, lecturas Modbus auténticas, comparación con la CPU compartida, captura/exportación Serial, inspección Vision, datos propios/SQL/exportación BI y adaptación a 390 px de las nueve herramientas y catálogo.
+El primer script verifica **14 recorridos**: apertura de las nueve herramientas, ejecución KOP, HMI vinculado/caducidad/persistencia/errores, transferencia SCL a PLC, etapas GRAFCET, lecturas Modbus auténticas, comparación con la CPU compartida, captura/exportación Serial, inspección Vision, datos propios/SQL/exportación BI , caída/recuperación de servicios sin publicar señales obsoletas y adaptación a 390 px de las nueve herramientas y catálogo.
 
 El segundo verifica **8 recorridos específicos de BI**: crear un espacio vacío; importar datos propios en otro espacio; consultar SQL; crear una visualización; cambiar y reabrir; conservar el análisis anterior; rechazar una importación inválida sin sustituir el trabajo; capturar opcionalmente la CPU en el modelo nativo. También prueba el renombrado. La respuesta HTTP 422 del caso inválido es intencional y su mensaje se verifica; no es un error de ejecución JavaScript.
 
