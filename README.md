@@ -88,3 +88,10 @@ El bus no es un broker MQTT, ni Modbus TCP, ni servidor OPC UA, ni componente ce
 - [Prueba HTTP → CPU virtual → Modbus → bus en AB-PLC Simulator](https://github.com/msrobotika/AB-PLC-Simulator/blob/main/tests/suite-core-integration.test.mjs)
 - [Conector SSE → CSV de AB-BI Studio](https://github.com/msrobotika/AB-BI-Studio/blob/main/scripts/ab_suite_telemetry.py)
 - [Captura auténtica del simulador compartido](https://github.com/msrobotika/AB-PLC-Simulator/blob/main/docs/screenshots/lab-suite-live.png), que pertenece al simulador y **no** representa una interfaz gráfica del bus
+
+### Adaptadores originales ya publicados
+
+- [AB-GRAFCET Studio — estado de etapas](https://github.com/msrobotika/AB-GRAFCET-Studio-v0.1-c/blob/main/docs/SUITE_CORE.md): ejecuta el motor nativo con proyecto y escenario JSON y publica en el bus cambios ON/OFF.
+- [AB-Vision Inspector — resultados de inspección](https://github.com/msrobotika/-AB-Vision-Inspector/blob/main/docs/SUITE_CORE.md): toma el historial exportado y publica una selección prudente de calidad y metrología, sin IP ni imágenes.
+
+Ambos funcionan mediante archivos exportados y acciones explícitas. **No hay aún streaming automático del navegador de estas dos aplicaciones.** Se mantienen en repositorios independientes.

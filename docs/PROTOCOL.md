@@ -40,3 +40,11 @@ El servidor valida el emisor autenticado, los tipos y límites, y añade \`seque
 | ab-scl-studio | project.updated | project_id, format |
 
 No existen temas para escritura física, y el cliente ab-modbus-studio tiene permisos únicamente de lectura.
+
+## Adaptadores nativos disponibles (octubre de 2026)
+
+GRAFCET publica por evento `grafcet.stage.changed` los campos `step_id`, `active`, `cycle`, `transition_ids` y `project_id`. El ciclo es lógico: no equivale a milisegundos del PLC.
+
+Vision publica `vision.inspection.result` con `image_id` (ID derivado del registro, no hash de imagen), `passed`, `defects`, estados de veredicto/auditoría y medidas seleccionadas. `passed=true` únicamente cuando el propio adaptador comprueba auditoría VERIFIED y estado dimensional OK además del veredicto visual OK. Esa decisión no acredita calibración metrológica industrial.
+
+Los adaptadores no modifican los temas ni el contrato v1. Los permisos siguen siendo por identidad del emisor, con publicación local voluntaria.
