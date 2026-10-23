@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>KOP Studio · AB Suite</title>
+    <link rel="stylesheet" href="src/style.css" />
+    <link rel="stylesheet" href="src/studio.css" />
+  </head>
+  <body>
+    <main class="kop-studio">
+      <header class="studio-command">
+        <div>
+          <span class="studio-kicker">PROGRAMACIÓN / LADDER</span>
+          <h1>KOP Studio</h1>
+        </div>
+        <div class="toolbar">
+          <button id="new-project" class="btn">Nuevo</button
+          ><button id="kop-undo" class="btn" title="Deshacer (Ctrl+Z)">↶</button
+          ><button id="kop-redo" class="btn" title="Rehacer (Ctrl+Mayús+Z)">
+            ↷</button
+          ><button id="toggle-tools" class="btn" aria-expanded="true">
+            Explorador</button
+          ><button id="toggle-inspector" class="btn" aria-expanded="true">
+            Inspector
+          </button>
+        </div>
+        <div class="sim-actions">
+          <button id="reset" class="btn" title="Reiniciar simulación">
+            ↺ Reiniciar</button
+          ><button id="back" class="btn" title="Restaurar ciclo anterior">
+            ↶ Ciclo</button
+          ><button id="step" class="btn primary">▶ Ejecutar 1 ciclo</button
+          ><button id="auto" class="btn">▷ Auto · 1s</button>
+        </div>
+      </header>
+      <div id="notice" class="notice" role="status" aria-live="polite">
+        Selecciona una red. Conmuta las entradas del banco y ejecuta un ciclo.
+      </div>
+      <div class="kop-layout">
+        <aside class="kop-tools" id="kop-tools">
+          <details open>
+            <summary>Banco de señales <span>BOOL</span></summary>
+            <div id="inputs" class="input-list"></div>
+            <h3>Salidas y temporizadores</h3>
+            <div id="outputs" class="output-list"></div>
+            <p class="hint">
+              Entradas virtuales. Las salidas cambian al ejecutar un ciclo.
+            </p>
+          </details>
+          <details id="project">
+            <summary>Proyecto y archivos</summary>
+            <div class="project-grid">
+              <div class="project-fields">
+                <label for="project-name">Nombre del proyecto</label
+                ><input id="project-name" maxlength="100" /><label
+                  for="description"
+                  >Descripción</label
+                ><textarea id="description" maxlength="500" rows="3"></textarea>
+                <div class="project-actions">
+                  <button id="export-json" class="btn primary">
+                    ↓ Guardar JSON</button
+                  ><label class="btn file-label" for="import-json"
+                    >↑ Abrir JSON<input
+                      id="import-json"
+                      type="file"
+                      accept=".json,application/json" /></label
+                  ><button id="export-svg" class="btn">↓ Exportar SVG</button
+                  ><button id="export-report" class="btn">↓ Informe HTML</button
+                  ><button id="restore" class="btn subtle">
+                    Restaurar ejemplo
+                  </button>
+                </div>
+              </div>
+              <div class="diagnostic">
+                <h3>Auditoría de lógica</h3>
+                <div id="diagnostic-list"></div>
+                <p>
+                  Las advertencias del simulador no sustituyen comprobaciones
+                  eléctricas o de seguridad. No se genera código descargable a
+                  PLC.
+                </p>
+              </div>
+            </div>
+          </details>
+          <details>
+            <summary>Referencia rápida</summary>
+            <div class="kop-reference">
+              <p><b>—| |— NO</b> Conduce con TRUE.</p>
+              <p><b>—|/|— NC</b> Conduce con FALSE.</p>
+              <p><b>Serie / paralelo</b> AND / OR.</p>
+              <p>
+                <b>COIL / SET / RESET</b> Asigna, memoriza y borra una salida.
+              </p>
+              <p><b>TON</b> Retardo en ciclos de prueba.</p>
+              <p>
+                Edición reinicia la simulación. Este laboratorio no programa
+                equipos físicos.
+              </p>
+            </div>
+          </details>
+        </aside>
+        <section class="kop-center" id="workspace">
+          <div class="kop-document">
+            <span>▤ &nbsp; Programa principal</span
+            ><span>LD · <b id="rung-count"></b></span>
+          </div>
+          <div class="kop-editbar">
+            <button id="add-rung" class="btn">＋ Red</button
+            ><button id="add-contact" class="btn">—| |— Serie</button
+            ><button id="add-branch" class="btn">⑂ Paralelo</button
+            ><button id="rung-up" class="btn" title="Subir red seleccionada">
+              ↑</button
+            ><button id="rung-down" class="btn" title="Bajar red seleccionada">
+              ↓</button
+            ><button
+              id="rung-copy"
+              class="btn"
+              title="Duplicar red con una salida propia"
+            >
+              Duplicar</button
+            ><label class="kop-zoom"
+              >Zoom
+              <select id="kop-zoom">
+                <option value="0.75">75 %</option>
+                <option value="1" selected>100 %</option>
+                <option value="1.25">125 %</option>
+                <option value="1.5">150 %</option>
+              </select></label
+            >
+          </div>
+          <div class="kop-paper" id="kop-paper">
+            <div id="rungs" class="rungs" aria-label="Redes Ladder"></div>
+          </div>
+          <div class="kop-status">
+            <span><i class="power-dot"></i> Verde = paso de corriente</span
+            ><span id="scan-label">Ciclo 0</span><span id="status">LISTO</span
+            ><span
+              ><b id="count-rungs">0</b> redes ·
+              <b id="count-outputs">0</b> salidas ON ·
+              <b id="count-timers">0</b> TON</span
+            ><span id="outputs-label" hidden></span>
+          </div>
+          <details class="kop-diagnostics" id="trace">
+            <summary>
+              Traza y diagnóstico
+              <span id="sim-message">Esperando primer ciclo.</span>
+            </summary>
+            <div class="kop-trace-grid">
+              <div>
+                <h3>Resultado por red</h3>
+                <div id="trace-list" class="trace-list"></div>
+              </div>
+              <div>
+                <h3>Historial de exploración</h3>
+                <div id="events" class="event-list"></div>
+                <button id="clear-history" class="btn">Limpiar historial</button
+                ><button id="export-csv" class="link-btn">
+                  Exportar CSV ↗
+                </button>
+              </div>
+            </div>
+          </details>
+        </section>
+        <aside class="kop-inspector panel inspector" id="kop-inspector">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">RED SELECCIONADA</p>
+              <h2>Propiedades</h2>
+            </div>
+          </div>
+          <div id="inspector-content"></div>
+        </aside>
+      </div>
+    </main>
+    <script src="src/engine.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

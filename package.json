@@ -1,9 +1,9 @@
 {
   "name": "@msrobotika/ab-suite-core",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "type": "module",
   "private": false,
-  "description": "Local versioned event bus for MS ROBOTIKA industrial simulation apps",
+  "description": "AB Suite · laboratorio local de programación, HMI, comunicaciones y datos",
   "exports": {
     ".": "./src/index.js",
     "./protocol": "./src/protocol.js",
@@ -15,19 +15,32 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node scripts/serve.mjs",
-    "test": "node --test",
-    "check": "node --check src/protocol.js && node --check src/bus.js && node --check src/server.js && node --check src/client.js && node --check src/plc-bridge.js && node --check scripts/serve.mjs && node --test"
+    "start": "node scripts/workspace.mjs",
+    "test": "node scripts/check-workspace.mjs",
+    "check": "node scripts/check-workspace.mjs",
+    "bus": "node scripts/serve.mjs",
+    "setup": "node scripts/setup.mjs",
+    "test:workspace": "node --test tests/workspace*.test.mjs",
+    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs && node scripts/verify-editors-browser.cjs"
   },
   "files": [
     "src/",
+    "scripts/",
+    "web/",
+    "apps/",
+    "docs/",
     "README.md",
     "LICENSE",
     "SECURITY.md",
-    "docs/PROTOCOL.md"
+    "iniciar.bat",
+    "iniciar.sh",
+    "AGENTS.md"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n.git"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
   }
 }

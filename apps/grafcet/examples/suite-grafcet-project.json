@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "name": "Ciclo demo Suite",
+  "description": "Ejemplo local sin PLC",
+  "stages": [
+    {
+      "id": "E0",
+      "name": "Espera",
+      "actions": [
+        "LISTO"
+      ],
+      "initial": true,
+      "x": 340,
+      "y": 85
+    },
+    {
+      "id": "E1",
+      "name": "Carga",
+      "actions": [
+        "MOTOR_CINTA"
+      ],
+      "initial": false,
+      "x": 340,
+      "y": 270
+    },
+    {
+      "id": "E2",
+      "name": "Sellado",
+      "actions": [
+        "RESISTENCIA"
+      ],
+      "initial": false,
+      "x": 340,
+      "y": 455
+    },
+    {
+      "id": "E3",
+      "name": "Expulsión",
+      "actions": [
+        "EXPULSOR"
+      ],
+      "initial": false,
+      "x": 340,
+      "y": 640
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T0",
+      "name": "Arranque",
+      "from": [
+        "E0"
+      ],
+      "to": [
+        "E1"
+      ],
+      "condition": "marcha AND seguridad"
+    },
+    {
+      "id": "T1",
+      "name": "Cargado",
+      "from": [
+        "E1"
+      ],
+      "to": [
+        "E2"
+      ],
+      "condition": "carga_terminada"
+    },
+    {
+      "id": "T2",
+      "name": "Fin sello",
+      "from": [
+        "E2"
+      ],
+      "to": [
+        "E3"
+      ],
+      "condition": "sellado_terminado AND seguridad"
+    },
+    {
+      "id": "T3",
+      "name": "Retorno",
+      "from": [
+        "E3"
+      ],
+      "to": [
+        "E0"
+      ],
+      "condition": "caja_fuera"
+    }
+  ],
+  "inputs": {
+    "marcha": false,
+    "seguridad": true,
+    "carga_terminada": false,
+    "sellado_terminado": false,
+    "caja_fuera": false
+  }
+}

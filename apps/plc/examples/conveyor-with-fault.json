@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scenario": "conveyor",
+  "scans": 150,
+  "events": [
+    {
+      "at": 0,
+      "action": "start"
+    },
+    {
+      "at": 50,
+      "action": "fault",
+      "fault": "sensorStuck",
+      "value": true
+    },
+    {
+      "at": 80,
+      "action": "fault",
+      "fault": "sensorStuck",
+      "value": false
+    },
+    {
+      "at": 100,
+      "action": "fault",
+      "fault": "jam",
+      "value": true
+    },
+    {
+      "at": 120,
+      "action": "fault",
+      "fault": "jam",
+      "value": false
+    },
+    {
+      "at": 125,
+      "action": "start"
+    }
+  ]
+}

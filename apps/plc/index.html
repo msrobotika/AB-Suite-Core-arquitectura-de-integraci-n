@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0f19">
+  <meta name="description" content="AB-PLC Simulator. Banco virtual de PLC para entrenar lógica industrial de forma segura y reproducible.">
+  <title>AB-PLC Simulator · MS ROBOTIKA</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./src/styles.css">
+  <link rel="stylesheet" href="./src/kop.css">
+  <link rel="stylesheet" href="./src/lab.css">
+  <script src="./src/suite-app.js" type="module"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-symbol">AB<span>◈</span></div>
+        <div><strong>MS ROBOTIKA</strong><small>INDUSTRIAL LABS</small></div>
+      </div>
+      <div class="workspace-label">WORKSPACE / 01</div>
+      <nav class="nav" aria-label="Navegación principal">
+        <button type="button" class="nav-item active" data-view="lab"><span>▣</span> Simulador PLC</button>
+        <button type="button" class="nav-item" data-view="console"><span>▦</span> Demo clásica</button>
+        <button type="button" class="nav-item" data-view="program"><span>⌘</span> Programa PLC</button>
+        <button type="button" class="nav-item" data-view="kop"><span>⋮</span> Editor KOP</button>
+        <button type="button" class="nav-item" data-view="diagnostics"><span>◷</span> Diagnóstico</button>
+        <button type="button" class="nav-item" data-view="help"><span>ⓘ</span> Manual de uso</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-panel">
+          <div class="online-line"><span class="alive-dot"></span> MOTOR DE SIMULACIÓN</div>
+          <strong id="global-runtime-mode">Modo offline</strong>
+          <p id="global-runtime-description">Sin PLC ni red industrial conectados.</p>
+        </div>
+        <div class="copyright">AB-PLC v0.4.0<br>© 2026 MS ROBOTIKA</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>LABORATORIO</span> <b>/</b> <span id="breadcrumb-view">PANEL DE CONTROL</span></div>
+        <div class="top-actions">
+          <span class="chip chip-muted"><i class="dot"></i> IEC-INSPIRED</span>
+          <span class="chip chip-muted"><i class="dot"></i> CPU VIRTUAL · SIN PLC REAL</span>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <div class="heading-row">
+          <div>
+            <div class="eyebrow">PLATAFORMA DE AUTOMATIZACIÓN · 001</div>
+            <h1 id="view-title">PLC Simulation Console <span class="title-accent">/</span></h1>
+            <p class="subtitle" id="view-subtitle">Un entorno digital para diseñar, ejecutar y verificar lógica de control.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="btn btn-outline" id="reset-btn" title="Reinicia el programa y las variables">↺ &nbsp; Reiniciar</button>
+            <button class="btn btn-primary" id="run-btn">Ⅱ &nbsp; Pausar</button>
+          </div>
+        </div>
+
+        <section id="view-lab" class="view"><div id="lab-root"></div></section>
+        <section id="view-console" class="view" hidden>
+          <div class="stats">
+            <article class="stat-card">
+              <div class="stat-top"><span>ESTADO DEL SISTEMA</span><span class="stat-icon">⏣</span></div>
+              <div class="stat-value"><span id="stat-state">RUNNING</span> <span id="status-dot" class="status-dot"></span></div>
+              <div class="stat-foot">Motor de escaneo simulado</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>CICLOS EJECUTADOS</span><span class="stat-icon">↻</span></div>
+              <div class="stat-value mono" id="stat-scans">0</div>
+              <div class="stat-foot">Scan determinista · 100 ms</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>TIEMPO SIMULADO</span><span class="stat-icon">◷</span></div>
+              <div class="stat-value mono" id="stat-time">0.0 <small>s</small></div>
+              <div class="stat-foot">Tiempo lógico, no reloj físico</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>UNIDADES DETECTADAS</span><span class="stat-icon">▣</span></div>
+              <div class="stat-value mono" id="stat-count">0 <small>/ 5</small></div>
+              <div class="stat-foot" id="stat-count-label">Contador CTU C0</div>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel process-panel">
+              <div class="panel-titleline"><div><span class="section-kicker">DIGITAL TWIN / PREVIEW</span><h2>Línea de transporte <span class="muted">L-01</span></h2></div><span class="tag">SIMULADO</span></div>
+              <div class="process-stage">
+                <div class="process-top"><span><i class="mini-light"></i> ESTACIÓN DE ALIMENTACIÓN</span><span>MONITORIZACIÓN VIRTUAL</span></div>
+                <div class="factory-scene" aria-label="Visualización de una cinta transportadora con paquetes">
+                  <div class="machine-label">L1-CV-001 <span>│</span> 0.18 m/s · DEMO</div>
+                  <div class="belt-zone">
+                    <div id="belt" class="belt"><div class="belt-lines"></div><div class="belt-items" id="belt-items"></div></div>
+                    <div class="sensor-beam"><span class="beam-led" id="sensor-led"></span><span>S1</span></div>
+                    <div class="roller roller-left"></div><div class="roller roller-right"></div>
+                  </div>
+                  <div class="machine-foot"><span>◉ &nbsp; CV-01</span><span>▬▬▬▬ &nbsp; TRANSPORTE</span><span>PE-01 &nbsp; ◉</span></div>
+                </div>
+                <div class="legend"><span><i class="legend-dot green"></i> Motor Q0.0</span><span><i class="legend-dot blue"></i> Sensor I0.3</span><span><i class="legend-dot orange"></i> Conteo C0</span></div>
+              </div>
+              <div class="controls">
+                <div><span class="section-kicker">MANDOS VIRTUALES</span><p>Los pulsadores operan únicamente sobre entradas simuladas.</p></div>
+                <div class="control-buttons">
+                  <button id="start-motor" class="btn btn-success">▶ &nbsp; MARCHA</button>
+                  <button id="stop-motor" class="btn btn-warning">■ &nbsp; PARO</button>
+                  <button id="estop" class="btn btn-danger" aria-pressed="false">⬟ &nbsp; E-STOP</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel io-panel">
+              <div class="panel-titleline"><div><span class="section-kicker">I/O MONITOR / LIVE</span><h2>Entradas y salidas</h2></div><span class="tag">DIGITAL</span></div>
+              <div class="io-head"><span>ENTRADAS · I</span><span id="inputs-active">0 ACTIVAS</span></div>
+              <div id="input-list" class="io-list"></div>
+              <div class="io-head output-head"><span>SALIDAS · Q</span><span id="outputs-active">0 ACTIVAS</span></div>
+              <div id="output-list" class="io-list"></div>
+            </section>
+          </div>
+
+          <section class="panel lower-panel">
+            <div class="panel-titleline"><div><span class="section-kicker">PROGRAM EXECUTION / LIVE</span><h2>Redes activas</h2></div><button class="link-button" data-view="program">ABRIR PROGRAMA ↗</button></div>
+            <div class="rung-strip" id="rung-strip"></div>
+          </section>
+        </section>
+
+        <section id="view-program" class="view" hidden>
+          <div class="two-col secondary-grid">
+            <section class="panel">
+              <div class="panel-titleline"><div><span class="section-kicker">LOGIC / RUNG LIST</span><h2>Editor de redes</h2></div><span class="tag" id="program-rung-total">0 REDES</span></div>
+              <div class="notice"><strong>Motor propio, sintaxis propia.</strong> Editor JSON estructurado inspirado en lógica PLC. No importa AWL, SCL ni proyectos Siemens/Omron nativos.</div>
+              <div id="program-rungs" class="program-rungs"></div>
+              <div class="add-rung">
+                <h3>+ Añadir red rápida</h3>
+                <div class="form-grid">
+                  <label>Contacto origen <input id="new-contact" value="I0.5" placeholder="I0.5"></label>
+                  <label>Destino <input id="new-target" value="Q0.3" placeholder="Q0.3"></label>
+                  <label>Acción
+                    <select id="new-action"><option value="coil">Bobina</option><option value="set">SET</option><option value="reset">RESET</option><option value="ton">TON</option><option value="tof">TOF</option><option value="ctu">CTU</option></select>
+                  </label>
+                  <label>Preset (ms / unidades) <input id="new-preset" type="number" value="1000" min="0"></label>
+                </div>
+                <div class="inline-check"><label><input type="checkbox" id="new-nc"> Contacto NC (normalmente cerrado)</label><button id="add-rung-btn" class="btn btn-primary">Añadir red</button></div>
+              </div>
+            </section>
+            <section class="panel editor-panel">
+              <div class="panel-titleline"><div><span class="section-kicker">SOURCE / JSON</span><h2>Programa editable</h2></div><span class="tag">V1 SCHEMA</span></div>
+              <textarea id="program-json" spellcheck="false" aria-label="Editor JSON del programa"></textarea>
+              <div class="editor-actions"><button id="load-json" class="btn btn-primary">Validar y cargar</button><button id="export-json" class="btn btn-outline">↓ Exportar</button><button id="import-json" class="btn btn-outline">↑ Importar</button><input type="file" id="file-json" accept=".json,application/json" hidden></div>
+              <p class="hint">Aplicar un programa reinicia memoria, temporizadores, contadores y salidas. La copia editable se guarda localmente en el navegador.</p>
+            </section>
+          </div>
+        </section>
+
+        <section id="view-kop" class="view" hidden>
+          <div id="kop-editor" class="kop-workspace">
+            <section class="panel kop-mainpanel">
+              <div class="panel-titleline">
+                <div><span class="section-kicker">GRAPHICAL LADDER / KOP</span><h2>Redes de contactos y bobinas</h2></div>
+                <span class="tag">VISUAL EDITOR v0.2</span>
+              </div>
+              <div id="kop-toolbar" class="kop-toolbar">
+                <div class="kop-toolbar-left">
+                  <button type="button" id="kop-add" class="btn btn-outline">＋ Nueva red</button>
+                  <button type="button" id="kop-undo" class="btn btn-outline">↶ Deshacer</button>
+                  <button type="button" id="kop-redo" class="btn btn-outline">↷ Rehacer</button>
+                  <span id="kop-count" class="kop-counter">0 REDES</span>
+                </div>
+                <div class="kop-toolbar-right">
+                  <button type="button" id="kop-discard" class="btn btn-outline">Descartar</button>
+                  <button type="button" id="kop-apply" class="btn btn-primary">✓ Validar y cargar</button>
+                </div>
+              </div>
+              <div id="kop-feedback" class="kop-feedback" role="status" aria-live="polite"></div>
+              <div id="kop-canvas" class="kop-canvas"></div>
+            </section>
+            <aside class="panel kop-sidepanel">
+              <span class="section-kicker">ENGINEERING / HELP</span>
+              <h2>Editor KOP visual</h2>
+              <p>Configura contactos NO/NC conectados <strong>en serie</strong> (AND) o <strong>en paralelo</strong> (OR). El circuito se traduce al motor lógico propio.</p>
+              <div class="kop-scheme"><pre> L+ ──| |────|/|────( )── N
+       I0.0   I0.1    Q0.0
+
+         ┌──| |──┐
+ L+ ─────┤ I0.0  ├────( )── N
+         └──| |──┘
+            I0.1</pre></div>
+              <div class="side-divider"></div>
+              <span class="section-kicker">FLUJO SEGURO</span>
+              <ol class="kop-guide">
+                <li>Edita una red.</li><li>Añade contactos en serie o paralelo.</li>
+                <li>Selecciona instrucción y destino.</li>
+                <li>Valida y carga los cambios.</li>
+                <li>Comprueba las salidas en el panel de control.</li>
+              </ol>
+              <div class="kop-tip"><strong>Solo simulación.</strong> Los cambios no se ejecutan hasta validarlos. El E-STOP del simulador no es un sistema de seguridad funcional.</div>
+              <div class="side-divider"></div>
+              <p>Las condiciones complejas no representables conservan sus datos. Para editarlas, utiliza <strong>Programa PLC → JSON</strong>.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section id="view-diagnostics" class="view" hidden>
+          <div class="two-col secondary-grid">
+            <section class="panel"><div class="panel-titleline"><div><span class="section-kicker">STATE / INSPECTOR</span><h2>Estado del motor</h2></div><span class="tag">TIEMPO REAL</span></div><pre class="inspect-code" id="diag-json"></pre></section>
+            <section class="panel"><div class="panel-titleline"><div><span class="section-kicker">EVENT / TIMELINE</span><h2>Registro de eventos</h2></div><button id="clear-logs" class="link-button">LIMPIAR</button></div><div id="event-list" class="event-list"></div></section>
+          </div>
+        </section>
+
+        <section id="view-help" class="view" hidden>
+          <div class="panel help-panel">
+            <span class="section-kicker">DOCUMENTACIÓN / QUICKSTART</span>
+            <h2>Manual de operación</h2>
+            <div class="help-grid">
+              <article><span class="help-number">01</span><h3>Ejecuta la simulación</h3><p>La consola arranca con un ciclo lógico de 100 ms. Puedes pausar, reanudar o reiniciar el PLC virtual.</p></article>
+              <article><span class="help-number">02</span><h3>Activa la marcha</h3><p>Pulsa MARCHA para enclavar Q0.0. PARO abre el permiso I0.1; E-STOP abre I0.2 y exige restablecerlo antes del rearranque.</p></article>
+              <article><span class="help-number">03</span><h3>Observa las piezas</h3><p>La cinta simula paquetes que cruzan I0.3. El contador CTU suma flancos positivos y enciende Q0.2 al llegar a cinco.</p></article>
+              <article><span class="help-number">04</span><h3>Edita tus redes</h3><p>En Programa PLC puedes añadir redes, editar el JSON, validar y exportar. Se admiten AND, OR, NOT, comparaciones, TON, TOF, CTU, SET y RESET.</p></article>
+            </div>
+            <div class="notice"><strong>Importante:</strong> es una plataforma educativa de simulación, no un PLC certificado ni un sistema de seguridad funcional. No conectar salidas a equipos reales, ni sustituir funciones de parada de emergencia.</div>
+            <p class="hint">Documentación técnica, esquemas de programa y pruebas automatizadas disponibles en el repositorio GitHub.</p>
+          </div>
+        </section>
+
+        <footer>MS ROBOTIKA <span>·</span> AB-PLC SIMULATOR <span>·</span> OPEN SOURCE / MIT <span class="footer-right">OFFLINE-FIRST &nbsp; // &nbsp; BUILD 0.4.0</span></footer>
+      </div>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

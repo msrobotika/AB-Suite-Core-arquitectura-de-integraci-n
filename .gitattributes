@@ -1,0 +1,6 @@
+* text=auto
+*.sh text eol=lf
+*.bat text eol=crlf
+*.md whitespace=-blank-at-eol
+# Intentional dirty-data fixture: trailing spaces are part of the exercise.
+apps/bi/examples/datos_para_limpiar.csv whitespace=-blank-at-eol

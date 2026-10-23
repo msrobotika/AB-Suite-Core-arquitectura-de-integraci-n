@@ -1,0 +1,64 @@
+/* MS ROBOTIKA · graphical KOP editor v0.2 */
+.kop-workspace{display:grid;grid-template-columns:minmax(0,1fr) 265px;gap:17px;align-items:start}
+.kop-mainpanel{min-width:0;padding:22px}
+.kop-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border:1px solid #2b4057;border-radius:10px;padding:12px;background:#101d2e;margin-bottom:11px}
+.kop-toolbar-left,.kop-toolbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kop-toolbar .btn{padding:10px 13px}
+.kop-toolbar .btn:disabled,.kop-small-btn:disabled{opacity:.36;cursor:not-allowed;transform:none;filter:none}
+.kop-counter{font-size:10px;letter-spacing:.13em;color:#9cbed3;font-weight:800}
+.kop-feedback{font-size:12px;line-height:1.6;padding:11px 14px;background:#0b1b29;color:#76d8b6;border-radius:7px;margin-bottom:14px;border:1px solid #235044}
+.kop-feedback.kop-dirty{background:#292417;color:#eec67f;border-color:#65512e}
+.kop-feedback.kop-error{background:#3a2027;color:#ffa5aa;border-color:#914651}
+.kop-canvas{display:flex;flex-direction:column;gap:15px}
+.kop-rung{background:#0e1929;border:1px solid #2e4660;border-radius:11px;overflow:hidden}
+.kop-rung-head{display:flex;align-items:center;gap:12px;padding:15px;border-bottom:1px solid #25384b;background:#142136;flex-wrap:wrap}
+.kop-rung-tag{font-size:12px;font-weight:900;letter-spacing:.08em;color:#5fc7de;font-family:Consolas,monospace;min-width:42px}
+.kop-rung-name{display:flex;flex-direction:column;gap:5px;font-size:9px;font-weight:800;letter-spacing:.09em;color:#7e95ab;flex:1;min-width:165px}
+.kop-rung-name input{font-size:12px;color:#e4edf6;font-weight:700;background:transparent;border:none;border-bottom:1px solid #324c64;padding:6px 0;max-width:360px}
+.kop-rung-actions{display:flex;gap:5px}
+.kop-small-btn{font-size:10px;letter-spacing:.04em;font-weight:850;padding:7px 9px;border-radius:5px;border:1px solid #35516b;background:#203248;color:#acd1e1}
+.kop-small-btn:hover{color:#67f6d0;border-color:#51bca6;background:#1a3c46}
+.kop-diagram-scroll{overflow-x:auto;scrollbar-width:thin;padding:22px 15px;background:repeating-linear-gradient(0deg,rgba(74,104,133,.08) 0 1px,transparent 1px 30px),#091626}
+.kop-diagram{display:flex;align-items:stretch;width:max-content;min-width:100%;min-height:153px}
+.kop-rail{background:linear-gradient(#6897b2,#456580);width:4px;min-width:4px;margin:6px 0;position:relative;font-size:0}
+.kop-rail:before{position:absolute;left:9px;top:-6px;font-size:9px;letter-spacing:.1em;color:#89c3e0;white-space:nowrap;font-weight:800}
+.rail-left:before{content:"L+"}.rail-right:before{content:"N"}
+.kop-stages{display:flex;align-items:center}
+.kop-stage{display:flex;align-items:center;flex-direction:column;justify-content:center;position:relative;min-width:142px;padding:0 13px}
+.kop-stage:before{content:"";position:absolute;top:50%;left:0;right:0;height:2px;background:#4d7794}
+.kop-branches{position:relative;display:flex;flex-direction:column;gap:9px;padding:10px 7px;border-left:2px solid #4d7794;border-right:2px solid #4d7794;border-radius:5px;z-index:1;min-width:126px}
+.kop-branch{display:flex;align-items:center;justify-content:center;position:relative}
+.kop-contact{background:#172a3f;border:1px solid #385873;border-radius:7px;padding:8px 10px;min-width:113px;box-shadow:0 3px 15px #0003;position:relative}
+.kop-contact.kop-live{background:#123b36;border-color:#338b75}
+.kop-contact-symbol{font-family:Consolas,monospace;text-align:center;font-weight:800;color:#8bb3dc;font-size:17px;letter-spacing:1px;margin-bottom:6px}
+.kop-contact.kop-live .kop-contact-symbol{color:#3de2b6;text-shadow:0 0 14px #3de2b666}
+.kop-contact-tools{display:flex;justify-content:space-between;align-items:end;gap:6px;margin-top:6px}
+.kop-contact-tools label{font-size:8px;letter-spacing:.08em;color:#8ba7b9;display:flex;flex-direction:column;gap:3px}
+.kop-contact-tools select{background:#0d1b2e;border:1px solid #3b5770;color:#b9d1e5;font-size:10px;padding:4px 3px;border-radius:4px}
+.kop-contact-tools .kop-small-btn{padding:4px 8px}
+.kop-field-label{font-size:8px;color:#82a3b9;display:flex;flex-direction:column;gap:4px;letter-spacing:.09em;font-weight:800}
+.kop-field-label input{width:91px;box-sizing:border-box;background:#0b1c2d;color:#e2f3ff;border:1px solid #335471;border-radius:4px;padding:6px;font:700 11px Consolas,monospace}
+.kop-stage-actions{position:relative;z-index:1;display:flex;gap:4px;margin-top:9px;background:#0b1726;padding:3px;border-radius:5px}
+.kop-stage-actions .kop-small-btn{font-size:9px;padding:4px 6px}
+.kop-coil{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:126px;color:#d7b47d;font:700 13px Consolas,monospace;gap:8px}
+.kop-wire{width:100%;height:2px;background:#4d7794;position:absolute;top:50%;left:0}
+.kop-coil-icon{z-index:1;padding:8px 12px;background:#172739;border:2px solid #c69c61;border-radius:6px;min-width:60px;text-align:center}
+.kop-coil strong{z-index:1;background:#101c2b;padding:2px 9px}
+.kop-locked{display:flex;gap:16px;padding:24px;background:#1f283c}
+.kop-locked span{font-size:28px;color:#efbc77}
+.kop-locked strong{color:#e8c39e}
+.kop-locked p{font-size:12px;color:#9fb2c8;line-height:1.7;margin:7px 0 0}
+.kop-coil-settings{padding:14px 16px;border-top:1px solid #293c52;display:flex;flex-wrap:wrap;gap:12px}
+.kop-coil-settings label{font-size:9px;letter-spacing:.1em;font-weight:800;color:#809ab0;display:flex;flex-direction:column;gap:6px;min-width:110px;flex:1}
+.kop-coil-settings select,.kop-coil-settings input{background:#111e30;border:1px solid #34516c;border-radius:6px;color:#e4eefb;padding:9px;font-size:12px;min-width:0}
+.kop-sidepanel{padding:23px}
+.kop-sidepanel h2{margin:10px 0 10px;font-size:19px}
+.kop-sidepanel p{font-size:12px;color:#9db1c6;line-height:1.8}
+.kop-sidepanel code{color:#7deac9;background:#162a39;border-radius:4px;padding:2px 5px;font-size:11px}
+.kop-scheme{margin:19px 0;background:#0a1928;border:1px solid #2a445a;padding:13px;border-radius:9px}
+.kop-scheme pre{font-size:12px;color:#96e2c9;margin:0;font-family:Consolas,monospace;line-height:1.8}
+.kop-sidepanel .side-divider{border-top:1px solid #2b4053;margin:20px 0}
+.kop-guide{padding:0 0 0 18px;color:#a5bed0;font-size:12px;line-height:2.2}
+.kop-tip{border:1px solid #7d673b;background:#2b281c;border-radius:8px;padding:12px;font-size:11px;color:#d9c492;line-height:1.75}
+@media(max-width:1400px){.kop-workspace{grid-template-columns:1fr}.kop-sidepanel{display:block}}
+@media(max-width:650px){.kop-mainpanel{padding:12px}.kop-rung-head{gap:6px}.kop-diagram-scroll{padding:20px 10px}.kop-toolbar .btn{padding:8px 10px}.kop-stage{padding:0 8px;min-width:125px}.kop-contact{min-width:108px}}

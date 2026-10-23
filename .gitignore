@@ -5,3 +5,11 @@ coverage/
 .env.*
 !.env.example
 .DS_Store
+
+.venv/
+__pycache__/
+*.pyc
+.suite-data/
+playwright-report/
+.pytest_cache/
+suite.log

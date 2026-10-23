@@ -1,0 +1,65 @@
+[
+  {
+    "id": "plc",
+    "repository": "https://github.com/msrobotika/AB-PLC-Simulator",
+    "commit": "23aebbdee35eec0aee90151bdd48a9f4c037fdc3",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "kop",
+    "repository": "https://github.com/msrobotika/AB-KOP-Studio-v0.1",
+    "commit": "4e62f21e23ed2d3407a71a73bb582b3257f197ba",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "scl",
+    "repository": "https://github.com/msrobotika/AB-SCL-Studio",
+    "commit": "56fc68216e9e3d8fb14cd0301d8d9f13fde3a330",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "grafcet",
+    "repository": "https://github.com/msrobotika/AB-GRAFCET-Studio-v0.1-c",
+    "commit": "e3586b7414c0d2fc8a3aa693a8a27b494bb17ead",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "vision",
+    "repository": "https://github.com/msrobotika/-AB-Vision-Inspector",
+    "commit": "07e9109d8e38cd1e97d37fc975a444c601108675",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "modbus",
+    "repository": "https://github.com/msrobotika/AB-Modbus-Studio",
+    "commit": "c121e26abf3d97d8e97b708cb1a98ae895842bb5",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "serial",
+    "repository": "https://github.com/msrobotika/AB-Serial-Analyzer-v0.1-",
+    "commit": "18ca3a2dadb35d084cc7923e9d0a339b33afac9b",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "bi",
+    "repository": "https://github.com/msrobotika/AB-BI-Studio",
+    "commit": "d1fc642bd9e74ad56d4dfb63d540af0523a8b869",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  },
+  {
+    "id": "scada",
+    "repository": "https://github.com/msrobotika/AB-SCADA-Studio",
+    "commit": "82a8195ea05d950c5a307d5c3e5feac50c506772",
+    "license": "MIT",
+    "note": "Snapshot de código propio; modificaciones de integración en este repositorio."
+  }
+]

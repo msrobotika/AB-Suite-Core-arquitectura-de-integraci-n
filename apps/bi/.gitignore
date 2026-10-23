@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+data/
+.env
+.env.*
+!.env.example
+dist/
+*.abbi
+filtered-test.csv
+test-results*.xml
+
+# AB-Suite telemetry captured locally
+ab_suite_plc_telemetry.csv

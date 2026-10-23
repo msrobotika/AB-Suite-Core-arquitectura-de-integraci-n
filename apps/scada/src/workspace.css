@@ -1,0 +1,711 @@
+/* AB Suite HMI editor: application layout, using the common suite design tokens. MIT. */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--suite-bg, #10141d);
+  color: var(--suite-ink, #e9eef8);
+  font:
+    13px/1.5 'Segoe UI',
+    sans-serif;
+}
+button,
+.hmi-file {
+  font:
+    600 11px 'Segoe UI',
+    sans-serif;
+  border: 1px solid var(--suite-border);
+  border-radius: 7px;
+  padding: 7px 10px;
+  cursor: pointer;
+  background: var(--suite-raised);
+  color: var(--suite-ink);
+  min-height: 32px;
+}
+button:hover {
+  border-color: var(--suite-accent);
+}
+button:disabled {
+  opacity: 0.4;
+}
+input,
+select {
+  font:
+    12px 'Segoe UI',
+    sans-serif;
+  min-height: 32px;
+  width: 100%;
+  padding: 7px;
+  border: 1px solid var(--suite-border);
+  border-radius: 6px;
+  background: var(--suite-bg);
+  color: var(--suite-ink);
+}
+input[type='color'] {
+  padding: 2px;
+  cursor: pointer;
+}
+label {
+  display: grid;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--suite-muted);
+  margin: 10px 0;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+.hmi-studio {
+  height: calc(100dvh - 68px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.hmi-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  min-height: 68px;
+  border-bottom: 1px solid var(--suite-border);
+  background: var(--suite-surface);
+}
+.hmi-product {
+  margin-right: 14px;
+}
+.hmi-product h1 {
+  font-size: 20px !important;
+  letter-spacing: -0.5px !important;
+}
+.hmi-product small {
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  color: var(--suite-accent);
+}
+.toolbar-space {
+  flex: 1;
+}
+.mode-switch {
+  display: flex;
+  gap: 2px;
+}
+.mode-switch button[aria-pressed='true'] {
+  background: var(--suite-accent) !important;
+  color: #142029 !important;
+}
+.hmi-file {
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+.hmi-file input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.hmi-notice {
+  font-size: 11px;
+  min-height: 30px;
+  padding: 6px 16px;
+  color: var(--suite-muted);
+  border-bottom: 1px solid var(--suite-border);
+}
+.hmi-notice.is-error {
+  color: #ffadb8;
+}
+.hmi-layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 258px;
+  flex: 1;
+  min-height: 0;
+}
+.hmi-library,
+.hmi-inspector {
+  background: var(--suite-surface);
+  overflow: auto;
+  min-height: 0;
+  border-right: 1px solid var(--suite-border);
+}
+.hmi-inspector {
+  border-right: 0;
+  border-left: 1px solid var(--suite-border);
+}
+details {
+  border-bottom: 1px solid var(--suite-border);
+}
+summary {
+  font-size: 11px;
+  font-weight: 650;
+  padding: 13px 12px;
+  cursor: pointer;
+}
+.hmi-padding {
+  padding: 0 12px 14px;
+}
+.hmi-library nav {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.hmi-library nav button {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 400;
+  background: transparent !important;
+  border-color: transparent !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hmi-library nav button[aria-current='true'] {
+  border-color: var(--suite-accent) !important;
+  background: color-mix(
+    in srgb,
+    var(--suite-accent),
+    transparent 92%
+  ) !important;
+  color: var(--suite-accent) !important;
+}
+.hmi-palette {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 0 10px 12px;
+}
+.hmi-palette button {
+  font-weight: 400;
+  font-size: 9px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+.hmi-palette b {
+  font:
+    20px Consolas,
+    monospace;
+  color: var(--suite-accent);
+  width: 22px;
+  text-align: center;
+}
+.hmi-canvas-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+.hmi-canvas-head {
+  min-height: 47px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding: 7px 12px;
+  background: var(--suite-raised);
+  border-bottom: 1px solid var(--suite-border);
+}
+.hmi-canvas-head h2 {
+  font-size: 12px;
+  letter-spacing: 0 !important;
+  margin-right: 8px;
+}
+.hmi-canvas-head > span {
+  font-size: 9px;
+  color: var(--suite-muted);
+}
+.hmi-canvas-head button {
+  padding: 4px 8px;
+  font-size: 10px;
+  min-height: 28px !important;
+}
+.snap-control {
+  margin: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+}
+.snap-control input {
+  width: 13px;
+  min-height: 13px;
+  height: 13px;
+  accent-color: var(--suite-accent);
+}
+.hmi-viewport {
+  min-height: 200px;
+  flex: 1;
+  overflow: auto;
+  padding: 30px;
+  background: #090f17;
+  overscroll-behavior: contain;
+}
+.hmi-canvas {
+  position: relative;
+  width: 1600px;
+  height: 1000px;
+  flex-shrink: 0;
+  background: #101c2a;
+  background-image: radial-gradient(#a8bed326 1px, transparent 1px);
+  background-size: 10px 10px;
+  box-shadow:
+    0 0 0 1px #50637b,
+    0 16px 65px #0007;
+  transform-origin: top left;
+  isolation: isolate;
+}
+.hmi-canvas.no-grid,
+.hmi-preview .hmi-canvas {
+  background-image: none;
+}
+.hmi-empty {
+  position: absolute;
+  left: 80px;
+  top: 90px;
+  max-width: 600px;
+  pointer-events: none;
+  color: #90a4bd;
+}
+.hmi-empty > span {
+  font:
+    60px Consolas,
+    monospace;
+  color: #ff9da7;
+}
+.hmi-empty h3 {
+  font-size: 32px;
+  margin: 16px 0;
+}
+.hmi-empty p {
+  font-size: 20px;
+  line-height: 1.7;
+}
+.hmi-canvas-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 9px 12px;
+  font-size: 9px;
+  color: var(--suite-muted);
+  background: var(--suite-raised);
+}
+.hmi-properties {
+  padding: 15px 12px;
+  margin: 0;
+  border-top: 1px solid var(--suite-border);
+}
+.hmi-caption {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: var(--suite-accent);
+  margin-bottom: 12px;
+}
+.field-help {
+  font-size: 10px;
+  color: var(--suite-muted);
+  line-height: 1.7;
+}
+.property-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 8px;
+}
+.hmi-primary {
+  width: 100%;
+  margin: 12px 0 4px;
+  background: var(--suite-accent);
+  color: #142029;
+}
+.hmi-inline {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.hmi-inline button {
+  font-size: 10px;
+  padding: 5px 8px;
+}
+.hmi-danger {
+  color: #ffacb8 !important;
+}
+.hmi-screen-properties button {
+  font-size: 10px;
+  margin-top: 6px;
+}
+.hmi-widget {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-width: 40px;
+  min-height: 30px;
+  padding: 12px;
+  border: 1px solid #4a5e72;
+  background: #1c2a3b;
+  border-radius: 8px;
+  touch-action: none;
+  user-select: none;
+  overflow: visible;
+}
+.hmi-widget.selected {
+  outline: 2px solid var(--suite-accent);
+  outline-offset: 4px;
+}
+.widget-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+  cursor: move;
+  flex-shrink: 0;
+  min-height: 18px;
+}
+.widget-head strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.widget-head button {
+  font-size: 9px;
+  padding: 2px 5px;
+  min-height: 22px !important;
+  background: transparent !important;
+}
+.widget-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.widget-reading {
+  font-size: 30px;
+  font-weight: 500;
+}
+.widget-unit {
+  font-size: 12px;
+  color: #acc0d3;
+}
+.widget-quality {
+  font-size: 10px;
+  color: #edc79a;
+  display: block;
+  width: 100%;
+}
+.widget-signal {
+  font:
+    9px Consolas,
+    monospace;
+  color: #94aac0;
+  padding-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.widget-indicator {
+  font-size: 35px;
+  color: #728499;
+}
+.widget-indicator.active {
+  color: #77dfc7;
+}
+.widget-state {
+  font-size: 10px;
+  letter-spacing: 0.7px;
+}
+.widget-content > p {
+  width: 100%;
+  font-size: 10px;
+}
+.widget-content > svg {
+  width: 100%;
+  height: 60%;
+  min-height: 30px;
+}
+.widget-content > small {
+  font-size: 9px;
+}
+.alarm-active {
+  color: #ff9da7;
+  font-size: 12px;
+}
+.alarm-clear {
+  color: #77dfc7;
+  font-size: 12px;
+}
+.trend-value {
+  font-size: 16px;
+}
+.resize-handle {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 14px;
+  height: 14px;
+  min-height: 14px !important;
+  border: 2px solid #101c2a !important;
+  border-radius: 2px !important;
+  padding: 0;
+  background: var(--suite-accent) !important;
+  cursor: nwse-resize;
+  display: none;
+}
+.selected .resize-handle {
+  display: block;
+}
+.hmi-widget.figure {
+  padding: 0;
+  border: 0;
+  background: transparent !important;
+  border-radius: 0;
+}
+.figure .widget-head {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  right: 0;
+  visibility: hidden;
+  color: #d4e4f0;
+  font-size: 10px;
+  z-index: 2;
+}
+.figure.selected .widget-head {
+  visibility: visible;
+}
+.figure .widget-signal {
+  display: none;
+}
+.figure .widget-content {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: move;
+}
+.figure-svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: visible;
+}
+.figure-label {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 8%;
+  font:
+    11px Consolas,
+    monospace;
+  text-align: center;
+  color: #d4e4f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.figure-reading {
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  text-align: center;
+  font:
+    600 18px Consolas,
+    monospace;
+  color: #eef5f8;
+  pointer-events: none;
+}
+.figure .widget-quality {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #111c2ae6;
+  padding: 3px;
+  text-align: center;
+  font-size: 9px;
+}
+.figure .text-shape {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  font:
+    24px 'Segoe UI',
+    sans-serif;
+  width: 100%;
+  height: 100%;
+  overflow-wrap: anywhere;
+}
+.hmi-preview .hmi-library,
+.hmi-preview .hmi-inspector {
+  display: none;
+}
+.hmi-preview .hmi-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+.hmi-preview .widget-head {
+  cursor: default;
+}
+.hmi-preview .figure .widget-head {
+  display: none;
+}
+.hmi-preview .figure .widget-content {
+  cursor: default;
+}
+.hmi-preview .hmi-widget.selected {
+  outline: none;
+}
+.hmi-preview .resize-handle {
+  display: none;
+}
+.hmi-preview #snap-grid {
+  pointer-events: none;
+}
+.library-hidden .hmi-library {
+  display: none;
+}
+.properties-hidden .hmi-inspector {
+  display: none;
+}
+.hmi-layout.library-hidden {
+  grid-template-columns: minmax(0, 1fr) 258px;
+}
+.hmi-layout.properties-hidden {
+  grid-template-columns: 200px minmax(0, 1fr);
+}
+.hmi-layout.library-hidden.properties-hidden {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (max-width: 1100px) {
+  .hmi-layout {
+    grid-template-columns: minmax(0, 1fr) 250px;
+  }
+  .hmi-layout.library-hidden {
+    grid-template-columns: minmax(0, 1fr) 250px;
+  }
+  .hmi-layout.properties-hidden {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hmi-library {
+    position: absolute;
+    left: 0;
+    top: 180px;
+    bottom: 0;
+    width: 220px;
+    z-index: 80;
+    box-shadow: 20px 0 60px #0009;
+  }
+  .hmi-toolbar {
+    gap: 5px;
+  }
+  .hmi-product {
+    margin-right: 5px;
+  }
+}
+@media (max-width: 800px) {
+  .hmi-studio {
+    height: calc(100dvh - 110px);
+  }
+  .hmi-toolbar {
+    padding: 8px 10px;
+    min-height: 76px;
+  }
+  .hmi-product {
+    display: none;
+  }
+  .hmi-toolbar button,
+  .hmi-file {
+    font-size: 10px;
+    padding: 6px 8px;
+    min-height: 30px !important;
+  }
+  .hmi-layout,
+  .hmi-layout.library-hidden {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hmi-inspector {
+    position: absolute;
+    right: 0;
+    top: 235px;
+    bottom: 0;
+    z-index: 70;
+    width: 260px;
+    box-shadow: -20px 0 60px #0009;
+  }
+  .hmi-library {
+    top: 235px;
+  }
+  .hmi-canvas-head {
+    gap: 5px;
+    padding: 7px 10px;
+  }
+  .hmi-canvas-head > span#component-count {
+    display: none;
+  }
+  .hmi-canvas-head h2 {
+    font-size: 11px;
+  }
+  .snap-control {
+    font-size: 9px;
+    margin-left: 0;
+  }
+  .hmi-canvas-footer > span:last-child {
+    display: none;
+  }
+  .hmi-notice {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+  .hmi-viewport {
+    padding: 16px;
+  }
+}
+.resize-handle {
+  z-index: 100;
+}
+.hmi-widget.selected > .widget-head {
+  z-index: 101;
+}
+
+.hmi-canvas {
+  margin: 0 auto;
+}
+
+.screen-navigation {
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+}
+.hmi-widget:has(.screen-navigation) {
+  padding: 6px;
+}
+.hmi-widget:has(.screen-navigation) .widget-head {
+  font-size: 9px;
+  min-height: 16px;
+}
+
+.figure-state {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px 5px;
+  background: #101c2acc;
+  border-radius: 3px;
+  color: #d4e4f0;
+  font:
+    9px Consolas,
+    monospace;
+  pointer-events: none;
+}

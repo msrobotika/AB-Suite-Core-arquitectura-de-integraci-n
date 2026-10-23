@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+dist/
+build/
+.pytest_cache/
+playwright-report/
+test-results/
+*.log
+
+# Suite Core local checkpoints
+.ab-vision-suite-checkpoint.json
+.ab-vision-suite-checkpoint.json.tmp

@@ -1,0 +1,25 @@
+{
+  "name": "ab-plc-simulator",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Simulador PLC educativo, offline y determinista · MS ROBOTIKA",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test",
+    "check": "node --check scripts/serve-suite-core.mjs && node --check src/plc-engine.js && node --check src/plant-runtime.js && node --check src/suite-contract.js && node --check src/modbus-tcp.js && node --check src/suite-live-server.js && node --check src/suite-live-client.js && node --check src/kop-import.js && node --check src/lab-ui.js && node --check src/scenario-runner.js && node --check src/app.js && node --test",
+    "sim:demo": "node scripts/run-scenario.mjs --scenario examples/conveyor-with-fault.json --csv ab-plc-scenario.csv",
+    "sim:tank": "node scripts/run-scenario.mjs --scenario examples/tank-cycle.json --csv ab-plc-tank.csv",
+    "sim:modbus": "node scripts/serve-modbus.mjs",
+    "suite:live": "node scripts/serve-suite-live.mjs",
+    "suite:core": "node scripts/serve-suite-core.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@msrobotika/ab-suite-core": "git+https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n.git#53dfed5b674daa107d15eb938617a031da88afa2"
+  }
+}

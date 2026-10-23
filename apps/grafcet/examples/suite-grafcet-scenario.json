@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "steps": [
+    {
+      "inputs": {
+        "marcha": true,
+        "seguridad": true
+      },
+      "expectActive": [
+        "E1"
+      ]
+    },
+    {
+      "inputs": {
+        "carga_terminada": true
+      },
+      "expectActive": [
+        "E2"
+      ]
+    },
+    {
+      "inputs": {
+        "sellado_terminado": true
+      },
+      "expectActive": [
+        "E3"
+      ]
+    },
+    {
+      "inputs": {
+        "caja_fuera": true
+      },
+      "expectActive": [
+        "E0"
+      ]
+    }
+  ]
+}
