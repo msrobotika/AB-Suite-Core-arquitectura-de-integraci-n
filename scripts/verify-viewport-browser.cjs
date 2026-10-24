@@ -85,11 +85,14 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
           report.pageHeight <= report.height + 1,
           id + ' ' + label + ': page scroll'
         );
-        assert.deepEqual(
-          report.off,
-          [],
-          id + ' ' + label + ': controls outside the window'
-        );
+        if (report.off.length)
+          errors.push(
+            id +
+              ' ' +
+              label +
+              ': controls outside the window ' +
+              JSON.stringify(report.off)
+          );
       };
       for (const [width, height] of [
         [1280, 720],
@@ -177,11 +180,20 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
       await page.screenshot({
         path: path.join(dir, 'viewport-' + id + '.png')
       });
-      passed.push(
-        id +
-          ': bounded editor and active task controls at 1280×720 / 1366×768, ES/EN'
+      if (
+        !errors.some(
+          (error) => error.startsWith(id + ' ') || error.startsWith(id + ':')
+        )
+      )
+        passed.push(
+          id +
+            ': bounded editor and active task controls at 1280×720 / 1366×768, ES/EN'
+        );
+      console.log(
+        (passed.at(-1)?.startsWith(id + ':') ? 'PASS ' : 'FAIL ') +
+          id +
+          ': viewport audit complete'
       );
-      console.log('PASS ' + passed.at(-1));
       await context.close();
     }
     assert.deepEqual(errors, []);
