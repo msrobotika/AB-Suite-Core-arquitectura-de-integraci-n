@@ -14,6 +14,7 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
       : {})
   });
   const context = await browser.newContext({
+    locale: 'es-ES',
     viewport: { width: 1600, height: 1000 },
     acceptDownloads: true
   });
@@ -36,11 +37,41 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
     hmi.evaluate(() =>
       JSON.parse(localStorage.getItem('ab-suite:hmi-project:v1'))
     );
-  const input = async (id, value) =>
-    hmi.locator('#widget-' + id).fill(String(value));
+  const input = async (id, value) => {
+    const field = hmi.locator('#widget-' + id);
+    if (!(await field.isVisible()))
+      await hmi
+        .locator('#properties .viewport-task')
+        .selectOption(
+          [
+            'x',
+            'y',
+            'width',
+            'height',
+            'fill',
+            'stroke',
+            'strokeWidth',
+            'direction'
+          ].includes(id)
+            ? '1'
+            : '0'
+        );
+    await field.fill(String(value));
+  };
   const apply = () => hmi.locator('#properties button[type=submit]').click();
   const choose = async (id) => {
+    const layers = hmi
+      .locator('#library>details')
+      .filter({ has: hmi.locator('#layers') });
+    if (!(await layers.evaluate((e) => e.open)))
+      await layers.locator('summary').first().click();
     await hmi.locator('#layers button[data-widget="' + id + '"]').click();
+    await hmi
+      .locator('#library>details')
+      .filter({ has: hmi.locator('.hmi-palette') })
+      .locator('summary')
+      .first()
+      .click();
   };
   const upload = async (p, selector, project) => {
     await p.locator(selector).setInputFiles({
@@ -58,6 +89,13 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
   try {
     await kop.goto(base + '/apps/kop/');
     await hmi.goto(base + '/apps/scada/');
+    await Promise.all([
+      kop.waitForFunction(() => ABSuite.viewportReady),
+      hmi.waitForFunction(() => ABSuite.viewportReady)
+    ]);
+    await kop.locator('#project>summary').click();
+    await kop.locator('#restore').click();
+    await kop.locator('#kop-tools>details>summary').first().click();
     await run(
       'KOP: área de trabajo principal y paneles plegables',
       async () => {
@@ -77,8 +115,14 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
     await run(
       'KOP: programa propio, contacto NC, ejecución real, deshacer y rehacer',
       async () => {
-        await kop.locator('#new-project').click();
-        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.locator('#suite-new').click();
+        await kop.locator('#suite-document-name').fill('Mi programa de prueba');
+        await kop.locator('#suite-document-create').click();
+        await kop
+          .locator('#suite-document-dialog')
+          .waitFor({ state: 'hidden' });
+        assert.equal(await kop.locator('.rung').count(), 0);
+        await kop.locator('#add-rung').click();
         await kop.locator('#edit-name').fill('Borrador en curso');
         await kop.locator('#step').click();
         assert.equal(
@@ -98,6 +142,40 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
         await kop.locator('#kop-redo').click();
         await kop.locator('#step').click();
         assert.match(await kop.locator('#outputs').textContent(), /● Q0/);
+      }
+    );
+    await run(
+      'KOP: borrar la última red, proteger texto, deshacer y persistir el vacío',
+      async () => {
+        const original = await kop.evaluate(() =>
+          ABSuite.adapter.documents.get()
+        );
+        await kop
+          .locator('#edit-name')
+          .fill('No borrar el programa al editar texto');
+        await kop.keyboard.press('Delete');
+        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.locator('.rung').click();
+        await kop.keyboard.press('Delete');
+        assert.equal(await kop.locator('.rung').count(), 0);
+        assert.equal(await kop.locator('#step').isDisabled(), true);
+        await kop.locator('#kop-undo').click();
+        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.locator('#delete-rung').click();
+        assert.equal(await kop.locator('.rung').count(), 0);
+        await kop.reload();
+        await kop.waitForFunction(() => ABSuite.viewportReady);
+        assert.equal(
+          (await kop.evaluate(() => ABSuite.adapter.documents.get())).rungs
+            .length,
+          0
+        );
+        await kop.locator('#rungs button').click();
+        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.evaluate(
+          (doc) => ABSuite.adapter.documents.restore(doc),
+          original
+        );
       }
     );
     await run(
@@ -122,8 +200,9 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
           await kop.locator('.rung-title').first().textContent(),
           /R1/
         );
-        await kop.locator('#project summary').click();
+        await kop.locator('#project>summary').click();
         await kop.locator('#restore').click();
+        await kop.locator('#kop-tools>details>summary').first().click();
         await kop
           .locator('#inputs button')
           .filter({ hasText: 'START' })
@@ -142,6 +221,8 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
     await run(
       'KOP: archivos JSON y SVG recuperables desde el editor',
       async () => {
+        if (!(await kop.locator('#project').evaluate((e) => e.open)))
+          await kop.locator('#project>summary').click();
         const json = kop.waitForEvent('download');
         await kop.locator('#export-json').click();
         const file = path.join(evidence, 'programa.kop.json');
@@ -156,7 +237,12 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
         assert.match(drawing, /<svg/);
         assert.match(drawing, /MOTOR/);
         assert.match(drawing, /<path/);
-        await kop.locator('#new-project').click();
+        await kop.locator('#suite-new').click();
+        await kop.locator('#suite-document-name').fill('Mi programa de prueba');
+        await kop.locator('#suite-document-create').click();
+        await kop
+          .locator('#suite-document-dialog')
+          .waitFor({ state: 'hidden' });
         await upload(kop, '#import-json', program);
         assert.equal(await kop.locator('.rung').count(), 4);
         await kop.locator('#step').click();

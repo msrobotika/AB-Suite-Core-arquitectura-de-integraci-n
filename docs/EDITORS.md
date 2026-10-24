@@ -1,16 +1,18 @@
-# Edición de programas y pantallas · AB Suite 0.3
+# Edición de programas y pantallas · AB Suite 0.4
 
 ## KOP Studio
 
 El programa ocupa el centro. Explorador abre el banco de señales y los archivos; Inspector abre las propiedades de la red. Ambos se pueden plegar. Traza y diagnóstico se despliega debajo del esquema. El zoom no modifica el programa.
 
-1. Pulsa **Nuevo** para crear una entrada I0, una salida Q0 y una red de partida. Puedes deshacer la creación para recuperar el programa anterior.
+1. Pulsa **＋ Nuevo** en la barra común para crear un programa sin redes, con I0/Q0 declaradas y a cero. **Crear primera red** añade tu primera instrucción editable. Puedes eliminar también la última red; el proyecto sigue siendo válido y los controles de ejecución quedan deshabilitados hasta añadir lógica. **Proyectos** permite recuperar el trabajo anterior.
 2. Selecciona la red. En el inspector cambia nombre, operación, destino y contactos NO/NC. **Guardar cambios** valida las referencias antes de aplicar; un destino de bobina tiene que estar declarado como salida. Añadir una señal permite declararlo.
 3. **Serie** añade un contacto a la primera rama de la red seleccionada. **Paralelo** crea otra rama. Los botones de cada rama añaden contactos en esa rama. Hasta 12 contactos por rama, 8 ramas por red y 40 redes.
 4. Las flechas de la barra cambian el orden de evaluación. **Duplicar** crea una red y un destino propio; no introduce una segunda escritura COIL sobre la misma salida.
 5. Conmuta las entradas del banco. **Ejecutar 1 ciclo** (F5) evalúa el programa de arriba abajo. **Auto** ejecuta un ciclo por segundo. **Ciclo** restaura el estado y las entradas del ciclo anterior; **Reiniciar** conserva las entradas.
-6. Los trazos verdes muestran conducción. Después de un ciclo, la representación usa la traza capturada durante ese ciclo, respetando el orden de las redes. Cambiar una entrada requiere ejecutar otro ciclo para actualizar esa traza. Consulta el diagnóstico para detectar dependencias entre redes.
+6. Una red verde intensa con **● CONDUCE** muestra conducción; **○ SIN PASO** indica que la condición no conduce. La selección tiene otro estilo. Después de un ciclo, la representación usa la traza capturada durante ese ciclo, respetando el orden de las redes. Cambiar una entrada muestra **TRAZA PENDIENTE** y retira el estado de conducción hasta ejecutar otro ciclo. Consulta el diagnóstico para detectar dependencias entre redes.
 7. El inspector conserva los campos que estés escribiendo al conmutar entradas o ejecutar ciclos. **Guardar cambios** aplica el programa y reinicia su simulación.
+
+Selecciona una red y pulsa **Eliminar red** en la barra o **Supr** dentro del lienzo. Se puede borrar la última red, deshacer y recargar el programa vacío. Supr dentro de un campo sigue editando texto.
 
 Ctrl+Z y Ctrl+Mayús+Z deshacen/rehacen fuera de los campos de texto. El JSON conserva el programa; el SVG es un esquema estático vectorial, no una captura de la ejecución. El informe HTML y el historial CSV son exportaciones separadas.
 

@@ -3,7 +3,7 @@ import json, os, socket, sys, threading
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 for name in ('modbus','serial','bi','vision'):sys.path.insert(0,str(ROOT/'apps'/name))
-DATA=ROOT/'.suite-data'; DATA.mkdir(exist_ok=True)
+DATA=Path(os.environ.get('AB_SUITE_DATA_DIR',str(ROOT/'.suite-data'))); DATA.mkdir(parents=True,exist_ok=True)
 os.environ['ABBI_DATA_DIR']=str(DATA/'bi')
 from ab_modbus.application import Application, LocalHTTPServer
 from ab_serial.server import LocalServer

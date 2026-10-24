@@ -30,3 +30,15 @@ Los motores de programación, protocolo, metrología y análisis son los origina
 - Los proyectos de cada disciplina conservan sus propios formatos; no se afirma que exista un archivo único que restaure todos los estados de todos los motores.
 
 Estas restricciones forman parte del producto y de su documentación. Ampliar cada capacidad exige el estándar de creación y una prueba de uso propia, no añadir controles decorativos.
+
+## Revisión 0.4: la demo no era un punto de partida suficiente
+
+La revisión anterior no resolvía de forma consistente crear un documento propio. SCL, GRAFCET y Vision arrancaban con ejemplos; comunicaciones conservaban resultados de sesión; los controles largos desplazaban el trabajo. KOP distinguía mal selección y conducción. Estas carencias impedían presentar la suite como producto preparado para difusión.
+
+Se introduce Nuevo/Proyectos en las nueve aplicaciones, puntos de vuelta antes de sustituir, nombre propio y trabajo sin ejemplo. KOP y PLC admiten cero redes. Se comprueba un resultado propio y la recuperación en cada disciplina. El taller central y los paneles plegables se extienden a SCL, GRAFCET, comunicaciones y Vision; PLC y BI conservan su navegación nativa con controles compactos.
+
+Vision mantiene una imagen amplia y fija, cinco tareas de configuración y ampliación sin perder el fotograma. No hay alusiones a un material concreto: se habla de piezas y producto lineal continuo. El alcance sigue siendo inspección por imagen, sin longitud acumulada ni rechazo de maquinaria. Se comprueba que cada configuración cabe sin scroll en los tamaños de escritorio declarados.
+
+Funciones de práctica añadidas: tabla de verdad SCL, coordenadas GRAFCET, inspector TCP propio, trama RTU con decodificador original, comparación Vision A/B, observación de CPU con entradas preparadas separadas del último ciclo y esquema/historial SQL BI. Se preservan los motores existentes; no se sustituyen por resultados prefijados.
+
+La descarga se explica en README, LEEME-PRIMERO y catálogo. Un ZIP contiene las nueve herramientas; no son nueve HTML autónomos. La rama de revisión y la instantánea versionada se identifican sin anunciar un lanzamiento estable.

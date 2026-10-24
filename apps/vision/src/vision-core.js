@@ -9,7 +9,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const MODES = ['dark', 'light', 'reference'];
+  const MODES = ['dark', 'light', 'reference', 'range'];
   const MAX_PIXELS = 2_000_000;
   function integer(value, lo, hi, label) {
     if (!Number.isInteger(value) || value < lo || value > hi)
@@ -38,8 +38,15 @@
     if (!recipe || typeof recipe !== 'object') throw new TypeError('Configuración de inspección inválida');
     const mode = recipe.mode;
     if (!MODES.includes(mode)) throw new RangeError('Modo de inspección desconocido');
+    const range = {};
+    if (mode === 'range') {
+      range.rangeMin = integer(Number(recipe.rangeMin), 0, 255, 'Luminosidad mínima');
+      range.rangeMax = integer(Number(recipe.rangeMax), 0, 255, 'Luminosidad máxima');
+      if (range.rangeMin > range.rangeMax) throw new RangeError('El mínimo no puede superar el máximo');
+    }
     return {
       mode,
+      ...range,
       threshold: integer(Number(recipe.threshold), 0, 255, 'Umbral'),
       minArea: integer(Number(recipe.minArea), 1, 500000, 'Área mínima'),
       maxDefects: integer(Number(recipe.maxDefects), 0, 10000, 'Máximo de defectos'),
@@ -63,6 +70,7 @@
       luminanceSum += lum;
       const isCandidate = rule.mode === 'dark' ? lum < rule.threshold
         : rule.mode === 'light' ? lum > rule.threshold
+        : rule.mode === 'range' ? lum >= rule.rangeMin && lum <= rule.rangeMax
         : Math.max(Math.abs(data[p] - refData[p]), Math.abs(data[p+1] - refData[p+1]), Math.abs(data[p+2] - refData[p+2])) > rule.threshold;
       if (isCandidate) {mask[i] = 1; matchPixels++;}
     }
@@ -91,6 +99,7 @@
     return {
       verdict: components.length<=rule.maxDefects?'OK':'NOK',
       width,height,roi:rect,mode:rule.mode,threshold:rule.threshold,minArea:rule.minArea,
+      ...(rule.mode === 'range' ? {rangeMin: rule.rangeMin, rangeMax: rule.rangeMax} : {}),
       maxDefects:rule.maxDefects,defectCount:components.length,defectPixels,
       candidatePixels:matchPixels,discardedComponents:discarded,
       coveragePercent:Number((100*defectPixels/(rect.width*rect.height)).toFixed(3)),

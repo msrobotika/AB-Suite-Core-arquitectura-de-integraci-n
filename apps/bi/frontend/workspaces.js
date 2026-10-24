@@ -21,7 +21,7 @@
    for(const id of ['dataHead','dataBody','sqlResults','sqlError','profileGrid','cleanPreview','cleanHistory']){const node=$(id);if(node)node.replaceChildren()}
    const table=F.model.tables[0]?.name;$('sqlSource').value=table?'SELECT * FROM "'+table.replaceAll('"','""')+'" LIMIT 50':'';$('daxSource').value='';$('measureName').value='';
   }
-  await refreshLibrary();
+  await refreshLibrary();window.dispatchEvent(new Event('ab-suite:model'));
  };
  const dialog=make('dialog',undefined,'bi-workspace-dialog');dialog.id='workspace-dialog';dialog.setAttribute('aria-labelledby','workspace-heading');
  const form=make('form');const heading=make('h2','Nuevo espacio de datos');heading.id='workspace-heading';
@@ -79,3 +79,7 @@
  refreshLibrary().catch(failure=>toast(failure.message,true));
  setInterval(()=>refreshLibrary().catch(()=>{}),5000);
 })();
+
+if(window.ABSuite)window.ABSuite.bi={model:()=>F.model,show,runSql,openVisual,post,refresh:loadModel,toast};
+
+if(window.ABSuite)window.ABSuite.documents={get:()=>F.model?{schema:'ab.bi.workspace.v1',name:F.model.name,id:F.model.workspace_id}:null,create:async name=>{await post('/api/workspaces',{name,template:'blank'});await loadModel();show('dashboard')},restore:async doc=>{if(doc.schema!=='ab.bi.workspace.v1'||typeof doc.id!=='string')throw Error('Espacio BI inválido');await post('/api/workspaces/'+encodeURIComponent(doc.id)+'/activate',{});await loadModel();show('dashboard')}};

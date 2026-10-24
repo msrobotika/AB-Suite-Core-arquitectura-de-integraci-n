@@ -11,7 +11,7 @@ const placeholder=create('option','Cambiar herramienta…');placeholder.value=''
 for(const item of catalog){const option=create('option',item.name);option.value=item.id;select.append(option)}
 select.addEventListener('change',()=>{if(select.value)location.href=`/apps/${select.value}/`});
 const connections=create('a','Conexiones ↗','suite-action');connections.href='/#connections';connections.target='_blank';connections.rel='noopener';
-const help=create('button','Guía de práctica','suite-action');help.type='button';
+const help=create('button','Ayuda','suite-action');help.type='button';help.setAttribute('aria-label','Guía de práctica');
 const status=create('span','Laboratorio local','suite-status');status.setAttribute('role','status');
 bar.append(brand,divider,badge,title,select,connections,help,status);document.body.prepend(bar);
 if(sdk.id==='modbus'&&window.ABSuitePLC){const read=create('button','Leer CPU de la suite','suite-action suite-primary');read.type='button';read.onclick=()=>window.dispatchEvent(new CustomEvent('ab-suite:read-plc',{detail:{port:window.ABSuitePLC.modbusPort}}));bar.insertBefore(read,status)}
@@ -23,7 +23,7 @@ if(sdk.id==='bi'){
  window.addEventListener('ab-suite:bi-capture-state',event=>refresh(event.detail));
  setInterval(()=>fetch('/suite/bi-capture').then(response=>response.json()).then(refresh).catch(()=>{}),2500);
 }
-if(sdk.adapter?.project){const transfer=create('button','Enviar al PLC ↗','suite-action suite-primary');transfer.type='button';transfer.onclick=()=>sdk.transfer().catch(err=>{status.textContent=err.message});bar.insertBefore(transfer,status)}
+if(sdk.adapter?.project){const transfer=create('button','Enviar al PLC ↗','suite-action suite-primary');transfer.type='button';transfer.disabled=!sdk.adapter.project();setInterval(()=>{transfer.disabled=!sdk.adapter.project()},500);transfer.onclick=()=>sdk.transfer().catch(err=>{status.textContent=err.message});bar.insertBefore(transfer,status)}
 const dialog=create('dialog',undefined,'suite-guide');dialog.setAttribute('aria-labelledby','suite-guide-title');
 const close=create('button','Cerrar ×','suite-action');close.type='button';close.onclick=()=>dialog.close();
 dialog.append(close,create('p',app.area.toUpperCase(),'suite-eyebrow'));
@@ -44,7 +44,9 @@ async function checkTransfer(){
 }
 setInterval(()=>{
  const state=parseSnapshot(localStorage.getItem(PREFIX+sdk.id));
- status.textContent=sdk.storageError?'No se pudo guardar/publicar':sdk.conflict?'Otra pestaña publica estas señales':quality(state)==='good'?'● Señales disponibles':'Laboratorio local';
+ status.textContent=sdk.documentStorageError?'Trabajo sin guardar':sdk.storageError?'No se pudo guardar/publicar':sdk.conflict?'Otra pestaña publica estas señales':quality(state)==='good'?'● Señales disponibles':'Laboratorio local';
  checkTransfer();
 },1200);
 window.addEventListener('storage',checkTransfer);checkTransfer();
+
+const workspaceStyle=document.createElement('link');workspaceStyle.rel='stylesheet';workspaceStyle.href='/suite/workbench.css';document.head.append(workspaceStyle);await import('/suite/studio-features.js');await import('/suite/workbench.js');await import('/suite/documents.js');await import('/suite/viewport.js');

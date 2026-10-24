@@ -63,6 +63,8 @@ jobs:
           python-version: '3.13'
       - run: node scripts/setup.mjs
       - run: npm install --ignore-scripts
+      - name: Type-check public contract consumers
+        run: npm run test:contracts
       - run: npx --no-install playwright install --with-deps chromium
       - name: Start suite and wait for native engines
         run: |
@@ -76,3 +78,44 @@ jobs:
           path: |
             .suite-data/qa/
             suite.log
+  windows-distribution:
+    name: Windows installer lifecycle
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Prepare verified installer compiler
+        shell: pwsh
+        run: |
+          $compilerSetup = Join-Path $env:RUNNER_TEMP 'inno-setup.exe'
+          Invoke-WebRequest 'https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innosetup-6.7.3.exe' -OutFile $compilerSetup
+          if ((Get-AuthenticodeSignature -LiteralPath $compilerSetup).Status -ne 'Valid') { throw 'Invalid compiler signature' }
+          $compilerDir = Join-Path $env:RUNNER_TEMP 'Inno Setup'
+          $setupArgs = @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/CURRENTUSER','/NOICONS',('/DIR="'+$compilerDir+'"'))
+          $setup = Start-Process -FilePath $compilerSetup -ArgumentList $setupArgs -Wait -PassThru -WindowStyle Hidden
+          if ($setup.ExitCode -ne 0) { throw 'Compiler setup failed' }
+      - name: Build self-contained installer and portable edition
+        shell: pwsh
+        run: |
+          node scripts/build-locales.mjs
+          python scripts/build-windows.py --output "$env:RUNNER_TEMP/ab-package" --cache "$env:RUNNER_TEMP/runtime-cache" --iscc "$env:RUNNER_TEMP/Inno Setup/ISCC.exe"
+      - name: Install, launch with empty PATH, update and uninstall
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/ab-install-qa" | Out-Null
+          python scripts/verify-windows-install.py --installer "$env:RUNNER_TEMP/ab-package/AB-Suite-0.6.1-Windows-x64-Setup.exe" --workspace "$env:RUNNER_TEMP/ab-install-qa"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-review-distribution
+          path: |
+            ${{ runner.temp }}/ab-package/*Setup.exe
+            ${{ runner.temp }}/ab-package/*Portable.zip
+            ${{ runner.temp }}/ab-install-qa/installation-results.json
+            ${{ runner.temp }}/ab-install-qa/setup.log

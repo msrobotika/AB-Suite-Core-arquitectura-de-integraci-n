@@ -28,6 +28,21 @@ class MockConnection:
     def close(self):pass
 
 class CameraTests(unittest.TestCase):
+    def test_blocked_destination_never_opens_network(self):
+        with patch('serve.http.client.HTTPConnection') as http,patch('serve.http.client.HTTPSConnection') as https:
+            for ip in ['127.0.0.1','169.254.169.254','8.8.8.8','2130706433','camera.local','::ffff:127.0.0.1']:
+                with self.subTest(ip=ip),self.assertRaises(CameraError):fetch_camera_frame({**CONFIG,'ip':ip})
+            http.assert_not_called();https.assert_not_called()
+
+    def test_network_error_is_actionable_without_credentials(self):
+        with patch('serve.http.client.HTTPConnection.request',side_effect=TimeoutError('secret detail')):
+            with self.assertRaises(CameraError) as error:fetch_camera_frame({**CONFIG,'password':'private-secret'})
+        message=str(error.exception)
+        self.assertIn('192.168.1.25:8080',message)
+        self.assertIn('JPEG/MJPEG',message)
+        self.assertNotIn('private-secret',message)
+        self.assertNotIn('secret detail',message)
+
     def test_only_private_ip_no_redirect_dangerous_path(self):
         for ip in ['127.0.0.1','8.8.8.8','169.254.1.1','0.0.0.0','192.0.2.30','cam.local','::1']:
             with self.subTest(ip=ip),self.assertRaises(CameraError):

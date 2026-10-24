@@ -58,7 +58,9 @@ test("eliminar contacto y reordenar redes", () => {
   assert.equal(draft.rungs[0].id, "K001");
   draft = editDraft(draft, { type: "delete-rung", rungIndex: 1 });
   assert.equal(draft.rungs.length, 1);
-  assert.throws(() => editDraft(draft, { type: "delete-rung", rungIndex: 0 }), /al menos una/);
+  draft = editDraft(draft, { type: "delete-rung", rungIndex: 0 });
+  assert.deepEqual(compileDraft(draft).rungs, []);
+  assert.equal(compileDraft(editDraft(draft, {type:"add-rung"})).rungs.length, 1);
 });
 
 test("cambio de tipo bobina → TON y CTU corrige direccionamiento", () => {

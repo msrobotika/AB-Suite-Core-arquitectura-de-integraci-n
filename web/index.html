@@ -1,7 +1,165 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10141d"><title>AB Suite · Tu laboratorio de programación</title><link rel="stylesheet" href="/suite/shell.css"><link rel="stylesheet" href="/suite/home.css"><script type="module" src="/suite/home.js"></script></head><body class="suite-home">
-<header class="home-header"><a class="suite-brand" href="/"><span class="suite-mark">ab<span>·</span></span><span>SUITE<small>MS ROBOTIKA</small></span></a><nav aria-label="Principal"><a href="#tools">Herramientas</a><a href="#path">Ruta de práctica</a><a href="#connections">Conexiones</a></nav><span class="local-badge">● LOCAL · OPEN SOURCE</span></header>
-<main class="home-main"><section class="hero"><div><p class="suite-eyebrow">EL CÓDIGO SE APRENDE HACIENDO</p><h1>Tu próximo<br>«ya lo entiendo»<span> empieza aquí.</span></h1><p class="hero-copy">Programa una secuencia. Ejecuta la lógica.<br>Diseña su interfaz. Comprueba lo que ocurre.</p><a class="hero-button" href="/apps/kop/">Empezar con KOP <span>↗</span></a><a class="secondary-link" href="#path">Seguir una ruta guiada →</a></div><div class="hero-circuit" aria-label="Del programa al resultado"><div class="circuit-label">UN MISMO LABORATORIO</div><div class="circuit-row"><span class="circuit-node mint">Ko<small>PROGRAMA</small></span><span class="circuit-line"></span><span class="circuit-node blue">Pl<small>EJECUTA</small></span></div><div class="circuit-middle"><span></span><b>ENTIENDE<br>LO QUE CAMBIA</b><span></span></div><div class="circuit-row"><span class="circuit-node pink">Hm<small>VISUALIZA</small></span><span class="circuit-line reverse"></span><span class="circuit-node gold">Bi<small>ANALIZA</small></span></div><p>Señales compartidas · Archivos abiertos · Código propio</p></div></section>
-<section id="tools"><div class="section-heading"><div><p class="suite-eyebrow">ELIGE TU SIGUIENTE PRÁCTICA</p><h2>Nueve herramientas. Una suite.</h2></div><label class="search-label">Buscar herramienta<input id="search" type="search" placeholder="KOP, señales, SQL…"></label></div><div class="filter-row" id="filters" role="group" aria-label="Filtrar herramientas"></div><p id="runtime-note" role="status"></p><div class="tool-grid" id="tool-grid"></div><p id="no-results" hidden>No hay herramientas con ese filtro. Prueba otro término.</p></section>
-<section id="path" class="learning"><div><p class="suite-eyebrow">DE LA PRIMERA RED A UN PROYECTO COMPLETO</p><h2>Un ejercicio que crece contigo.</h2><p>Practica una habilidad cada vez. Abre la guía dentro de cada herramienta y marca los pasos que hayas comprobado.</p></div><ol><li><a href="/apps/scl/"><span>01</span><div><b>Expresa la condición</b><p>Escribe lógica BOOL y verifica su tabla de verdad.</p></div>↗</a></li><li><a href="/apps/kop/"><span>02</span><div><b>Construye el programa</b><p>Contactos, bobinas y orden de ejecución.</p></div>↗</a></li><li><a href="/apps/plc/"><span>03</span><div><b>Ponlo a prueba</b><p>Importa el programa, observa la CPU e introduce fallos.</p></div>↗</a></li><li><a href="/apps/scada/" target="_blank" rel="noopener"><span>04</span><div><b>Haz visible el resultado</b><p>Vincula señales en una pantalla HMI creada por ti.</p></div>↗</a></li><li><a href="/apps/bi/"><span>05</span><div><b>Explica lo que has medido</b><p>Exporta telemetría, analiza datos y prepara un informe.</p></div>↗</a></li></ol></section>
-<section id="connections"><div class="section-heading"><div><p class="suite-eyebrow">DATOS DEL EJERCICIO · ENTRE PESTAÑAS</p><h2>Ve de dónde viene cada señal.</h2></div><button id="export-signals" class="suite-action">Exportar telemetría CSV</button></div><p class="section-copy">Mantén abiertos los editores que quieras observar. Una señal sin actualizaciones durante 5 segundos se marca como caducada. La exportación recoge hasta 600 muestras observadas en esta página.</p><div class="connection-grid" id="connection-grid"></div><p id="connection-note" role="status"></p></section>
-<footer class="home-footer"><span>AB Suite · MS ROBOTIKA<br><small>Herramientas propias para aprender programación y automatización.</small></span><span>MIT · Sin cuenta · Procesamiento local<br><small>Los formatos de cada proyecto se exportan desde su herramienta.</small></span></footer></main></body></html>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#10141d" />
+    <title>AB Suite · Herramientas</title>
+    <link rel="stylesheet" href="/suite/shell.css" />
+    <link rel="stylesheet" href="/suite/home.css" />
+    <script src="/apps/plc/suite-session.js"></script>
+    <script type="module" src="/suite/home.js"></script>
+    <script type="module" src="/suite/i18n.js"></script>
+  </head>
+  <body class="suite-home">
+    <header class="home-header">
+      <a class="suite-brand" href="/"
+        ><span class="suite-mark">ab<span>·</span></span
+        ><span>SUITE<small>MS ROBOTIKA</small></span></a
+      >
+      <nav aria-label="Principal">
+        <a href="/" aria-current="page">Herramientas</a
+        ><a href="/suite/exercises.html"
+          >Mis ejercicios <span>Opcional</span></a
+        >
+      </nav>
+      <div class="home-utilities">
+        <button id="open-connections" type="button" class="suite-action">
+          Conexiones</button
+        ><button id="open-help" type="button" class="suite-action">Ayuda</button
+        ><button id="open-download" type="button" class="suite-action">
+          Descargar suite
+        </button>
+      </div>
+    </header>
+    <main class="home-main" id="tools">
+      <section class="launcher-heading">
+        <div>
+          <p class="suite-eyebrow">TU ESPACIO DE TRABAJO</p>
+          <h1>Nueve herramientas. Tú eliges.</h1>
+          <p>Abre solo las que necesitas. Conéctalas cuando te resulte útil.</p>
+        </div>
+        <p id="runtime-note" role="status">Comprobando motores locales…</p>
+      </section>
+      <div class="launcher-controls">
+        <div
+          class="launcher-views"
+          role="group"
+          aria-label="Vista del catálogo"
+        >
+          <button id="view-all" type="button" aria-pressed="true">
+            Todas · 9</button
+          ><button id="view-favorites" type="button" aria-pressed="false">
+            Mis favoritas
+          </button>
+        </div>
+        <label class="search-label"
+          ><span>Buscar</span
+          ><input
+            id="search"
+            type="search"
+            placeholder="Nombre o función…" /></label
+        ><label class="area-label"
+          ><span>Área</span
+          ><select id="filters">
+            <option value="Todas">Todas las áreas</option>
+          </select></label
+        ><button id="reset-catalog" class="suite-action" type="button" hidden>
+          Mostrar las nueve
+        </button>
+      </div>
+      <p id="launcher-message" role="status" aria-live="polite"></p>
+      <div
+        class="tool-grid"
+        id="tool-grid"
+        aria-label="Herramientas de AB Suite"
+      ></div>
+      <p id="no-results" hidden>
+        No hay herramientas con esa selección. Cambia la búsqueda o muestra las
+        nueve.
+      </p>
+    </main>
+    <footer class="home-footer">
+      <span>AB Suite · MS ROBOTIKA</span
+      ><span>Local · MIT · Sin cuenta <b>0.6.1 · en desarrollo</b></span>
+    </footer>
+    <dialog id="help-dialog" class="suite-guide" aria-labelledby="help-title">
+      <button class="suite-action" data-close type="button">Cerrar ×</button>
+      <p class="suite-eyebrow">EMPIEZA A TU MANERA</p>
+      <h2 id="help-title">Cada herramienta es un espacio propio</h2>
+      <p>
+        Elige cualquiera de las nueve aplicaciones y pulsa Nuevo para comenzar
+        con tu trabajo. No necesitas seguir un orden ni abrir las demás.
+      </p>
+      <p>
+        Marca con la estrella las que utilizas habitualmente. Se recordarán en
+        este navegador; la vista inicial siempre muestra las nueve.
+      </p>
+      <p>
+        Si necesitas reunir varios documentos para trasladar una práctica,
+        utiliza Mis ejercicios. Es opcional y no sustituye a los formatos
+        nativos de cada aplicación.
+      </p>
+      <p>
+        Dentro de cada herramienta encontrarás su guía, capacidades y límites.
+        La suite es un laboratorio de aprendizaje de programación,
+        automatización, comunicaciones, visión y datos.
+      </p>
+    </dialog>
+    <dialog
+      id="download-dialog"
+      class="suite-guide"
+      aria-labelledby="download-title"
+    >
+      <button class="suite-action" data-close type="button">Cerrar ×</button>
+      <p class="suite-eyebrow">LAS NUEVE EN UN PAQUETE</p>
+      <h2 id="download-title">Instalación de AB Suite</h2>
+      <p>
+        Windows 10/11 de 64 bits: instala AB Suite y ábrela desde Inicio.
+        El instalador incluye los motores; no necesitas instalar Node.js ni Python.
+      </p>
+      <div id="distribution-files" aria-live="polite"></div>
+      <p id="distribution-note" role="status"></p>
+      <h3>Código fuente · Windows, macOS y Linux</h3>
+      <p>
+        La edición de código fuente requiere Node.js 20+ y Python 3.11+.
+        Extrae el ZIP y abre iniciar.bat o ejecuta sh iniciar.sh.
+        La primera preparación del código fuente necesita Internet.
+      </p>
+      <a
+        class="suite-action suite-primary"
+        href="https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/main.zip"
+        >Descargar código fuente completo ↓</a
+      ><a
+        class="suite-action"
+        href="/docs/EXERCISES.md"
+        target="_blank"
+        rel="noopener"
+        >Guía de ejercicios opcionales</a
+      >
+    </dialog>
+    <dialog
+      id="connections-dialog"
+      class="suite-guide"
+      aria-labelledby="connections-title"
+    >
+      <button class="suite-action" data-close type="button">Cerrar ×</button>
+      <p class="suite-eyebrow">CONEXIONES OPCIONALES</p>
+      <h2 id="connections-title">De dónde viene cada señal</h2>
+      <p>
+        PLC se consulta en la CPU residente y sigue disponible al cerrar su
+        vista. Las otras fuentes de navegador necesitan su pestaña abierta. Tras
+        cinco segundos sin actualizar, una señal se muestra caducada.
+      </p>
+      <div id="connection-grid" class="connection-grid"></div>
+      <button id="export-signals" type="button" class="suite-action">
+        Exportar telemetría CSV
+      </button>
+      <p>
+        Hasta 600 muestras observadas mientras este panel está abierto. La
+        captura no controla equipos ni modifica programas.
+      </p>
+      <p id="connection-note" role="status"></p>
+    </dialog>
+  </body>
+</html>

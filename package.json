@@ -1,14 +1,18 @@
 {
   "name": "@msrobotika/ab-suite-core",
-  "version": "0.3.0",
+  "version": "0.6.1",
   "type": "module",
   "private": false,
-  "description": "AB Suite · laboratorio local de programación, HMI, comunicaciones y datos",
+  "description": "AB Suite: laboratorio local de programación, HMI, comunicaciones y datos",
   "exports": {
     ".": "./src/index.js",
     "./protocol": "./src/protocol.js",
     "./client": "./src/client.js",
-    "./bridge": "./src/plc-bridge.js"
+    "./bridge": "./src/plc-bridge.js",
+    "./contracts": {
+      "types": "./src/contracts.d.ts",
+      "default": "./src/contracts.js"
+    }
   },
   "engines": {
     "node": ">=20"
@@ -21,7 +25,9 @@
     "bus": "node scripts/serve.mjs",
     "setup": "node scripts/setup.mjs",
     "test:workspace": "node --test tests/workspace*.test.mjs",
-    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs && node scripts/verify-editors-browser.cjs"
+    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs && node scripts/verify-editors-browser.cjs && node scripts/verify-new-user-browser.cjs && node scripts/verify-resident-browser.cjs && node scripts/verify-exercises-browser.cjs && node scripts/verify-portal-browser.cjs && node scripts/verify-i18n-browser.cjs && node scripts/verify-viewport-browser.cjs",
+    "test:contracts": "tsc --project tests/contracts/tsconfig.json",
+    "locales": "node scripts/build-locales.mjs"
   },
   "files": [
     "src/",
@@ -34,13 +40,16 @@
     "SECURITY.md",
     "iniciar.bat",
     "iniciar.sh",
-    "AGENTS.md"
+    "AGENTS.md",
+    "LEEME-PRIMERO.md",
+    "CONTRIBUTING.md"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n.git"
   },
   "devDependencies": {
-    "playwright": "1.62.1"
+    "playwright": "1.62.1",
+    "typescript": "5.9.3"
   }
 }

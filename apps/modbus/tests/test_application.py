@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
 from ab_modbus.application import Application, LocalHTTPServer
 from ab_modbus.profiles import DEFAULT, Profiles
@@ -12,6 +13,16 @@ from ab_modbus.protocol import ProtocolError
 
 
 class ApplicationTests(unittest.TestCase):
+    def test_network_error_explains_destination_and_next_action(self):
+        for failure in (ConnectionRefusedError('internal detail'),TimeoutError('internal detail')):
+            with self.subTest(failure=type(failure).__name__),patch.object(self.app.client,'read',side_effect=failure):
+                status,_,raw=self.request('POST','/api/read',{'profile':DEFAULT,'allow_lan':False})
+                message=json.loads(raw)['error']
+                self.assertEqual(status,400)
+                self.assertIn(str(DEFAULT['port']),message)
+                self.assertIn('Laboratorio local',message)
+                self.assertNotIn('internal detail',message)
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.app = Application(Path(self.directory.name))
@@ -87,6 +98,33 @@ class ApplicationTests(unittest.TestCase):
             self.assertEqual(second.client.read(port=result["port"], function=3)["values"][0], 230)
         finally:
             second.simulator.stop()
+
+    def test_rejected_posts_deliver_json_without_executing_the_body(self):
+        cases = [
+            (False, {}, 401),
+            (True, {"Authorization": "Bearer wrong"}, 401),
+            (True, {"Origin": "https://attacker.example"}, 403),
+            (True, {"Sec-Fetch-Site": "cross-site"}, 403),
+            (True, {"Content-Type": "text/plain"}, 415),
+        ]
+        with patch.object(self.app, "action") as action:
+            for token, headers, expected in cases:
+                with self.subTest(expected=expected, headers=headers):
+                    status, response_headers, raw = self.request(
+                        "POST", "/api/monitor/clear", "x" * 32000,
+                        token=token, headers=headers)
+                    self.assertEqual(status, expected)
+                    self.assertIn("error", json.loads(raw))
+                    self.assertEqual(int(response_headers["Content-Length"]), len(raw))
+            action.assert_not_called()
+
+    def test_oversized_requests_return_errors_without_resetting_the_client(self):
+        for size in (65537, 70000, 131072):
+            status, headers, raw = self.request("POST", "/api/monitor/clear", "x" * size)
+            self.assertEqual(status, 413)
+            self.assertEqual(int(headers["Content-Length"]), len(raw))
+            self.assertIn("64 KiB", json.loads(raw)["error"])
+        self.assertEqual(self.request()[0], 200)
 
     def test_memory_api_is_local(self):
         self.app.simulator.start(0)

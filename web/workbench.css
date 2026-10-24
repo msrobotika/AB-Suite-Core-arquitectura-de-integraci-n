@@ -1,0 +1,1485 @@
+/* Workspace geometry; all color, type and control tokens belong to shell.css. */
+.ab-workbench {
+  height: calc(100dvh - 68px);
+  width: 100%;
+  max-width: none !important;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0 !important;
+}
+.ab-command {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 16px !important;
+  border-bottom: 1px solid var(--suite-border);
+  background: var(--suite-surface);
+  margin: 0 !important;
+  min-height: 64px;
+}
+.ab-command h1 {
+  font-size: 20px !important;
+  letter-spacing: -0.5px !important;
+  margin: 0 !important;
+}
+.ab-command small {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--suite-accent);
+}
+.ab-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+.ab-command :is(button, .button, .btn) {
+  font-size: 11px !important;
+  min-height: 32px !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 7px 10px !important;
+}
+.ab-notice {
+  flex-shrink: 0;
+  margin: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--suite-border) !important;
+  border-radius: 0 !important;
+  padding: 7px 16px !important;
+  min-height: 30px !important;
+  font-size: 11px !important;
+  background: var(--suite-bg) !important;
+}
+.ab-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.ab-layout.has-tools {
+  grid-template-columns: 224px minmax(0, 1fr);
+}
+.ab-layout.has-properties {
+  grid-template-columns: minmax(0, 1fr) 292px;
+}
+.ab-layout.has-tools.has-properties {
+  grid-template-columns: 224px minmax(0, 1fr) 280px;
+}
+.ab-layout.tools-closed.has-properties {
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+.ab-layout.properties-closed.has-tools {
+  grid-template-columns: 224px minmax(0, 1fr);
+}
+.ab-layout.tools-closed.properties-closed,
+.ab-layout.tools-closed:not(.has-properties),
+.ab-layout.properties-closed:not(.has-tools) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.tools-closed .ab-tools,
+.properties-closed .ab-properties {
+  display: none;
+}
+.ab-dock {
+  overflow: auto;
+  min-width: 0;
+  border-right: 1px solid var(--suite-border);
+  background: var(--suite-surface);
+}
+.ab-properties {
+  border: 0;
+  border-left: 1px solid var(--suite-border);
+}
+.ab-dock-section {
+  border-bottom: 1px solid var(--suite-border);
+}
+.ab-dock-section > summary {
+  padding: 12px 13px;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.ab-dock .panel,
+.ab-dock .config-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  box-shadow: none !important;
+}
+.ab-dock :is(h2, h3) {
+  font-size: 13px !important;
+}
+.ab-dock :is(.section-head, .panel-title, .panel-header, .card-head) {
+  padding: 12px !important;
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ab-dock :is(.section-head, .panel-title, .panel-header, .card-head) .eyebrow,
+.ab-dock .overline {
+  display: none;
+}
+.ab-dock :is(p, .hint, .small-copy, .body-copy) {
+  font-size: 10px !important;
+  line-height: 1.65;
+}
+.ab-dock
+  :is(input:not([type='checkbox']):not([type='range']), select, textarea) {
+  width: 100%;
+  max-width: 100%;
+  font-size: 11px !important;
+  min-width: 0;
+}
+.ab-dock label {
+  font-size: 10px !important;
+}
+.ab-dock
+  :is(.fields, .project-grid, .profile-row, .decode-layout, .input-fields) {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 7px;
+  padding: 0 12px 12px;
+}
+.ab-dock
+  :is(
+    .actions,
+    .sim-actions,
+    .file-actions,
+    .conversion-actions,
+    .history-actions
+  ) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.ab-dock button {
+  font-size: 10px !important;
+}
+.ab-dock .pipeline {
+  padding: 0 12px;
+}
+.ab-dock .io-list {
+  padding: 0 12px;
+}
+.ab-dock .project-form {
+  padding: 0;
+}
+.ab-document {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--suite-bg);
+}
+.ab-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--suite-raised);
+  border-bottom: 1px solid var(--suite-border);
+  flex-shrink: 0;
+  overflow: auto;
+}
+.ab-tabs button {
+  font-size: 11px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+.ab-tabs button[aria-selected='true'] {
+  color: var(--suite-accent) !important;
+  border-color: var(--suite-accent) !important;
+  background: color-mix(
+    in srgb,
+    var(--suite-accent),
+    transparent 92%
+  ) !important;
+}
+.ab-tab-page {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+.ab-tab-page[hidden] {
+  display: none !important;
+}
+.ab-tab-page > .panel,
+.ab-tab-page > .work-card,
+.ab-tab-page > .history-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  min-height: 100%;
+  box-shadow: none !important;
+}
+.ab-tab-page :is(.section-head, .panel-title, .panel-header, .card-head) {
+  padding: 12px 16px !important;
+}
+.ab-tab-page :is(h2) {
+  font-size: 15px !important;
+}
+.ab-tab-page .eyebrow,
+.ab-tab-page .overline {
+  font-size: 8px;
+}
+.ab-tab-page .editor-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.ab-tab-page .code-wrap {
+  flex: 1;
+  min-height: 200px;
+}
+.ab-tab-page #source {
+  height: 100% !important;
+  min-height: 200px !important;
+  font:
+    14px/1.8 Consolas,
+    monospace !important;
+  tab-size: 2;
+}
+.ab-tab-page #line-numbers {
+  font:
+    14px/1.8 Consolas,
+    monospace !important;
+}
+.ab-tab-page .editor-panel .section-head {
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.ab-tab-page .editor-panel .file-actions {
+  gap: 5px;
+}
+.ab-tab-page .editor-panel .file-actions :is(button, label) {
+  font-size: 10px !important;
+  padding: 6px 8px;
+}
+.ab-tab-page .editor-hint {
+  font-size: 10px;
+  padding: 8px 16px;
+}
+.ab-tab-page .diagram-viewport {
+  height: calc(100% - 122px) !important;
+  max-height: none !important;
+  min-height: 480px;
+  overflow: auto;
+}
+.ab-tab-page .canvas-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.ab-tab-page #diagram {
+  min-width: 650px;
+}
+.ab-tab-page .diagram-hint {
+  font-size: 10px;
+  padding: 8px 14px;
+}
+.ab-tab-page #vision {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.ab-tab-page #vision .viewer {
+  flex: 1;
+  min-height: 220px;
+  aspect-ratio: auto !important;
+  background: #09121c;
+}
+.ab-tab-page #overlay {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ab-tab-page #vision .tool-bar {
+  padding: 8px 12px;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.ab-tab-page #vision .tool-bar :is(button, label) {
+  font-size: 10px !important;
+  padding: 6px 8px;
+}
+.ab-tab-page #vision .connect-panels {
+  max-height: 200px;
+  overflow: auto;
+}
+.ab-tab-page .selection-bar {
+  font-size: 10px;
+  padding: 8px 12px;
+}
+.ab-tab-page .frames-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.ab-tab-page .frames-panel .table-scroll {
+  flex: 1;
+  max-height: none;
+  overflow: auto;
+}
+.ab-tab-page .frame-head {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ab-tab-page .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ab-tab-page .toolbar label {
+  font-size: 10px;
+}
+.ab-tab-page .toolbar :is(button, input, select) {
+  font-size: 10px !important;
+}
+.ab-tab-page #resultados {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.ab-tab-page #resultados .table-wrap {
+  flex: 1;
+  max-height: none;
+}
+.ab-status {
+  padding: 7px 14px !important;
+  margin: 0 !important;
+  border-top: 1px solid var(--suite-border);
+  background: var(--suite-raised);
+  flex-shrink: 0;
+}
+.ab-status :is(.metrics, .kpis) {
+  display: flex !important;
+  gap: 20px;
+  margin: 0 !important;
+  flex-wrap: wrap;
+}
+.ab-status :is(.metric, .kpi) {
+  display: flex !important;
+  align-items: center;
+  gap: 7px;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+}
+.ab-status :is(.metric, .kpi) > small,
+.ab-status .metric-sub,
+.ab-status .kpi-icon,
+.ab-status .metric-glyph,
+.ab-status .metric-label > span {
+  display: none;
+}
+.ab-status :is(.metric, .kpi) :is(strong, .metric-status) {
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+.ab-status :is(.metric, .kpi) :is(span, .metric-label, .kpi-name) {
+  font-size: 8px !important;
+}
+.ab-status .metric-row {
+  display: flex;
+  gap: 5px;
+}
+.ab-table-panel {
+  padding: 16px;
+  min-height: 100%;
+}
+.ab-table-panel h2 {
+  margin: 0 0 8px;
+}
+.ab-table-panel p {
+  font-size: 12px;
+  color: var(--suite-muted);
+  margin: 8px 0 16px;
+}
+.ab-table-tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 10px 0;
+}
+.ab-table-tools input,
+.ab-table-tools select {
+  min-height: 34px;
+  padding: 6px;
+  font-size: 11px;
+}
+.ab-table-scroll {
+  overflow: auto;
+  max-height: 550px;
+}
+.ab-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font:
+    11px Consolas,
+    monospace;
+}
+.ab-table-scroll :is(th, td) {
+  padding: 10px;
+  border-bottom: 1px solid var(--suite-border);
+  text-align: left;
+  white-space: nowrap;
+}
+.ab-table-scroll thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.ab-empty {
+  padding: 40px 24px;
+  color: var(--suite-muted);
+  text-align: center;
+}
+.ab-tag {
+  font:
+    9px Consolas,
+    monospace;
+  padding: 4px 7px;
+  border-radius: 4px;
+  background: var(--suite-raised);
+  color: var(--suite-accent);
+}
+@media (max-width: 1100px) {
+  .ab-layout.has-tools.has-properties,
+  .ab-layout.tools-closed.has-properties {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+  .ab-layout.has-tools:not(.has-properties),
+  .ab-layout.properties-closed.has-tools {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ab-tools {
+    position: absolute;
+    top: 180px;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    z-index: 80;
+    box-shadow: 20px 0 50px #0008;
+  }
+  .ab-command {
+    gap: 6px;
+  }
+}
+@media (max-width: 800px) {
+  .ab-workbench {
+    height: calc(100dvh - 110px);
+  }
+  .ab-command {
+    padding: 8px 10px !important;
+    min-height: 68px;
+  }
+  .ab-command h1 {
+    font-size: 16px !important;
+  }
+  .ab-command small {
+    display: none;
+  }
+  .ab-command :is(button, .btn, .button) {
+    font-size: 10px !important;
+    padding: 5px 7px !important;
+  }
+  .ab-actions {
+    margin-left: 0;
+  }
+  .ab-command > div:first-child {
+    margin-right: auto;
+  }
+  .ab-layout.has-properties,
+  .ab-layout.has-tools.has-properties,
+  .ab-layout.tools-closed.has-properties {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ab-properties {
+    position: absolute;
+    top: 230px;
+    bottom: 0;
+    right: 0;
+    width: 280px;
+    z-index: 70;
+    box-shadow: -20px 0 50px #0009;
+  }
+  .ab-tools {
+    top: 230px;
+  }
+  .ab-status :is(.metrics, .kpis) {
+    gap: 8px;
+  }
+  .ab-status .metric:nth-child(n + 3),
+  .ab-status .kpi:nth-child(n + 3) {
+    display: none !important;
+  }
+  .ab-status {
+    padding: 6px 10px !important;
+  }
+  .ab-tab-page .diagram-viewport {
+    min-height: 350px;
+  }
+  .ab-notice {
+    font-size: 10px !important;
+  }
+  .ab-tab-page #vision .viewer {
+    min-height: 160px;
+  }
+}
+
+.suite-bar {
+  height: auto;
+  min-height: 68px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+body[data-suite-app] {
+  padding-top: var(--suite-bar-height, 68px) !important;
+}
+body[data-suite-app] :is(.kop-studio, .hmi-studio, .ab-workbench) {
+  height: calc(100dvh - var(--suite-bar-height, 68px)) !important;
+}
+body[data-suite-app] :is(.sidebar, .side, aside.rail) {
+  top: var(--suite-bar-height, 68px) !important;
+  height: calc(100dvh - var(--suite-bar-height, 68px)) !important;
+}
+.suite-documents > button:first-child {
+  float: right;
+}
+.suite-documents label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+}
+.suite-documents input {
+  width: 100%;
+  padding: 10px;
+}
+.suite-document-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+.suite-document-copy {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 13px 0;
+  border-top: 1px solid var(--suite-border);
+}
+.suite-document-copy strong,
+.suite-document-copy small {
+  display: block;
+}
+.suite-document-copy small {
+  font-size: 10px;
+  color: var(--suite-muted);
+  margin-top: 5px;
+}
+.suite-document-help {
+  font-size: 11px !important;
+}
+.suite-documents #suite-document-message {
+  font-size: 12px;
+  color: var(--suite-accent);
+}
+body[data-suite-app] .kop-studio .kop-paper .rung[data-power='on'] {
+  border-left: 5px solid #68f5bc !important;
+  background-color: #0d392e !important;
+  box-shadow: inset 0 0 0 1px #60e8ac66 !important;
+}
+.kop-paper .rung .network-power {
+  font:
+    700 10px Consolas,
+    monospace;
+  padding: 5px 8px;
+  border: 1px solid #4b6074;
+  background: #182737;
+  border-radius: 4px;
+  color: #aebfd0;
+}
+.kop-paper .rung[data-power='on'] .network-power {
+  color: #a3ffcd;
+  background: #146140;
+  border-color: #68f5bc;
+}
+.kop-paper .rung[data-power='on'] .rail {
+  background: #74ffc1;
+}
+.kop-paper .wire.live {
+  height: 4px !important;
+  background: #79ffbf !important;
+  box-shadow: 0 0 8px #56ffad66;
+}
+.kop-paper .contact.live svg {
+  color: #98ffd1;
+  filter: drop-shadow(0 0 3px #68f5bc66);
+}
+.kop-paper .rung[data-power='pending'] .wire.live {
+  background: #6b8398 !important;
+  box-shadow: none;
+}
+.kop-paper .rung[data-power='off'] .network-power {
+  color: #aebfd0;
+}
+.ab-workbench .ab-dock .panel,
+.ab-workbench .ab-dock .config-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+@media (max-width: 800px) {
+  .suite-bar {
+    min-height: 110px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .ab-properties,
+  .ab-tools {
+    top: calc(var(--suite-bar-height, 110px) + 105px);
+  }
+  body[data-suite-app] :is(.sidebar, .side, aside.rail) {
+    height: auto !important;
+  }
+}
+
+.ab-workbench :is(textarea) {
+  font:
+    13px/1.7 Consolas,
+    monospace;
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid var(--suite-border);
+  border-radius: 8px;
+  background: var(--suite-bg);
+  color: var(--suite-ink);
+}
+.ab-check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  margin: 15px 0;
+}
+.ab-check input {
+  width: 16px;
+}
+.ab-compare-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.ab-compare-images figure {
+  margin: 0;
+}
+.ab-compare-images img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background: #0a111b;
+  border: 1px solid var(--suite-border);
+  border-radius: 8px;
+}
+.ab-compare-images figcaption {
+  font-size: 11px;
+  color: var(--suite-muted);
+  padding: 8px;
+}
+.ab-roi-form {
+  padding: 12px;
+  border: 1px solid var(--suite-border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.ab-roi-form summary {
+  font-size: 11px;
+  cursor: pointer;
+}
+.ab-roi-form .property-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ab-roi-form input {
+  width: 100%;
+}
+.ab-table-panel > form > label {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  margin: 15px 0;
+}
+.ab-table-panel > form > textarea {
+  width: 100%;
+}
+.ab-status .metric .metric-status {
+  font-size: 10px !important;
+}
+body[data-suite-app='bi'] .page-head {
+  margin: 0 0 16px;
+  padding: 8px 0;
+}
+.page-head h1 {
+  font-size: 24px !important;
+}
+.ab-sql-browser {
+  background: var(--suite-surface);
+  border: 1px solid var(--suite-border);
+  border-radius: 12px;
+  padding: 18px;
+  min-width: 0;
+}
+.ab-sql-browser h3 {
+  font-size: 14px;
+}
+.ab-sql-browser p {
+  font-size: 11px;
+  color: var(--suite-muted);
+  overflow-wrap: anywhere;
+}
+.ab-sql-browser details {
+  border-top: 1px solid var(--suite-border);
+  padding: 12px 0;
+}
+.ab-sql-browser summary {
+  font-size: 11px;
+  cursor: pointer;
+}
+.ab-sql-browser button {
+  font-size: 10px;
+  margin: 4px;
+}
+.ab-sql-browser + #unused {
+  display: none;
+}
+body[data-suite-app='bi'] .sql-layout {
+  grid-template-columns: 230px minmax(0, 1fr) !important;
+  align-items: start;
+}
+body[data-suite-app='bi'] .sql-layout > .panel:last-child {
+  grid-column: 2;
+}
+body[data-suite-app='bi'] #sqlSource {
+  min-height: 300px;
+}
+.bi-tools-closed .rail {
+  display: none !important;
+}
+.bi-tools-closed .main {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+.bi-tools-closed .shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.bi-filters-closed .filters {
+  display: none !important;
+}
+.bi-filters-closed .report-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.bi-filters-closed .filters-panel {
+  display: none !important;
+}
+body[data-suite-app='bi'] .bi-quickstart {
+  margin: 10px 0;
+  padding: 12px;
+}
+.bi-filters-closed .dashboard-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+body.plc-studio .topbar {
+  min-height: 36px;
+  padding: 8px 20px;
+}
+body.plc-studio .heading-row {
+  margin-bottom: 16px;
+  padding: 0;
+  align-items: center;
+}
+body.plc-studio .heading-row h1 {
+  font-size: 23px !important;
+}
+body.plc-studio .heading-row .eyebrow {
+  display: none;
+}
+body.plc-studio .heading-row .subtitle {
+  font-size: 11px;
+}
+body.plc-studio .main-content {
+  padding: 18px 20px;
+}
+body.plc-studio .lab-overview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+body.plc-studio .lab-metric {
+  padding: 10px 14px;
+  min-width: 140px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+body.plc-studio .lab-metric p {
+  font-size: 9px;
+  margin: 0;
+}
+body.plc-studio .lab-metric strong {
+  font-size: 16px;
+}
+body.plc-studio .lab-metric small {
+  font-size: 9px;
+}
+body.plc-studio .lab-onboarding {
+  max-height: 56px;
+  overflow: auto;
+  padding: 12px;
+}
+body.plc-studio .lab-onboarding:focus-within,
+body.plc-studio .lab-onboarding:hover {
+  max-height: 250px;
+}
+body.plc-studio .lab-guide-heading h2 {
+  font-size: 13px;
+}
+body.plc-studio .lab-controlpanel {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+body.plc-studio .lab-controlpanel h2 {
+  font-size: 16px;
+}
+.plc-tools-closed .sidebar {
+  display: none !important;
+}
+.plc-tools-closed .shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.plc-tools-closed .main {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+#plc-watch-content {
+  padding: 0;
+  min-height: 550px;
+}
+#plc-watch-content .ab-table-scroll {
+  max-height: 650px;
+}
+#plc-watch-content button {
+  font-size: 10px;
+}
+#watch-status {
+  font-size: 11px;
+  color: var(--suite-muted);
+}
+@media (max-width: 800px) {
+  .ab-compare-images {
+    grid-template-columns: 1fr;
+  }
+  .ab-sql-browser {
+    padding: 12px;
+  }
+  body[data-suite-app='bi'] .sql-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body[data-suite-app='bi'] .sql-layout > .panel:last-child {
+    grid-column: 1;
+  }
+  body.plc-studio .main-content {
+    padding: 12px;
+  }
+  body.plc-studio .lab-metric {
+    min-width: 110px;
+    flex: 1;
+  }
+  body.plc-studio .heading-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ab-table-panel {
+    padding: 12px;
+  }
+  .ab-table-scroll table {
+    font-size: 10px;
+  }
+  .ab-table-tools {
+    gap: 6px;
+  }
+}
+
+.ab-workbench :is(.file-button, .file-label) {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex !important;
+}
+.ab-workbench :is(.file-button, .file-label) input[type='file'] {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.bi-filters-closed .filter-panel {
+  display: none !important;
+}
+.bi-filters-closed .dashboard-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.ab-vision-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, #152c3c, #09121c 70%);
+  z-index: 2;
+}
+.ab-vision-empty h3 {
+  font-size: 22px !important;
+  max-width: 420px;
+}
+.ab-vision-empty p {
+  font-size: 12px;
+  color: var(--suite-muted);
+}
+.ab-vision-empty .suite-app-mark {
+  width: 54px;
+  height: 54px;
+  font-size: 28px;
+}
+.ab-dock .conversion-result.pending {
+  background: var(--suite-bg) !important;
+  border-color: var(--suite-border) !important;
+}
+.ab-status .metric > div > span {
+  display: none;
+}
+.ab-status .metric :is(small) {
+  font-size: 8px !important;
+}
+.ab-status .metric strong {
+  border: 0 !important;
+  background: none !important;
+}
+
+.bi-filters-closed .work-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+body[data-suite-app='bi'] .rail > .brand,
+body.plc-studio .sidebar > .brand {
+  display: none !important;
+}
+
+@media (max-width: 800px) {
+  body.plc-studio .sidebar {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  body.plc-studio .sidebar nav {
+    display: flex;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 0;
+    padding-bottom: 6px;
+  }
+  body.plc-studio .sidebar nav button {
+    flex-shrink: 0;
+  }
+  body.plc-studio .sidebar-bottom {
+    display: none;
+  }
+  body.plc-studio .lab-guide-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  body.plc-studio .lab-onboarding {
+    max-width: 100%;
+    min-width: 0;
+  }
+  body.plc-studio .lab-guide-current {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+}
+
+body.plc-studio .lab-metric {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 10px;
+  align-items: center;
+  min-width: 170px;
+}
+body.plc-studio .lab-metric small {
+  grid-column: 1;
+  font-size: 9px;
+  line-height: 1.5;
+}
+body.plc-studio .lab-metric strong {
+  grid-column: 2;
+  grid-row: 1/3;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+body.plc-studio .lab-metric p {
+  grid-column: 1;
+  font-size: 9px !important;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.ab-plc-guide {
+  border: 1px solid var(--suite-border);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  background: var(--suite-surface);
+}
+.ab-plc-guide > summary {
+  padding: 11px 14px;
+  cursor: pointer;
+  font-size: 11px;
+}
+body.plc-studio .ab-plc-guide .lab-onboarding {
+  max-height: none !important;
+  margin: 0;
+  border: 0;
+  padding: 14px;
+}
+@media (max-width: 800px) {
+  body.plc-studio .lab-metric {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 0;
+    min-height: 80px;
+    padding: 10px !important;
+  }
+  body.plc-studio .lab-metric p {
+    font-size: 8px !important;
+  }
+  body.plc-studio .lab-metric small {
+    font-size: 8px;
+  }
+  body.plc-studio .lab-metric strong {
+    font-size: 13px;
+  }
+  .ab-plc-guide .lab-guide-steps {
+    display: none;
+  }
+}
+
+.kop-empty {
+  max-width: 620px;
+  margin: 48px auto;
+  padding: 32px;
+  border: 1px dashed var(--suite-border, #30394a);
+  border-radius: 14px;
+  text-align: center;
+  color: #a5afc1;
+}
+.kop-empty h2 {
+  color: #eef1f6;
+}
+.kop-empty p {
+  line-height: 1.6;
+}
+
+/* Vision keeps the image mounted while the inspector switches tasks. */
+body.vision-workspace {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+.vision-workspace .ab-workbench {
+  min-height: 0;
+}
+.vision-workspace .ab-command,
+.vision-workspace .ab-tabs {
+  flex-shrink: 0;
+}
+.vision-workspace .ab-command {
+  min-height: 52px;
+  padding: 7px 12px !important;
+}
+.vision-workspace .ab-layout.has-properties {
+  grid-template-columns: minmax(0, 1fr) 330px;
+}
+.vision-workspace .ab-layout.properties-closed {
+  grid-template-columns: minmax(0, 1fr);
+}
+.vision-workspace .ab-properties {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+.vision-workspace .properties-closed .ab-properties {
+  display: none;
+}
+.vision-workspace .ab-dock-section {
+  display: none;
+}
+.vision-inspector-heading {
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  border-bottom: 1px solid var(--suite-border);
+  flex-shrink: 0;
+}
+.vision-inspector-heading strong {
+  font-size: 12px;
+}
+.vision-inspector-heading select {
+  padding: 8px !important;
+  font-size: 12px !important;
+}
+.vision-task-panel {
+  padding: 12px;
+  min-height: 0;
+  overflow: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vision-task-panel label {
+  display: grid;
+  gap: 5px;
+  font-size: 11px !important;
+}
+.vision-task-panel input:not([type='range']):not([type='checkbox']),
+.vision-task-panel select {
+  padding: 7px !important;
+  min-height: 32px !important;
+}
+.vision-task-panel p {
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  margin: 0;
+}
+.vision-task-panel .parameter {
+  margin: 0;
+}
+.vision-task-panel .parameter p {
+  font-size: 10px !important;
+}
+.vision-task-panel .parameter-head {
+  margin-bottom: 2px;
+}
+.vision-task-panel .reference-box {
+  padding: 10px;
+  margin: 0;
+}
+.vision-task-panel .reference-box strong {
+  font-size: 11px;
+}
+.vision-task-panel .reference-box p {
+  font-size: 10px !important;
+}
+.vision-task-panel .calibration-box,
+.vision-task-panel .connection-box,
+.vision-task-panel .ab-roi-form {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.vision-task-panel .calibration-box > summary,
+.vision-task-panel .connection-box > summary,
+.vision-task-panel .ab-roi-form > summary {
+  display: none;
+}
+.vision-task-panel .cal-grid,
+.vision-task-panel .connection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+.vision-task-panel .cal-actions,
+.vision-task-panel .ip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+.vision-task-panel .cal-actions button,
+.vision-task-panel button {
+  font-size: 11px !important;
+  padding: 8px !important;
+}
+.vision-task-panel .camera-audit {
+  margin: 0;
+  padding: 0;
+}
+.vision-task-panel .selection-bar {
+  display: grid;
+  gap: 8px;
+  border: 0;
+  padding: 0 !important;
+}
+.vision-task-panel .check {
+  display: flex;
+  gap: 7px;
+  margin: 8px 0;
+}
+.vision-task-panel .recipe-actions {
+  display: grid;
+  gap: 8px;
+}
+.vision-task-panel .recipe-actions > *,
+.vision-task-panel [data-source] > .file-button {
+  width: 100%;
+  text-align: center;
+}
+.vision-task-panel [data-source] {
+  display: grid;
+  gap: 8px;
+}
+.vision-task-panel .audit-indicator {
+  padding: 8px !important;
+  font-size: 10px !important;
+  margin: 0;
+}
+.vision-task-panel .reference-box p,
+.vision-task-panel #calibration-status {
+  overflow-wrap: anywhere;
+}
+.vision-workspace .vision-document-context {
+  font-size: 10px;
+  color: var(--suite-muted);
+  padding: 7px 12px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.vision-workspace .ab-tab-page {
+  overflow: hidden;
+}
+.vision-workspace .ab-tab-page #vision {
+  height: 100%;
+  min-height: 0;
+}
+.vision-workspace #vision > .card-head {
+  padding: 7px 12px !important;
+  flex-shrink: 0;
+}
+.vision-workspace #vision > .card-head .overline {
+  display: none;
+}
+.vision-workspace #vision > .card-head h2 {
+  margin: 0;
+  font-size: 12px !important;
+}
+.vision-workspace .ab-tab-page #vision .viewer {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  flex: 1;
+}
+.vision-workspace #overlay {
+  position: absolute;
+  inset: 0;
+  max-width: none !important;
+  max-height: none !important;
+  display: block;
+  object-fit: contain;
+}
+.vision-workspace #vision .viewer-status {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  padding: 5px 8px;
+  pointer-events: none;
+}
+.vision-workspace .ab-status {
+  padding: 6px 12px !important;
+}
+.vision-workspace .ab-vision-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+  text-align: center;
+}
+.vision-workspace .ab-vision-empty h3 {
+  font-size: 19px;
+  margin: 0;
+}
+.vision-workspace .ab-vision-empty p {
+  max-width: 380px;
+  margin: 0;
+  font-size: 12px;
+}
+.vision-workspace .ab-vision-empty .suite-app-mark {
+  display: none;
+}
+.vision-focus .ab-properties,
+.vision-focus .vision-document-context,
+.vision-focus .ab-tabs,
+.vision-focus #vision > .card-head {
+  display: none !important;
+}
+.vision-focus .ab-layout.has-properties {
+  grid-template-columns: minmax(0, 1fr);
+}
+.vision-workspace #history {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.vision-workspace #history .table-scroller {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+}
+.vision-workspace #history > .card-head {
+  flex-wrap: wrap;
+}
+.vision-workspace #vision-comparison {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+}
+.ab-editor-grafcet #inputs {
+  grid-template-columns: 1fr !important;
+}
+.ab-editor-grafcet #inputs button {
+  min-width: 0;
+  justify-content: space-between;
+}
+.ab-editor-grafcet #inputs button > span {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+@media (max-width: 1000px) {
+  .vision-workspace .ab-layout.has-properties {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .vision-workspace .ab-properties {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    max-width: 100%;
+    width: 330px;
+    z-index: 80;
+  }
+  .vision-workspace .ab-layout {
+    position: relative;
+  }
+  .vision-workspace .ab-command {
+    gap: 5px;
+  }
+  .vision-workspace .ab-command small {
+    display: none;
+  }
+}
+@media (max-height: 850px) {
+  .vision-workspace .vision-task-panel {
+    padding: 8px 10px;
+    gap: 7px;
+  }
+  .vision-workspace .vision-inspector-heading {
+    padding: 8px 10px;
+    gap: 5px;
+  }
+  .vision-workspace .vision-task-panel .reference-box {
+    padding: 7px;
+  }
+  .vision-workspace .ab-command :is(button, .btn) {
+    min-height: 30px !important;
+    padding: 5px 8px !important;
+  }
+  .vision-workspace .ab-tabs {
+    padding: 5px 10px;
+  }
+}
+
+.vision-workspace #vision > .card-head {
+  display: none !important;
+}
+.vision-workspace #vision .viewer {
+  margin: 0 !important;
+  border: 0;
+  border-radius: 0;
+}
+.vision-workspace .vision-feed {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  pointer-events: none;
+  z-index: 2;
+}
+@media (max-height: 850px) {
+  .vision-workspace .vision-task-panel {
+    gap: 5px;
+  }
+  .vision-workspace .vision-task-panel .cal-grid {
+    gap: 6px;
+  }
+  .vision-workspace .vision-task-panel .cal-actions {
+    margin: 8px 0;
+  }
+}
+
+.vision-connection-help {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.vision-connection-help button {
+  flex: 1;
+}
+.suite-guide[aria-label='Credenciales de cámara IP'] label {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0;
+}
+.suite-guide[aria-label='Credenciales de cámara IP'] input {
+  padding: 9px;
+  width: 100%;
+}
+
+.vision-task-panel #vision-measure-mode {
+  margin-bottom: 10px;
+}
+.vision-task-panel .cal-actions {
+  flex-wrap: nowrap;
+}
+.vision-task-panel .cal-actions button {
+  flex: 1;
+  white-space: nowrap;
+}

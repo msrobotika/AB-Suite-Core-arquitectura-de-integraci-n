@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <script type="module" src="/suite/i18n.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mis ejercicios · AB Suite</title>
+    <link rel="stylesheet" href="/suite/shell.css" />
+    <link rel="stylesheet" href="/suite/exercises.css" />
+    <script type="module" src="/suite/exercises.js"></script>
+  </head>
+  <body class="exercise-page">
+    <header class="exercise-header">
+      <a class="suite-brand" href="/"
+        ><span class="suite-mark">ab<span>·</span></span
+        ><span>SUITE<small>MS ROBOTIKA</small></span></a
+      ><strong>Mis ejercicios</strong><a href="/">Herramientas ↗</a>
+    </header>
+    <main class="exercise-layout">
+      <aside class="exercise-library">
+        <h1>Tu biblioteca</h1>
+        <form id="exercise-new">
+          <label for="exercise-name">Nombre del ejercicio</label
+          ><input
+            id="exercise-name"
+            maxlength="90"
+            required
+            placeholder="Mi práctica"
+          /><button class="suite-action suite-primary" type="submit">
+            Crear ejercicio vacío
+          </button>
+        </form>
+        <button
+          id="exercise-import-button"
+          class="suite-action file-action"
+          type="button"
+        >
+          Importar archivo .absuite
+        </button>
+        <input
+          id="exercise-import"
+          type="file"
+          accept=".absuite,application/json"
+          hidden
+          aria-label="Archivo de ejercicio"
+        />
+        <label for="exercise-search">Buscar ejercicio</label
+        ><input
+          id="exercise-search"
+          type="search"
+          placeholder="Nombre o componente"
+        /><label for="exercise-view">Mostrar</label
+        ><select id="exercise-view">
+          <option value="active">En curso</option>
+          <option value="archived">Archivados</option>
+        </select>
+        <p id="exercise-count" role="status"></p>
+        <div id="exercise-list" aria-label="Ejercicios guardados"></div>
+      </aside>
+      <section class="exercise-workspace">
+        <div class="exercise-heading">
+          <div>
+            <p class="suite-eyebrow">
+              DOCUMENTOS PROPIOS · UN ARCHIVO PORTABLE
+            </p>
+            <h2 id="exercise-title">Empieza un ejercicio</h2>
+          </div>
+          <div class="exercise-toolbar">
+            <details id="exercise-organize">
+              <summary class="suite-action">Organizar</summary>
+              <div class="exercise-menu">
+                <button id="exercise-rename" type="button">Renombrar</button
+                ><button id="exercise-duplicate" type="button">Duplicar</button
+                ><button id="exercise-archive" type="button">
+                  Archivar ejercicio
+                </button>
+              </div>
+            </details>
+            <button
+              id="exercise-export"
+              class="suite-action suite-primary"
+              disabled
+            >
+              Descargar .absuite
+            </button>
+          </div>
+        </div>
+        <p id="exercise-message" role="status" aria-live="polite"></p>
+        <p id="exercise-intro">
+          Crea un ejercicio vacío o importa un archivo. Después añade tu trabajo
+          desde Proyectos dentro de cada herramienta.
+        </p>
+        <div id="exercise-components" class="exercise-components"></div>
+        <details class="exercise-recoveries">
+          <summary>Trabajos conservados</summary>
+          <label for="recovery-tool">Herramienta de las copias</label
+          ><select id="recovery-tool">
+            <option value="all">Todas las herramientas</option>
+          </select>
+          <div id="exercise-recoveries"></div>
+          <button id="recovery-more" class="suite-action" type="button" hidden>
+            Ver más copias
+          </button>
+        </details>
+        <p class="exercise-note">
+          Cada componente es una copia del momento en que lo añades. Los cambios
+          posteriores se incorporan expresamente desde su herramienta. La
+          biblioteca pertenece a este navegador y dirección local: descarga el
+          archivo para trasladarlo o tener una copia fuera del navegador.
+        </p>
+      </section>
+    </main>
+    <dialog id="exercise-name-dialog" class="suite-guide">
+      <form id="exercise-name-form">
+        <h2 id="exercise-name-title">Renombrar ejercicio</h2>
+        <label for="exercise-edit-name">Nombre</label
+        ><input id="exercise-edit-name" required maxlength="90" />
+        <p id="exercise-name-error" role="alert"></p>
+        <div class="suite-document-actions">
+          <button id="exercise-name-cancel" class="suite-action" type="button">
+            Cancelar</button
+          ><button
+            id="exercise-name-save"
+            class="suite-action suite-primary"
+            type="submit"
+          >
+            Guardar nombre
+          </button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

@@ -2,9 +2,13 @@
 
 ## Identidad
 
-AB Suite es un taller de programación y experimentación. Su unidad de trabajo es un ejercicio que el usuario puede crear, ejecutar, observar y explicar. La suite se organiza por tarea: programación, ejecución, interfaces, comunicaciones, visión y datos. No es un catálogo de fábricas de demostración.
+AB Suite es un taller de programación y experimentación. Cada herramienta se puede utilizar de forma independiente para crear, ejecutar, observar y explicar trabajo propio. Reunir documentos en un ejercicio de suite es opcional. La suite se organiza por tarea: programación, ejecución, interfaces, comunicaciones, visión y datos. No es un catálogo de fábricas de demostración.
 
 La marca común es **AB Suite · MS ROBOTIKA**. Los identificadores cortos Pl/Ko/Sc/Gr/Hm/Mb/Se/Vi/Bi, los colores por disciplina y la composición tipográfica son una implementación propia. No se incorporan activos, iconos, tipografías descargadas ni código de productos comerciales.
+
+## Entrada y libertad de uso
+
+El inicio muestra las nueve herramientas al mismo nivel, con su propósito y apertura directa. El usuario elige una, varias o todas. No se impone una ruta de aprendizaje ni un proyecto conjunto para abrir una aplicación. Las favoritas se recuerdan en este navegador; una entrada nueva al catálogo muestra las nueve. Ayuda, conexiones e instalación son paneles opcionales. En escritorio las nueve aperturas deben quedar visibles a 1280×720, 1366×768 y 1920×1080.
 
 ## Sistema visual
 
@@ -13,12 +17,12 @@ La marca común es **AB Suite · MS ROBOTIKA**. Los identificadores cortos Pl/Ko
 - Tipografía del sistema; jerarquía clara, cifras tabulares, código con fuente monoespaciada. Sin dependencias CDN.
 - Espaciados de 4/8/12/16/24/32 px; paneles de 14 px de radio y controles de 8 px. El área de edición tiene prioridad sobre métricas y adornos.
 - Estados: disponible, detenido, error, sin señal y caducado. El color se acompaña de texto o símbolo; no es la única indicación.
-- Barra común de 68 px en escritorio y 110 px en móvil, con cambio de aplicación, conexiones y guía. Los controles del ejercicio quedan dentro de su herramienta.
+- Barra común con altura medida en función de sus controles y el ancho disponible, con cambio de aplicación, conexiones y guía. Los controles del ejercicio quedan dentro de su herramienta.
 
 ## Interacciones comunes
 
 1. **Abrir** ejecuta la herramienta desde el catálogo. No descarga código ni lleva a GitHub.
-2. **Crear** produce un trabajo propio y vacío. Los ejemplos son opcionales e identificados.
+2. **Crear** usa **＋ Nuevo** y el mismo diálogo de nombre/recuperación en las nueve aplicaciones. Produce un trabajo sin ejemplo; se explica cualquier estructura mínima requerida. KOP y PLC permiten cero redes. La sustitución guarda primero un punto de vuelta; máximo ocho por herramienta. Los ejemplos son opcionales e identificados.
 3. **Editar** conserva borradores y distingue lo editado de lo que se está ejecutando.
 4. **Ejecutar** muestra el motor y el proyecto que realmente intervienen. Un cambio de código exige validación antes de cargarlo.
 5. **Inspeccionar** explica por qué cambia una salida, transición, trama, detección o cálculo.
@@ -37,7 +41,7 @@ Un error de archivo, formato, conexión o almacenamiento no debe restaurar una d
 
 ## Incorporar una herramienta
 
-Crear `apps/<id>` con su licencia, fuentes y pruebas; registrar su procedencia; declarar la entrada y su tipo de motor en el servidor; añadir ficha y práctica en el catálogo; reutilizar la barra y el contrato de señales; y completar al menos un recorrido con trabajo del usuario. Si necesita servicio, lo arranca el lanzador común y su ausencia se indica en el catálogo. No añadir instrucciones de instalación incompatibles en el flujo normal.
+Implementar `documents.get/create/restore`, incluyendo validación nativa, nombre persistente, limpieza del resultado anterior y recuperación. Documentar si se guardan datos en navegador, servidor o solo sesión. Crear `apps/<id>` con su licencia, fuentes y pruebas; registrar su procedencia; declarar la entrada y su tipo de motor en el servidor; añadir ficha y práctica en el catálogo; reutilizar la barra y el contrato de señales; y completar al menos un recorrido con trabajo del usuario. Si necesita servicio, lo arranca el lanzador común y su ausencia se indica en el catálogo. No añadir instrucciones de instalación incompatibles en el flujo normal.
 
 ## Investigación funcional
 
@@ -52,3 +56,9 @@ Las figuras HMI son primitivas y símbolos vectoriales propios. Se pueden editar
 Como investigación funcional se consultó también la [documentación oficial sobre redes y contactos Ladder](https://content.helpme-codesys.com/en/CODESYS%204/_c4ld_basics.html). Se tomaron conceptos de programación industrial —redes ordenadas, barras, contactos y bobinas—; la composición, los controles y los gráficos de AB son propios.
 
 El estándar de calidad previo a cualquier difusión se detalla en [RELEASE_READINESS.md](RELEASE_READINESS.md).
+
+## Práctica comprobable y estado real
+
+SCL presenta código y tabla de verdad del evaluador original; GRAFCET permite editar posición sin arrastre; comunicaciones permiten interpretar bytes propios; Vision compara dos inspecciones reales; PLC distingue entradas preparadas y último ciclo; BI descubre tablas y columnas reales. Los paneles se pliegan alrededor del trabajo. Un documento vacío no muestra una validación aprobada ni resultados de un trabajo anterior.
+
+Se estudiaron el [formato de mensajes Modbus TCP](https://www.modbus.org/docs/Modbus_Messaging_Implementation_Guide_V1_0b.pdf) y las [listas de observación de variables](https://content.helpme-codesys.com/en/CODESYS%20Development%20System/_cds_using_watchlists.html). El inspector, la experiencia de proyecto y sus gráficos son implementaciones originales de AB Suite.

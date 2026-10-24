@@ -102,7 +102,9 @@ def fetch_camera_frame(config):
                 raise CameraError('Fotograma superior a 4 MiB')
         raise CameraError('No se recibió un JPEG válido en el límite de tiempo/tamaño')
     except (OSError, TimeoutError, ssl.SSLError) as error:
-        raise CameraError('Cámara no disponible o tiempo agotado') from error
+        raise CameraError(f'Cámara no disponible en {ip}:{port}. Comprueba alimentación, IP y puerto, '
+                          'conectividad de red y que el servidor entregue JPEG/MJPEG. '
+                          'Si usas HTTPS, verifica que el certificado sea válido.') from error
     finally:
         conn.close()
 

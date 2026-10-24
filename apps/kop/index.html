@@ -119,6 +119,12 @@
               title="Duplicar red con una salida propia"
             >
               Duplicar</button
+            ><button
+              id="delete-rung"
+              class="btn"
+              title="Eliminar red seleccionada (Supr)"
+            >
+              Eliminar red</button
             ><label class="kop-zoom"
               >Zoom
               <select id="kop-zoom">
@@ -129,7 +135,12 @@
               </select></label
             >
           </div>
-          <div class="kop-paper" id="kop-paper">
+          <div
+            class="kop-paper"
+            id="kop-paper"
+            tabindex="0"
+            aria-label="Editor Ladder"
+          >
             <div id="rungs" class="rungs" aria-label="Redes Ladder"></div>
           </div>
           <div class="kop-status">

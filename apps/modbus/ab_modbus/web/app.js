@@ -1,29 +1,64 @@
 /* SPDX-License-Identifier: MIT · Copyright (c) 2026 MS ROBOTIKA */
 "use strict";
-const $ = id => document.getElementById(id);
-const token = new URLSearchParams(location.hash.slice(1)).get("token") || sessionStorage.getItem("ab-session") || "";
+const $ = (id) => document.getElementById(id);
+const token =
+  new URLSearchParams(location.hash.slice(1)).get("token") ||
+  sessionStorage.getItem("ab-session") ||
+  "";
 if (token) sessionStorage.setItem("ab-session", token);
 history.replaceState(null, "", location.pathname);
-let state = null, events = [], polling = false, pollTimer = null, busy = false, refreshing = false, closed = false;
-let lastFrameKey = "", lastProfileKey = "";
+let state = null,
+  events = [],
+  polling = false,
+  pollTimer = null,
+  busy = false,
+  refreshing = false,
+  closed = false;
+let connectionName = "Mi conexión",
+  eventStart = "",
+  archivedFrames = null;
+let lastFrameKey = "",
+  lastProfileKey = "";
 let firstReadComplete = false;
-const numericFields = ["port", "unit", "function", "address", "count", "timeout_ms"];
+const numericFields = [
+  "port",
+  "unit",
+  "function",
+  "address",
+  "count",
+  "timeout_ms"
+];
 
 function notice(message, error = false) {
   $("notice").textContent = message;
   $("notice").classList.toggle("error", error);
 }
 async function api(path, body) {
-  const response = await (window.ABSuite?.fetch ?? window.fetch.bind(window))(path, {method: body === undefined ? "GET" : "POST", cache: "no-store",
-    headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
-    body: body === undefined ? undefined : JSON.stringify(body)});
+  const response = await (window.ABSuite?.fetch ?? window.fetch.bind(window))(
+    path,
+    {
+      method: body === undefined ? "GET" : "POST",
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: body === undefined ? undefined : JSON.stringify(body)
+    }
+  );
   const result = await response.json();
-  if (!response.ok) throw new Error(result.error || `Error HTTP ${response.status}`);
+  if (!response.ok)
+    throw new Error(result.error || `Error HTTP ${response.status}`);
   return result;
 }
 function currentProfile() {
-  const profile = {name: $("profile-name").value.trim(), host: $("host").value.trim()};
-  numericFields.forEach(key => {profile[key] = Number($(key).value);});
+  const profile = {
+    name: $("profile-name").value.trim(),
+    host: $("host").value.trim()
+  };
+  numericFields.forEach((key) => {
+    profile[key] = Number($(key).value);
+  });
   return profile;
 }
 function stopPolling() {
@@ -36,7 +71,9 @@ function fillProfile(profile) {
   $("allow-lan").checked = false;
   $("host").value = profile.host;
   $("profile-name").value = profile.name;
-  numericFields.forEach(key => {$(key).value = profile[key];});
+  numericFields.forEach((key) => {
+    $(key).value = profile[key];
+  });
   updateCountLimit();
 }
 function updateCountLimit() {
@@ -57,9 +94,9 @@ function cell(row, content, className, label) {
 }
 function updateQuickstart() {
   const simulatorOn = state?.simulator_port != null;
-  const stage = firstReadComplete ? 3 : (simulatorOn ? 2 : 1);
+  const stage = firstReadComplete ? 3 : simulatorOn ? 2 : 1;
   $("primera-prueba").dataset.quickStage = String(stage);
-  document.querySelectorAll("[data-quick-step]").forEach(el => {
+  document.querySelectorAll("[data-quick-step]").forEach((el) => {
     const index = Number(el.dataset.quickStep);
     el.classList.toggle("done", index < stage);
     el.classList.toggle("current", index === stage);
@@ -72,42 +109,149 @@ function updateQuickstart() {
       : "Pulsa el botón para ejecutar una lectura sobre 127.0.0.1. No se envían escrituras Modbus.";
   $("quick-demo").disabled = closed || busy;
 }
-let suiteReading=null;
-window.ABSuite?.register({snapshot:()=>suiteReading&&Date.now()-suiteReading.at<5000?Object.fromEntries(suiteReading.result.values.map((v,i)=>["FC"+suiteReading.result.function+"."+(suiteReading.result.address+i),v])):null});
+let suiteReading = null;
+window.ABSuite?.register({
+  documents: {
+    get: () => ({
+      schema: "ab.modbus.document.v1",
+      name: connectionName,
+      profile: currentProfile(),
+      frames: structuredClone(events),
+      reading: suiteReading ? structuredClone(suiteReading) : null
+    }),
+    create: (name) => {
+      connectionName = name;
+      stopPolling();
+      eventStart = new Date().toISOString();
+      archivedFrames = null;
+      events = [];
+      suiteReading = null;
+      firstReadComplete = false;
+      $("profile-name").value = name;
+      $("host").value = "127.0.0.1";
+      $("port").value = "";
+      $("unit").value = "1";
+      $("address").value = "0";
+      $("count").value = "8";
+      $("function").value = "3";
+      $("allow-lan").checked = false;
+      $("values").replaceChildren();
+      $("read-meta").textContent = "Sin lecturas";
+      $("result-context").textContent =
+        "Nueva conexión: configura un destino o inicia el laboratorio.";
+      renderFrames();
+      notice(
+        "Conexión nueva. El laboratorio y los perfiles guardados se conservan."
+      );
+    },
+    restore: (doc) => {
+      stopPolling();
+      if (busy) throw Error("Espera a que termine la lectura actual antes de abrir otro documento");
+      if (
+        doc.schema !== "ab.modbus.document.v1" ||
+        !doc.profile ||
+        !Array.isArray(doc.frames) ||
+        doc.frames.length > 500
+      )
+        throw Error("Documento Modbus inválido");
+      connectionName = doc.name || "Mi conexión";
+      fillProfile({ ...doc.profile, port: doc.profile.port || "" });
+      if (!doc.reading) {
+        suiteReading = null;
+        $("values").replaceChildren();
+        $("read-meta").textContent = "Sin lecturas";
+      }
+      archivedFrames = structuredClone(doc.frames);
+      events = archivedFrames;
+      if (doc.reading) {
+        showValues(doc.reading.result);
+        suiteReading.at = doc.reading.at;
+      }
+      renderFrames();
+      notice(
+        "Conexión recuperada. Historial archivado; ejecuta una lectura para obtener datos nuevos."
+      );
+    }
+  },
+  reading: () => (suiteReading ? structuredClone(suiteReading) : null),
+  frames: () => structuredClone(events),
+  snapshot: () =>
+    suiteReading && Date.now() - suiteReading.at < 5000
+      ? Object.fromEntries(
+          suiteReading.result.values.map((v, i) => [
+            "FC" +
+              suiteReading.result.function +
+              "." +
+              (suiteReading.result.address + i),
+            v
+          ])
+        )
+      : null
+});
 function showValues(result) {
-  suiteReading={at:Date.now(),result};
+  archivedFrames = null;
+  suiteReading = { at: Date.now(), result };
+  window.dispatchEvent(new Event("ab-suite:document-changed"));
   const fragment = document.createDocumentFragment();
-  const prefixes = {1: 0, 2: 10000, 3: 40000, 4: 30000};
+  const prefixes = { 1: 0, 2: 10000, 3: 40000, 4: 30000 };
   result.values.forEach((value, i) => {
-    const address = result.address + i, row = element("tr");
+    const address = result.address + i,
+      row = element("tr");
     cell(row, address, "number", "Dirección PDU");
-    const reference = address < 9999 ? String(prefixes[result.function] + address + 1).padStart(5, "0") : "—";
+    const reference =
+      address < 9999
+        ? String(prefixes[result.function] + address + 1).padStart(5, "0")
+        : "—";
     cell(row, reference, "number", "Referencia");
     cell(row, value, "number value", "Decimal");
-    cell(row, "0x" + value.toString(16).toUpperCase().padStart(4, "0"), "number", "Hexadecimal");
-    const status = element("td"); status.dataset.label = "Estado";
-    status.append(element("span", result.function < 3 ? (value ? "ON" : "OFF") : "Leído", "state-tag"));
-    row.append(status); fragment.append(row);
+    cell(
+      row,
+      "0x" + value.toString(16).toUpperCase().padStart(4, "0"),
+      "number",
+      "Hexadecimal"
+    );
+    const status = element("td");
+    status.dataset.label = "Estado";
+    status.append(
+      element(
+        "span",
+        result.function < 3 ? (value ? "ON" : "OFF") : "Leído",
+        "state-tag"
+      )
+    );
+    row.append(status);
+    fragment.append(row);
   });
   $("values").replaceChildren(fragment);
-  $("read-meta").textContent = `${result.values.length} valores · ${result.elapsed_ms} ms · TID ${result.transaction}`;
-  $("result-context").textContent = `${result.host}:${result.port} · unidad ${result.unit} · FC${String(result.function).padStart(2, "0")} · ${new Date().toLocaleTimeString("es-ES")} · última lectura correcta`;
+  $("read-meta").textContent =
+    `${result.values.length} valores · ${result.elapsed_ms} ms · TID ${result.transaction}`;
+  $("result-context").textContent =
+    `${result.host}:${result.port} · unidad ${result.unit} · FC${String(result.function).padStart(2, "0")} · ${new Date().toLocaleTimeString("es-ES")} · última lectura correcta`;
   firstReadComplete = true;
   updateQuickstart();
 }
 async function readOnce() {
   if (busy || closed) return;
-  if (!$("read-form").reportValidity()) {stopPolling(); return;}
+  if (!$("read-form").reportValidity()) {
+    stopPolling();
+    return;
+  }
   busy = true;
   $("read").disabled = true;
   try {
-    const result = await api("/api/read", {profile: currentProfile(), allow_lan: $("allow-lan").checked});
+    const result = await api("/api/read", {
+      profile: currentProfile(),
+      allow_lan: $("allow-lan").checked
+    });
     showValues(result);
-    notice(`Lectura completada: ${result.values.length} valores. No se ha enviado ninguna escritura.`);
+    notice(
+      `Lectura completada: ${result.values.length} valores. No se ha enviado ninguna escritura.`
+    );
   } catch (error) {
     stopPolling();
-    suiteReading=null;
-    $("read-meta").textContent = "Lectura fallida · los valores anteriores no se han actualizado";
+    suiteReading = null;
+    $("read-meta").textContent =
+      "Lectura fallida · los valores anteriores no se han actualizado";
     notice(error.message, true);
   } finally {
     busy = false;
@@ -119,23 +263,35 @@ async function readOnce() {
 }
 function renderFrames() {
   const filter = $("source-filter").value;
-  const visible = events.filter(event => !filter || event.source === filter);
+  const visible = events.filter((event) => !filter || event.source === filter);
   const key = `${filter}:${events.length}:${events.at(-1)?.id || 0}`;
   if (key === lastFrameKey) return;
   lastFrameKey = key;
   $("frame-count").textContent = events.length;
   const fragment = document.createDocumentFragment();
-  [...visible].reverse().forEach(event => {
+  [...visible].reverse().forEach((event) => {
     const row = element("tr");
-    cell(row, event.time.slice(11, 23), "number", "Hora UTC"); cell(row, event.source, undefined, "Origen");
-    cell(row, event.direction, `direction ${event.direction === "ERROR" ? "error" : ""}`, "Dirección");
-    const data = element("td", event.hex || event.detail, "frame-data"); data.dataset.label = "Trama / detalle";
-    if (event.hex && event.detail) data.append(element("span", event.detail, "frame-detail"));
-    row.append(data); fragment.append(row);
+    cell(row, event.time.slice(11, 23), "number", "Hora UTC");
+    cell(row, event.source, undefined, "Origen");
+    cell(
+      row,
+      event.direction,
+      `direction ${event.direction === "ERROR" ? "error" : ""}`,
+      "Dirección"
+    );
+    const data = element("td", event.hex || event.detail, "frame-data");
+    data.dataset.label = "Trama / detalle";
+    if (event.hex && event.detail)
+      data.append(element("span", event.detail, "frame-detail"));
+    row.append(data);
+    fragment.append(row);
   });
   if (!visible.length) {
-    const row = element("tr"), empty = element("td", "Aún no hay tráfico para este origen.", "empty");
-    empty.colSpan = 4; row.append(empty); fragment.append(row);
+    const row = element("tr"),
+      empty = element("td", "Aún no hay tráfico para este origen.", "empty");
+    empty.colSpan = 4;
+    row.append(empty);
+    fragment.append(row);
   }
   $("frames").replaceChildren(fragment);
 }
@@ -148,106 +304,219 @@ async function refresh() {
     const running = state.simulator_port !== null;
     $("sim-status").textContent = running ? "EN MARCHA" : "DETENIDO";
     $("sim-status").classList.toggle("running", running);
-    $("sim-toggle").textContent = running ? "Detener simulador" : "Iniciar simulador local";
-    $("sim-port").disabled = running; $("sim-unit").disabled = running;
-    $("sim-endpoint").textContent = `127.0.0.1:${state.simulator_port || $("sim-port").value}`;
-    events = state.events; renderFrames();
+    $("sim-toggle").textContent = running
+      ? "Detener simulador"
+      : "Iniciar simulador local";
+    $("sim-port").disabled = running;
+    $("sim-unit").disabled = running;
+    $("sim-endpoint").textContent =
+      `127.0.0.1:${state.simulator_port || $("sim-port").value}`;
+    events =
+      archivedFrames ??
+      state.events.filter((event) => !eventStart || event.time >= eventStart);
+    renderFrames();
     updateQuickstart();
     const profileKey = JSON.stringify(state.profiles);
     if (profileKey !== lastProfileKey) {
       const selected = $("profile-list").value;
-      $("profile-list").replaceChildren(...state.profiles.profiles.map(profile => {
-        const option = element("option", profile.name); option.value = profile.name; return option;
-      }));
-      if (state.profiles.profiles.some(p => p.name === selected)) $("profile-list").value = selected;
+      $("profile-list").replaceChildren(
+        ...state.profiles.profiles.map((profile) => {
+          const option = element("option", profile.name);
+          option.value = profile.name;
+          return option;
+        })
+      );
+      if (state.profiles.profiles.some((p) => p.name === selected))
+        $("profile-list").value = selected;
       lastProfileKey = profileKey;
     }
-  } catch (error) {stopPolling(); notice(`No se pudo actualizar la sesión: ${error.message}`, true);}
-  finally {refreshing = false;}
+  } catch (error) {
+    stopPolling();
+    notice(`No se pudo actualizar la sesión: ${error.message}`, true);
+  } finally {
+    refreshing = false;
+  }
 }
 function download(name, data) {
-  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type: "application/json"}));
-  const anchor = element("a"); anchor.href = url; anchor.download = name;
-  document.body.append(anchor); anchor.click(); anchor.remove();
+  const url = URL.createObjectURL(
+    new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
+  );
+  const anchor = element("a");
+  anchor.href = url;
+  anchor.download = name;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function action(id, callback) {
   $(id).addEventListener("click", async () => {
     $(id).disabled = true;
-    try {await callback();} catch (error) {notice(error.message, true);}
-    finally {$(id).disabled = false; if (!closed) await refresh();}
+    try {
+      await callback();
+    } catch (error) {
+      notice(error.message, true);
+    } finally {
+      $(id).disabled = false;
+      if (!closed) await refresh();
+    }
   });
 }
-$("read-form").addEventListener("submit", event => {event.preventDefault(); stopPolling(); readOnce();});
-action("poll", async () => {
-  if (polling) {stopPolling(); notice("Lectura periódica detenida."); return;}
-  if (!$("read-form").reportValidity()) return;
-  polling = true; $("poll").textContent = "Detener repetición"; await readOnce();
-});
-$("read-form").addEventListener("input", event => {
+$("read-form").addEventListener("submit", (event) => {
+  event.preventDefault();
   stopPolling();
-  if (["host", "port", "unit"].includes(event.target.id)) $("allow-lan").checked = false;
+  readOnce();
+});
+action("poll", async () => {
+  if (polling) {
+    stopPolling();
+    notice("Lectura periódica detenida.");
+    return;
+  }
+  if (!$("read-form").reportValidity()) return;
+  polling = true;
+  $("poll").textContent = "Detener repetición";
+  await readOnce();
+});
+$("read-form").addEventListener("input", (event) => {
+  stopPolling();
+  if (["host", "port", "unit"].includes(event.target.id))
+    $("allow-lan").checked = false;
 });
 $("function").addEventListener("change", updateCountLimit);
-document.addEventListener("visibilitychange", () => {if (document.hidden) stopPolling();});
-action("sim-toggle", async () => {
-  if (state?.simulator_port) {stopPolling(); await api("/api/simulator/stop", {}); firstReadComplete = false; notice("Simulador detenido.");}
-  else {await startLocalSimulator(); notice("Simulador iniciado. Puedes leerlo desde el cliente.");}
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopPolling();
 });
-async function startLocalSimulator(){
-  if(window.ABSuite&&Number($("sim-port").value)===0)return api("/api/simulator/auto",{unit:Number($("sim-unit").value)});
-  return api("/api/simulator/start", {port:Number($("sim-port").value),unit:Number($("sim-unit").value)});
+action("sim-toggle", async () => {
+  if (state?.simulator_port) {
+    stopPolling();
+    await api("/api/simulator/stop", {});
+    firstReadComplete = false;
+    notice("Simulador detenido.");
+  } else {
+    await startLocalSimulator();
+    notice("Simulador iniciado. Puedes leerlo desde el cliente.");
+  }
+});
+async function startLocalSimulator() {
+  if (window.ABSuite && Number($("sim-port").value) === 0)
+    return api("/api/simulator/auto", { unit: Number($("sim-unit").value) });
+  return api("/api/simulator/start", {
+    port: Number($("sim-port").value),
+    unit: Number($("sim-unit").value)
+  });
 }
 $("quick-demo").addEventListener("click", () => {
   if (!$("demo").disabled && !busy && !closed) $("demo").click();
 });
 action("demo", async () => {
   if (busy) throw new Error("Espera a que termine la lectura en curso.");
-  const simulatorPort = state?.simulator_port ?? (await startLocalSimulator()).port;
+  const simulatorPort =
+    state?.simulator_port ?? (await startLocalSimulator()).port;
   const simulatorUnit = state?.simulator_unit ?? Number($("sim-unit").value);
   await refresh();
-  fillProfile({name: "Laboratorio local", host: "127.0.0.1", port: simulatorPort,
-    unit: simulatorUnit, function: 3, address: 0, count: 8, timeout_ms: 1500});
+  fillProfile({
+    name: "Laboratorio local",
+    host: "127.0.0.1",
+    port: simulatorPort,
+    unit: simulatorUnit,
+    function: 3,
+    address: 0,
+    count: 8,
+    timeout_ms: 1500
+  });
   await readOnce();
 });
 action("memory-edit", async () => {
-  await api("/api/simulator/memory", {function: Number($("memory-function").value),
-    address: Number($("memory-address").value), value: Number($("memory-value").value)});
-  notice("Memoria del laboratorio actualizada. Realiza otra lectura para verla.");
+  await api("/api/simulator/memory", {
+    function: Number($("memory-function").value),
+    address: Number($("memory-address").value),
+    value: Number($("memory-value").value)
+  });
+  notice(
+    "Memoria del laboratorio actualizada. Realiza otra lectura para verla."
+  );
 });
 $("source-filter").addEventListener("change", renderFrames);
-action("clear-frames", async () => {await api("/api/monitor/clear", {});});
-action("export-frames", async () => {download("AB-Modbus-tramas.json", {schema: 1, events});});
+action("clear-frames", async () => {
+  await api("/api/monitor/clear", {});
+});
+action("export-frames", async () => {
+  download("AB-Modbus-tramas.json", { schema: 1, events });
+});
 action("load-profile", async () => {
-  const profile = state.profiles.profiles.find(p => p.name === $("profile-list").value);
-  if (profile) {fillProfile(profile); notice(`Perfil cargado: ${profile.name}. Red privada desactivada.`);}
+  const profile = state.profiles.profiles.find(
+    (p) => p.name === $("profile-list").value
+  );
+  if (profile) {
+    fillProfile(profile);
+    notice(`Perfil cargado: ${profile.name}. Red privada desactivada.`);
+  }
 });
 action("save-profile", async () => {
   const profile = currentProfile();
-  const profiles = state.profiles.profiles.filter(p => p.name.toLowerCase() !== profile.name.toLowerCase());
-  profiles.push(profile); await api("/api/profiles", {schema: 1, profiles}); notice("Perfil guardado en este equipo.");
+  const profiles = state.profiles.profiles.filter(
+    (p) => p.name.toLowerCase() !== profile.name.toLowerCase()
+  );
+  profiles.push(profile);
+  await api("/api/profiles", { schema: 1, profiles });
+  notice("Perfil guardado en este equipo.");
 });
-action("export-profiles", async () => {download("AB-Modbus-perfiles.json", state.profiles);});
-$("import-profiles").addEventListener("change", async event => {
-  const file = event.target.files[0]; if (!file) return;
-  stopPolling(); $("allow-lan").checked = false;
+action("export-profiles", async () => {
+  download("AB-Modbus-perfiles.json", state.profiles);
+});
+$("import-profiles").addEventListener("change", async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  stopPolling();
+  $("allow-lan").checked = false;
   try {
     if (file.size > 65536) throw new Error("El archivo supera 64 KiB.");
     await api("/api/profiles", JSON.parse(await file.text()));
     notice("Perfiles importados y validados. La lista local se ha sustituido.");
     await refresh();
-  } catch (error) {notice(error.message, true);} finally {event.target.value = "";}
+  } catch (error) {
+    notice(error.message, true);
+  } finally {
+    event.target.value = "";
+  }
 });
 action("shutdown", async () => {
-  if(window.ABSuite){stopPolling();location.href="/";return;}
-  stopPolling(); await api("/api/shutdown", {}); closed = true;
-  document.querySelectorAll("button,input,select").forEach(node => {node.disabled = true;});
+  if (window.ABSuite) {
+    stopPolling();
+    location.href = "/";
+    return;
+  }
+  stopPolling();
+  await api("/api/shutdown", {});
+  closed = true;
+  document.querySelectorAll("button,input,select").forEach((node) => {
+    node.disabled = true;
+  });
   notice("Aplicación cerrada. Ya puedes cerrar esta pestaña.");
 });
-if(window.ABSuite){$("sim-port").min="0";$("sim-port").value="0";const hint=element("small","0 elige automáticamente un puerto libre de este laboratorio.");$("sim-port").parentElement.append(hint);const link=document.querySelector('a[href="scada.html"]');if(link){link.href="/apps/scada/";link.textContent="SCADA Studio ↗";}}
-window.addEventListener('ab-suite:read-plc',event=>{
-  $("host").value="127.0.0.1";$("port").value=event.detail.port;$("unit").value="1";
-  $("function").value="1";$("address").value="0";$("count").value="3";$("allow-lan").checked=false;
+if (window.ABSuite) {
+  $("sim-port").min = "0";
+  $("sim-port").value = "0";
+  const hint = element(
+    "small",
+    "0 elige automáticamente un puerto libre de este laboratorio."
+  );
+  $("sim-port").parentElement.append(hint);
+  const link = document.querySelector('a[href="scada.html"]');
+  if (link) {
+    link.href = "/apps/scada/";
+    link.textContent = "SCADA Studio ↗";
+  }
+}
+window.addEventListener("ab-suite:read-plc", (event) => {
+  $("host").value = "127.0.0.1";
+  $("port").value = event.detail.port;
+  $("unit").value = "1";
+  $("function").value = "1";
+  $("address").value = "0";
+  $("count").value = "3";
+  $("allow-lan").checked = false;
   readOnce();
 });
 refresh();

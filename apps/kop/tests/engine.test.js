@@ -22,3 +22,5 @@ test('escenario rechaza señal externa desconocida y tipos incorrectos',()=>{a.t
 test('límite de 40 redes y 8 ramas',()=>{const m=sample();m.rungs=Array.from({length:41},(_,i)=>({...m.rungs[0],id:'R'+(i+1),target:'Q'+i}));a.throws(()=>E.validate(m),/40/);});
 test('diagnóstico señala lectura de bobina anterior no escrita',()=>{const m=sample();m.rungs=[m.rungs[0],{id:'R9',name:'Otra',operation:'COIL',target:'ALARMA',branches:[[{kind:'NO',variable:'PILOTO_VERDE'}]]}];a.match(E.diagnostics(m).join(' '),/PILOTO_VERDE/);});
 test('la validación no realiza eval ni acceso de red',()=>{const m=sample();m.rungs[0].branches[0][0].variable='START;RUN';a.throws(()=>E.validate(m),/Contacto inválido/);});
+
+test('un proyecto sin redes conserva señales, no inventa trazas y se puede volver a editar',()=>{const m={schema:1,name:'Desde cero',inputs:{I0:true},outputs:{Q0:false},rungs:[]};a.equal(E.validate(m),true);const s=E.scan(m,E.initial(m));a.deepEqual(s.traces,[]);a.equal(s.outputs.Q0,false);m.rungs.push({id:'R1',name:'Propia',operation:'COIL',target:'Q0',branches:[[{kind:'NO',variable:'I0'}]]});a.equal(E.scan(m,E.initial(m)).outputs.Q0,true)});

@@ -1,0 +1,319 @@
+/** Vision workspace: a permanent image and one compact task panel at a time. MIT. */
+const $ = (selector) => document.querySelector(selector);
+const make = (tag, text, cls) => {
+  const node = document.createElement(tag);
+  if (text) node.textContent = text;
+  if (cls) node.className = cls;
+  return node;
+};
+export function mountVisionWorkspace() {
+  document.body.classList.add('vision-workspace');
+  const rail = $('.ab-properties');
+  const source = make('section');
+  const recipe = make('section');
+  const region = make('section');
+  const measure = make('section');
+  const files = make('section');
+  const place = (parent, selector) => {
+    const node = $(selector);
+    if (node) parent.append(node);
+    return node;
+  };
+  const heading = make('header', undefined, 'vision-inspector-heading');
+  heading.append(make('strong', 'Inspector de imagen'));
+  const select = make('select');
+  select.id = 'vision-task';
+  select.setAttribute('aria-label', 'Panel de inspección');
+  heading.append(select);
+  const taskBar = make('div', undefined, 'vision-task-tabs');
+  taskBar.setAttribute('role', 'tablist');
+  taskBar.setAttribute('aria-label', 'Panel de inspección');
+  heading.append(taskBar);
+  select.hidden = true;
+  rail.prepend(heading);
+  const tasks = [
+    ['source', 'Fuente de imagen', source],
+    ['recipe', 'Detección', recipe],
+    ['region', 'Región de interés', region],
+    ['measure', 'Medición', measure],
+    ['files', 'Receta y archivos', files]
+  ];
+  for (const [id, label, panel] of tasks) {
+    const option = make('option', label);
+    option.value = id;
+    select.append(option);
+    panel.id = 'vision-panel-' + id;
+    panel.className = 'vision-task-panel';
+    panel.setAttribute('aria-label', label);
+    panel.setAttribute('role', 'tabpanel');
+    const tab = make('button', label);
+    tab.type = 'button';
+    tab.id = 'vision-task-' + id;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', panel.id);
+    panel.setAttribute('aria-labelledby', tab.id);
+    tab.onclick = () => {
+      select.value = id;
+      activate();
+    };
+    tab.onkeydown = (event) => {
+      const buttons = [...taskBar.children];
+      const index = buttons.indexOf(tab);
+      const target =
+        event.key === 'ArrowRight'
+          ? (index + 1) % buttons.length
+          : event.key === 'ArrowLeft'
+            ? (index + buttons.length - 1) % buttons.length
+            : event.key === 'Home'
+              ? 0
+              : event.key === 'End'
+                ? buttons.length - 1
+                : -1;
+      if (target < 0) return;
+      event.preventDefault();
+      buttons[target].click();
+      buttons[target].focus();
+    };
+    taskBar.append(tab);
+    rail.append(panel);
+  }
+  const hint = make(
+    'p',
+    'Trabaja con imágenes de piezas, superficies o producto continuo. Define tus propios criterios visuales.',
+    'vision-context'
+  );
+  source.append(hint);
+  const sourceType = make('select');
+  sourceType.id = 'vision-source-type';
+  sourceType.setAttribute('aria-label', 'Configurar fuente');
+  const groups = [];
+  for (const [id, label] of [
+    ['file', 'Archivo de imagen'],
+    ['usb', 'Cámara USB'],
+    ['ip', 'Cámara IP']
+  ]) {
+    const option = make('option', label);
+    option.value = id;
+    sourceType.append(option);
+    const group = make('div');
+    group.dataset.source = id;
+    groups.push(group);
+  }
+  source.append(sourceType, ...groups);
+  // Keep the native file input in its label; all other controls retain their handlers.
+  const fileInput = $('#image-file');
+  const fileLabel = make('label', 'Abrir imagen', 'button file-button');
+  fileLabel.append(fileInput);
+  groups[0].append(fileLabel);
+  place(groups[0], '#demo');
+  const deviceLabel = make('label', 'Dispositivo de cámara');
+  const device = make('select');
+  device.id = 'camera-device';
+  device.append(new Option('Cámara predeterminada', ''));
+  deviceLabel.append(device);
+  const refresh = make('button', 'Actualizar cámaras');
+  refresh.type = 'button';
+  refresh.id = 'camera-refresh';
+  refresh.onclick = () =>
+    window.dispatchEvent(new Event('ab-vision:refresh-cameras'));
+  groups[1].append(deviceLabel, refresh);
+  for (const id of ['camera-start', 'capture', 'camera-stop', 'auto'])
+    place(groups[1], '#' + id);
+  const live = $('#camera-live');
+  groups[1].append(
+    live,
+    make(
+      'p',
+      'Directo muestra la máscara sin registrar inspecciones. Capturar congela la imagen; Analizar registra el resultado.'
+    )
+  );
+  const ip = place(groups[2], '#ip-camera-panel');
+  ip.open = true;
+  const ipInfo = ip.querySelector('.small-muted');
+  const infoButton = make('button', 'Formatos y límites');
+  infoButton.type = 'button';
+  const infoDialog = make('dialog', undefined, 'suite-guide');
+  infoDialog.setAttribute('aria-label', 'Conexión de cámara');
+  const close = make('button', 'Cerrar ×');
+  close.type = 'button';
+  close.onclick = () => infoDialog.close();
+  infoDialog.append(close, make('h2', 'Cámara IP'), ipInfo);
+  document.body.append(infoDialog);
+  infoButton.onclick = () => infoDialog.showModal();
+  groups[2].append(infoButton);
+  const credentials = make('dialog', undefined, 'suite-guide');
+  credentials.setAttribute('aria-label', 'Credenciales de cámara IP');
+  const credentialsOpen = make('button', 'Usuario y contraseña');
+  credentialsOpen.type = 'button';
+  credentialsOpen.id = 'vision-ip-credentials';
+  const credentialsClose = make('button', 'Guardar y volver');
+  credentialsClose.type = 'button';
+  credentialsClose.onclick = () => credentials.close();
+  credentials.append(
+    make('h2', 'Acceso a la cámara'),
+    make(
+      'p',
+      'Opcional: solo para cámaras con autenticación HTTP Basic. Estos campos permanecen en esta sesión y no se guardan en el proyecto.'
+    ),
+    $('#ip-user').parentElement,
+    $('#ip-password').parentElement,
+    credentialsClose
+  );
+  document.body.append(credentials);
+  credentialsOpen.onclick = () => credentials.showModal();
+  const connectionHelp = make('div', undefined, 'vision-connection-help');
+  connectionHelp.append(credentialsOpen, infoButton);
+  groups[2].append(connectionHelp);
+  sourceType.onchange = () => {
+    hint.hidden = sourceType.value !== 'file';
+    for (const group of groups)
+      group.hidden = group.dataset.source !== sourceType.value;
+  };
+  sourceType.onchange();
+  const feed = $('#feed-status');
+  feed.classList.add('vision-feed');
+  $('.viewer').append(feed);
+  $('.ab-actions').append($('#auto'));
+  // Move field wrappers, preserving native labels and events.
+  files.append($('#lot').parentElement);
+  recipe.append($('#mode').parentElement);
+  place(recipe, '#detection-range');
+  for (const id of ['threshold', 'min-area'])
+    recipe.append($('#' + id).closest('.parameter'));
+  recipe.append($('#max-defects').parentElement);
+  place(recipe, '.reference-box');
+  const roi = place(region, '.ab-roi-form');
+  roi.open = true;
+  place(region, '.selection-bar');
+  region.prepend(
+    make(
+      'p',
+      'Selecciona una zona sobre la imagen o introduce sus coordenadas en píxeles.'
+    )
+  );
+  const calibration = place(measure, '#calibration-panel');
+  calibration.open = true;
+  const measurementMode = make('select');
+  measurementMode.id = 'vision-measure-mode';
+  measurementMode.setAttribute('aria-label', 'Configurar medición');
+  const measurementGroups = [];
+  for (const [id, label, fields] of [
+    ['scale', 'Escala y patrón', ['reference-mm', 'distance-mm']],
+    [
+      'limits',
+      'Dimensiones y tolerancia',
+      [
+        'nominal-width',
+        'nominal-height',
+        'dimension-tolerance',
+        'piece-threshold'
+      ]
+    ]
+  ]) {
+    const option = make('option', label);
+    option.value = id;
+    measurementMode.append(option);
+    const group = make('div', undefined, 'cal-grid');
+    group.dataset.measure = id;
+    for (const field of fields) group.append($('#' + field).parentElement);
+    measurementGroups.push(group);
+  }
+  calibration
+    .querySelector('.cal-grid')
+    .replaceWith(measurementMode, ...measurementGroups);
+  const calibrationActions = calibration.querySelector('.cal-actions');
+  measurementMode.onchange = () => {
+    for (const group of measurementGroups)
+      group.hidden = group.dataset.measure !== measurementMode.value;
+    calibrationActions.hidden = measurementMode.value !== 'scale';
+  };
+  measurementMode.onchange();
+  $('#mark-scale').textContent = 'Marcar patrón';
+  $('#mark-scale').title =
+    'Marcar los centros CIAN → MAGENTA de longitud conocida';
+  $('#clear-scale').textContent = 'Borrar escala';
+  const audit = calibration.querySelector('.camera-audit');
+  const explanation = calibration.querySelector('.small-muted');
+  const help = make('button', 'Cómo calibrar y qué se verifica');
+  help.type = 'button';
+  help.id = 'vision-calibration-help';
+  const calibrationHelp = make('dialog', undefined, 'suite-guide');
+  calibrationHelp.setAttribute('aria-label', 'Guía de calibración');
+  const closeHelp = make('button', 'Cerrar ×');
+  closeHelp.type = 'button';
+  closeHelp.onclick = () => calibrationHelp.close();
+  const auditStatus = $('#audit-status');
+  calibration.append(auditStatus);
+  calibrationHelp.append(
+    closeHelp,
+    make('h2', 'Calibración por patrón'),
+    explanation,
+    audit
+  );
+  document.body.append(calibrationHelp);
+  help.onclick = () => calibrationHelp.showModal();
+  measure.append(help);
+  measure.prepend(make('p', 'Medición por fotograma con patrón verificado.'));
+  place(files, '.recipe-actions');
+  files.prepend(
+    make('h3', 'Conserva tu configuración'),
+    make(
+      'p',
+      'La receta contiene parámetros. Proyectos conserva también la imagen en este navegador. Exporta el PNG anotado y el historial desde Registro.'
+    )
+  );
+  // Empty original wrappers no longer consume vertical space.
+  $('#config').hidden = true;
+  $('.tool-bar').hidden = true;
+  $('.connect-panels').hidden = true;
+  const open = make('button', 'Abrir imagen');
+  open.type = 'button';
+  open.id = 'vision-open-image';
+  open.onclick = () => fileInput.click();
+  $('.ab-actions').prepend(open);
+  const connect = make('button', 'Conectar cámara');
+  connect.type = 'button';
+  connect.id = 'vision-open-camera';
+  connect.onclick = () => {
+    if ($('.ab-layout').classList.contains('properties-closed'))
+      $('[aria-controls="ab-properties"]').click();
+    window.ABSuite.workspace?.activate('Inspección');
+    select.value = 'source';
+    activate();
+    sourceType.value = 'usb';
+    sourceType.onchange();
+    refresh.click();
+    $('#camera-start').focus();
+  };
+  $('.ab-actions').prepend(connect);
+  function activate() {
+    for (const [id, , panel] of tasks) {
+      const active = id === select.value;
+      panel.hidden = !active;
+      const tab = $('#vision-task-' + id);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+    }
+  }
+  select.value = 'recipe';
+  select.onchange = activate;
+  activate();
+  const focus = make('button', 'Ampliar imagen');
+  focus.type = 'button';
+  focus.id = 'vision-focus';
+  focus.setAttribute('aria-pressed', 'false');
+  focus.onclick = () => {
+    window.ABSuite.workspace?.activate('Inspección');
+    const active = document.body.classList.toggle('vision-focus');
+    focus.textContent = active ? 'Volver al taller' : 'Ampliar imagen';
+    focus.setAttribute('aria-pressed', String(active));
+  };
+  $('.ab-actions').append(focus);
+  window.addEventListener('keydown', (event) => {
+    if (
+      event.key === 'Escape' &&
+      document.body.classList.contains('vision-focus')
+    )
+      focus.click();
+  });
+}

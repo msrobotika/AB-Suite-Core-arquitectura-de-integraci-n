@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import secrets
 import threading
+import time
 
 from . import __version__
 from .client import ReadClient
@@ -36,8 +37,14 @@ class Application:
             if set(body) != {"profile", "allow_lan"} or type(body["allow_lan"]) is not bool:
                 raise ProtocolError("Lectura: perfil y autorización de red explícitos requeridos")
             profile = validate_profile(body["profile"])
-            return self.client.read(**{k: v for k, v in profile.items() if k != "name"},
-                                    allow_lan=body["allow_lan"])
+            try:
+                return self.client.read(**{k: v for k, v in profile.items() if k != "name"},
+                                        allow_lan=body["allow_lan"])
+            except OSError as error:
+                reason = "Tiempo de espera agotado" if isinstance(error, TimeoutError) else "No se pudo conectar o completar la lectura"
+                raise ProtocolError(f"{reason} en {profile['host']}:{profile['port']}. "
+                                    "Comprueba que el servidor Modbus esté iniciado, su puerto TCP y las reglas del firewall. "
+                                    "Para practicar sin equipo externo, inicia el Laboratorio local.") from error
         if path == "/api/simulator/start":
             if set(body) != {"port", "unit"}:
                 raise ProtocolError("Se requieren puerto y unidad")
@@ -89,6 +96,8 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def respond(self, status, payload, content_type="application/json; charset=utf-8"):
+        if status >= 400:
+            self.discard_rejected_body()
         if not isinstance(payload, bytes):
             payload = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
@@ -102,6 +111,38 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Connection", "close")
         self.end_headers()
         self.wfile.write(payload)
+
+    def discard_rejected_body(self):
+        # Windows may reset a socket closed with unread POST bytes, hiding the
+        # intended 401/403/415/413 response. Never parse or execute rejected data.
+        if self.command != "POST" or getattr(self, "body_consumed", False):
+            return
+        self.body_consumed = True
+        lengths = self.headers.get_all("Content-Length", [])
+        if self.headers.get("Transfer-Encoding") or len(lengths) != 1:
+            return
+        try:
+            remaining = int(lengths[0])
+        except ValueError:
+            return
+        if not 0 < remaining <= 1024 * 1024:
+            return
+        timeout = self.connection.gettimeout()
+        deadline = time.monotonic() + 0.5
+        try:
+            while remaining:
+                budget = deadline - time.monotonic()
+                if budget <= 0:
+                    break
+                self.connection.settimeout(budget)
+                chunk = self.rfile.read(min(65536, remaining))
+                if not chunk:
+                    break
+                remaining -= len(chunk)
+        except OSError:
+            pass
+        finally:
+            self.connection.settimeout(timeout)
 
     def guard(self, auth=False):
         if self.headers.get_all("Host", []) != [self.server.authority]:
@@ -154,6 +195,7 @@ class Handler(BaseHTTPRequestHandler):
             if not 1 <= length <= 65536:
                 self.respond(413, {"error": "Petición fuera del límite de 64 KiB"})
                 return
+            self.body_consumed = True
             raw = self.rfile.read(length)
             if len(raw) != length:
                 raise ProtocolError("Cuerpo de petición incompleto")

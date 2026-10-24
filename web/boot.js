@@ -3,7 +3,7 @@
  const id=document.currentScript.dataset.app,base=`/apps/${id}`,nativeFetch=window.fetch.bind(window);
  let adapter=null,timer=null,lastProject='',saveError=false;
  const instance=crypto.randomUUID();
- const sdk={id,instance,base,conflict:false,
+ const sdk={id,instance,base,conflict:false,exerciseRequest:{exercise:new URLSearchParams(location.search).get('exercise'),recovery:new URLSearchParams(location.search).get('recovery')},
   fetch(input,options){return nativeFetch(typeof input==='string'&&input.startsWith('/')&&!input.startsWith('//')&&!input.startsWith('/suite/')&&!input.startsWith('/apps/')?base+input:input,options)},
   register(value){adapter=value},
   get adapter(){return adapter},

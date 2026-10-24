@@ -1,0 +1,1224 @@
+/* A single bounded work window on desktop. Panning belongs to documents and data lists. */
+@media (min-width: 1001px) {
+  body.viewport-app .suite-bar {
+    min-height: 44px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  body.viewport-app .suite-bar :is(.suite-action, select) {
+    min-height: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  body.viewport-app .suite-brand small {
+    display: none;
+  }
+  body.viewport-app .suite-mark {
+    font-size: 28px !important;
+  }
+  body.viewport-app .ab-command {
+    min-height: 40px;
+    padding: 4px 12px !important;
+  }
+  body.viewport-app .ab-command h1 {
+    font-size: 16px !important;
+  }
+  body.viewport-app .ab-command small {
+    display: none;
+  }
+  body.viewport-app .ab-notice {
+    min-height: 24px !important;
+    padding: 4px 12px !important;
+  }
+  .viewport-app .kop-studio .studio-command {
+    min-height: 44px;
+    padding: 4px 12px;
+    gap: 12px;
+  }
+  .viewport-app .kop-studio .studio-command h1 {
+    font-size: 16px !important;
+  }
+  .viewport-app .kop-studio .studio-kicker {
+    display: none;
+  }
+  .viewport-app .kop-studio .notice {
+    min-height: 24px;
+    padding: 4px 12px;
+  }
+  .viewport-app .kop-document {
+    padding: 6px 12px;
+  }
+  .viewport-app .kop-editbar {
+    padding: 4px 10px;
+  }
+}
+
+.vision-task-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.vision-task-tabs button {
+  flex: 1 0 auto;
+  font-size: 11px !important;
+  min-height: 28px !important;
+  padding: 4px 7px !important;
+}
+.vision-task-tabs [aria-selected='true'] {
+  background: var(--suite-accent) !important;
+  color: #101820 !important;
+  border-color: var(--suite-accent) !important;
+}
+.vision-inspector-heading {
+  padding: 8px 10px;
+  gap: 6px;
+}
+.vision-task-panel {
+  gap: 7px;
+  padding: 10px;
+}
+.vision-task-panel input[type='range'] {
+  width: 100%;
+  accent-color: var(--suite-accent);
+}
+.vision-task-panel #detection-range .parameter + .parameter {
+  margin-top: 6px;
+}
+.vision-workspace #vision-panel-recipe .reference-box {
+  margin-top: auto;
+}
+
+@media (min-width: 1001px) {
+  body.viewport-app {
+    height: 100dvh;
+    overflow: hidden !important;
+  }
+  .viewport-app .ab-workbench {
+    height: calc(100dvh - var(--suite-bar-height, 68px));
+  }
+  .viewport-app .ab-command {
+    min-height: 40px;
+    padding: 4px 12px !important;
+    flex-shrink: 0;
+  }
+  .viewport-app .ab-dock {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .viewport-accordion > details {
+    flex-shrink: 0;
+  }
+  .viewport-accordion > details[open] {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .viewport-accordion > details > summary {
+    padding: 9px 12px;
+    font-size: 11px;
+    min-height: 34px;
+    box-sizing: border-box;
+  }
+  .viewport-app .ab-dock :is(.fields, .project-grid, .input-fields) {
+    gap: 5px;
+    padding: 0 10px 8px;
+  }
+  .viewport-app .ab-dock :is(p, .hint, .body-copy, .small-copy) {
+    line-height: 1.4;
+    margin: 6px 10px;
+  }
+  .viewport-app .ab-dock :is(input, select, textarea) {
+    padding: 6px !important;
+    min-height: 28px !important;
+    margin: 3px 0 !important;
+  }
+  .viewport-app .ab-dock label {
+    margin: 3px 0 !important;
+    font-size: 11px !important;
+    line-height: 1.35;
+  }
+  .viewport-app .ab-dock :is(.section-head, .panel-title) {
+    padding: 8px 10px !important;
+  }
+  .viewport-app .ab-dock button {
+    padding: 6px 8px !important;
+    min-height: 28px !important;
+  }
+  .viewport-app .ab-dock textarea {
+    height: 52px;
+    min-height: 45px !important;
+  }
+  .viewport-app .ab-editor-grafcet .canvas-panel {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .viewport-app .ab-editor-grafcet .diagram-viewport {
+    flex: 1;
+    min-height: 0 !important;
+  }
+  .viewport-app .ab-editor-grafcet .canvas-panel > .section-head {
+    flex-shrink: 0;
+    padding: 8px 12px;
+  }
+  .viewport-app .ab-editor-grafcet .diagram-footer {
+    flex-shrink: 0;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content :is(p, .hint) {
+    margin: 3px 0;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content input {
+    min-height: 28px;
+    padding: 5px;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content label {
+    margin-top: 4px;
+  }
+  .viewport-app .ab-editor-grafcet .inspector {
+    padding: 8px;
+  }
+  .viewport-app .ab-editor-grafcet .position-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .viewport-app .ab-editor-modbus.ab-layout.has-tools.has-properties {
+    grid-template-columns: 260px minmax(0, 1fr) 270px;
+  }
+  .viewport-app .ab-editor-modbus #read-form {
+    padding: 0 !important;
+  }
+  .viewport-app .ab-editor-modbus .client-panel {
+    padding: 0 !important;
+  }
+  .viewport-app .ab-command .actions {
+    display: flex;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+  }
+  .viewport-app .ab-editor-modbus #read-form .fields {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .viewport-app .ab-editor-modbus #read-form .wide {
+    grid-column: 1/-1;
+  }
+  .viewport-app .ab-editor-modbus #read-form small {
+    font-size: 9px;
+    line-height: 1.25;
+  }
+  .viewport-app .ab-editor-modbus #read-form .checkbox {
+    padding: 2px 10px;
+    margin: 3px 0 !important;
+    line-height: 1.3;
+  }
+  .viewport-app .ab-editor-modbus #read-form .checkbox input {
+    min-height: 0 !important;
+    width: 15px;
+  }
+  .viewport-app .ab-editor-modbus #read-form .actions {
+    padding: 4px 10px 8px;
+    margin: 0;
+  }
+  .viewport-app .ab-editor-modbus #simulador .fields {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .viewport-app .ab-editor-modbus #simulador .sim-address {
+    padding: 9px;
+    margin: 6px 10px;
+  }
+  .viewport-app .ab-editor-modbus #simulador .body-copy {
+    display: none;
+  }
+  .viewport-app .ab-editor-modbus #simulador .full {
+    width: calc(100% - 20px);
+    margin: 4px 10px;
+  }
+  .viewport-app .ab-editor-modbus #simulador > details {
+    margin: 5px 10px;
+  }
+  .viewport-app
+    .ab-editor-modbus
+    #simulador.editing-memory
+    > :not(details):not(.panel-title) {
+    display: none;
+  }
+  .viewport-app .kop-tools {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+  }
+  .viewport-app .kop-tools .project-grid {
+    display: block;
+  }
+  .viewport-app .kop-tools .project-fields {
+    padding: 8px;
+  }
+  .viewport-app .kop-tools .project-fields textarea {
+    height: 45px;
+    min-height: 40px;
+  }
+  .viewport-app .kop-tools .project-fields :is(input, textarea) {
+    padding: 6px;
+    margin: 4px 0 7px;
+    min-height: 28px;
+  }
+  .viewport-app .kop-tools .project-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .viewport-app .kop-tools .project-actions :is(button, label) {
+    font-size: 10px;
+    min-height: 28px;
+    padding: 6px;
+  }
+  .viewport-app .kop-tools .hint {
+    font-size: 10px;
+    margin: 6px 10px;
+  }
+  .viewport-app .kop-inspector {
+    overflow: hidden;
+    padding: 10px !important;
+  }
+  .viewport-app .kop-inspector .section-head {
+    padding: 0 0 8px;
+    margin: 0;
+  }
+  .viewport-app .kop-inspector #inspector-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .viewport-app .kop-inspector #inspector-form > h3,
+  .viewport-app .kop-inspector #inspector-form > .branch-edit,
+  .viewport-app .kop-inspector .side-actions {
+    grid-column: 1/-1;
+  }
+  .viewport-app .kop-inspector #inspector-form label {
+    font-size: 10px;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .viewport-app .kop-inspector #inspector-form :is(input, select) {
+    padding: 5px;
+    min-height: 28px;
+    font-size: 11px;
+    margin: 3px 0;
+  }
+  .viewport-app .kop-inspector #inspector-form h3 {
+    font-size: 11px;
+    margin: 5px 0;
+  }
+  .viewport-app .kop-inspector .branch-edit {
+    margin: 0;
+    padding: 7px;
+    max-height: 175px;
+    overflow: auto;
+  }
+  .viewport-app .kop-inspector .branch-edit-head {
+    font-size: 10px;
+    margin: 0 0 4px;
+  }
+  .viewport-app .kop-inspector .side-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 4px 0;
+  }
+  .viewport-app .kop-inspector button {
+    padding: 6px;
+    min-height: 27px;
+    font-size: 10px;
+  }
+  .viewport-app #kop-signal-dialog .signal-editor {
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+  .viewport-app #kop-signal-dialog input,
+  .viewport-app #kop-signal-dialog select {
+    width: 100%;
+    padding: 8px;
+    min-height: 32px;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content > * {
+    grid-column: 1/-1;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content > label[for='edit-x'],
+  .viewport-app .ab-editor-grafcet #inspector-content > label[for='edit-y'] {
+    grid-column: auto;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .field-hint {
+    font-size: 9px;
+    line-height: 1.3;
+    margin: 3px 0;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .list-note {
+    font-size: 10px;
+    line-height: 1.35;
+    margin: 4px 0;
+    padding: 5px;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .editable-title {
+    font-size: 10px;
+    margin: 0;
+    padding: 4px 0;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .badge-id {
+    margin: 0;
+    padding: 2px 5px;
+    justify-self: start;
+  }
+  .viewport-app .ab-editor-grafcet .edit-actions {
+    display: flex;
+    gap: 5px;
+    margin: 4px 0;
+  }
+  .viewport-app .kop-trace {
+    flex-shrink: 0;
+    max-height: 150px;
+    overflow: hidden;
+  }
+  .viewport-app .kop-trace-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 5px 10px;
+  }
+  .viewport-app .kop-trace-grid h3 {
+    font-size: 10px;
+    margin: 2px 0;
+  }
+  .viewport-app .kop-trace-grid :is(.trace-list, .event-list) {
+    max-height: 55px;
+    overflow: auto;
+  }
+  .viewport-app .kop-trace-grid button {
+    font-size: 10px;
+    padding: 3px 6px;
+    min-height: 22px;
+  }
+  .viewport-app .hmi-library {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+  }
+  .viewport-app .hmi-library .hmi-palette {
+    gap: 4px;
+    padding: 8px;
+  }
+  .viewport-app .hmi-library .hmi-palette button {
+    min-height: 32px;
+    padding: 5px;
+    font-size: 10px;
+  }
+  .viewport-app .hmi-library .hmi-palette b {
+    font-size: 16px;
+  }
+  .viewport-app .hmi-library .field-help {
+    line-height: 1.4;
+    font-size: 10px;
+    margin: 5px 8px;
+  }
+  .viewport-app .hmi-library .hmi-padding {
+    padding: 5px 8px;
+  }
+  .viewport-app .hmi-library .hmi-padding label {
+    font-size: 10px;
+    gap: 3px;
+    margin: 0;
+  }
+  .viewport-app .hmi-library #project-name {
+    min-height: 25px;
+    padding: 4px;
+    margin: 2px 0;
+  }
+  .viewport-app .hmi-library #screens {
+    display: flex;
+    gap: 4px;
+    max-height: 60px;
+    overflow: auto;
+    margin: 4px 0;
+  }
+  .viewport-app .hmi-library #screens button {
+    min-width: 65px;
+    padding: 4px 6px;
+    min-height: 25px;
+  }
+  .viewport-app .hmi-library #add-screen {
+    padding: 4px 8px;
+    min-height: 25px;
+  }
+  .viewport-app .hmi-library #layers {
+    max-height: 340px;
+    overflow: auto;
+  }
+  .viewport-app .hmi-properties {
+    overflow: hidden !important;
+  }
+  .viewport-app .hmi-properties :is(label, input, select) {
+    font-size: 10px !important;
+  }
+  .viewport-app .hmi-properties input,
+  .viewport-app .hmi-properties select {
+    min-height: 25px;
+    padding: 4px !important;
+  }
+  .viewport-app .hmi-properties label {
+    gap: 3px;
+    margin: 4px 0;
+  }
+  .viewport-app .hmi-properties .hmi-fields {
+    gap: 5px;
+  }
+  .viewport-app .hmi-properties .field-help {
+    font-size: 10px;
+    line-height: 1.4;
+    margin: 5px 0;
+  }
+  .viewport-app .hmi-properties button {
+    min-height: 26px;
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+  .viewport-app .hmi-properties .hmi-inline {
+    margin: 5px 0;
+    gap: 4px;
+  }
+  .viewport-app .hmi-properties .hmi-caption {
+    margin: 3px 0;
+    font-size: 9px;
+  }
+  .viewport-app .hmi-properties #signal-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .viewport-app .hmi-properties #signal-fields > .field-help,
+  .viewport-app .hmi-properties #signal-fields > #alarm-fields {
+    grid-column: 1/-1;
+  }
+  .viewport-app .hmi-properties #alarm-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .viewport-app.hmi-preview .hmi-library,
+  .viewport-app .hmi-preview .hmi-library {
+    display: none !important;
+  }
+  .viewport-widget-design .property-grid {
+    gap: 5px;
+  }
+  .viewport-app .hmi-properties > .viewport-task {
+    margin: 0 0 7px;
+  }
+  .hmi-inspector:has(.hmi-screen-properties[open]) #properties {
+    display: none !important;
+  }
+  .viewport-app[data-suite-app='plc'] > .shell {
+    height: calc(100dvh - var(--suite-bar-height, 68px));
+    min-height: 0;
+    grid-template-columns: 166px minmax(0, 1fr);
+  }
+  .viewport-app[data-suite-app='plc'] .sidebar {
+    height: 100%;
+    min-height: 0;
+    position: static;
+    padding: 12px 8px;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='plc']
+    .sidebar
+    :is(.brand, .workspace-label, .sidebar-bottom) {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] .sidebar .nav {
+    padding: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .sidebar .nav button {
+    padding: 10px;
+    font-size: 11px;
+    min-height: 38px;
+  }
+  .viewport-app[data-suite-app='plc'] .main {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-left: 0 !important;
+    width: auto;
+  }
+  .viewport-app[data-suite-app='plc'] .topbar {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] .main-content {
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='plc'] .heading-row {
+    margin: 0 0 8px;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .heading-row h1 {
+    font-size: 21px;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .heading-row :is(.eyebrow, p) {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] .heading-actions {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] footer {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] .view:not([hidden]) {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='plc'] :is(#lab-root, .lab-dashboard) {
+    height: 100%;
+    min-height: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .lab-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .viewport-app[data-suite-app='plc'] .lab-overview {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .lab-metric {
+    padding: 5px 10px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .viewport-app[data-suite-app='plc'] .lab-metric strong {
+    font-size: 18px;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .lab-metric small {
+    font-size: 8px;
+  }
+  .viewport-app[data-suite-app='plc'] .lab-metric p {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] .plc-command {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .plc-command > div {
+    display: none;
+  }
+  .viewport-app[data-suite-app='plc'] .plc-command > .lab-controlbar {
+    display: flex;
+    gap: 5px;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='plc'] .plc-command .btn {
+    font-size: 10px;
+    padding: 7px 10px;
+  }
+  .viewport-app[data-suite-app='plc'] #lab-scenario {
+    max-width: 215px;
+    font-size: 11px;
+    padding: 7px;
+    margin-left: auto;
+  }
+  .plc-window {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 10px;
+    min-height: 0;
+    flex: 1;
+  }
+  .plc-stage,
+  .plc-controls {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    gap: 7px;
+  }
+  .viewport-task {
+    width: 100%;
+    font:
+      600 11px 'Segoe UI',
+      sans-serif;
+    padding: 8px 10px;
+    background: #202938;
+    color: #edf2fa;
+    border: 1px solid var(--suite-border);
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .plc-stage > .panel,
+  .plc-controls > .panel {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+    padding: 12px;
+    margin: 0;
+  }
+  .plc-stage .lab-scene-panel {
+    display: flex;
+    flex-direction: column;
+  }
+  .plc-stage .lab-frame {
+    flex: 1;
+    min-height: 0;
+  }
+  .plc-stage #lab-plant-visual > div {
+    height: 100%;
+    min-height: 0;
+  }
+  .plc-stage .lab-panel-head {
+    margin: 0 0 8px;
+  }
+  .plc-stage .lab-panel-head h2 {
+    font-size: 17px;
+  }
+  .plc-stage .lab-panel-head p {
+    font-size: 10px;
+    margin: 4px 0;
+  }
+  .plc-stage .lab-process-commands {
+    margin: 8px 0 0;
+    flex-shrink: 0;
+  }
+  .plc-stage .lab-process-commands button {
+    padding: 8px;
+    font-size: 11px;
+  }
+  .plc-stage .lab-micro {
+    margin: 6px 0 0;
+    font-size: 9px;
+  }
+  .plc-controls .lab-panel-head {
+    margin: 0 !important;
+    padding: 0;
+  }
+  .plc-controls .lab-panel-head h2 {
+    font-size: 13px;
+  }
+  .plc-controls .lab-panel-head .section-kicker {
+    display: none;
+  }
+  .plc-controls #lab-io {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    max-height: none;
+    overflow: auto;
+  }
+  .plc-controls .lab-io-row {
+    padding: 7px 5px;
+    font-size: 10px;
+    gap: 5px;
+  }
+  .plc-controls .lab-io-description {
+    display: none;
+  }
+  .plc-controls .lab-io-row code {
+    width: 34px;
+    font-size: 10px;
+  }
+  .plc-controls :is(.lab-muted, .lab-micro) {
+    font-size: 10px;
+    line-height: 1.4;
+    margin: 7px 0;
+  }
+  .plc-controls .lab-select {
+    padding: 7px;
+    font-size: 11px;
+  }
+  .plc-controls .lab-forcing {
+    margin: 8px 0;
+    padding: 8px 0;
+  }
+  .plc-controls .lab-forcing-buttons {
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+  .plc-controls .btn {
+    font-size: 10px;
+    padding: 7px 8px;
+  }
+  .plc-controls .lab-file-actions {
+    margin: 7px 0;
+    gap: 5px;
+  }
+  .plc-controls .lab-symbols {
+    max-height: 100px;
+    overflow: auto;
+  }
+  .plc-stage .lab-event-list {
+    max-height: none;
+    overflow: auto;
+    height: calc(100% - 40px);
+  }
+  .plc-stage #lab-register-table {
+    max-height: 240px;
+  }
+  .viewport-app[data-suite-app='plc'] .secondary-grid {
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+  .viewport-app[data-suite-app='plc'] .secondary-grid > .panel {
+    min-height: 0;
+    overflow: auto;
+    padding: 12px;
+  }
+  .viewport-app[data-suite-app='plc'] #program-json {
+    height: 260px;
+    min-height: 120px;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-workspace {
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) 235px;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-mainpanel {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-mainpanel > .panel-titleline {
+    padding: 0;
+    margin: 0 0 7px;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-mainpanel > .panel-titleline h2 {
+    font-size: 14px;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-toolbar {
+    flex-shrink: 0;
+    padding: 6px;
+    margin: 0 0 6px;
+    gap: 5px;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-toolbar button {
+    font-size: 10px;
+    padding: 6px;
+    min-height: 28px;
+  }
+  .viewport-app[data-suite-app='plc'] #kop-canvas {
+    min-height: 0;
+    flex: 1;
+    overflow: auto;
+  }
+  .viewport-app[data-suite-app='plc'] .kop-help {
+    max-height: 100%;
+    overflow: auto;
+  }
+  .viewport-app[data-suite-app='bi'] > .shell {
+    height: calc(100dvh - var(--suite-bar-height, 68px));
+    min-height: 0;
+    grid-template-columns: 185px minmax(0, 1fr);
+  }
+  .viewport-app[data-suite-app='bi'] .rail {
+    height: 100%;
+    min-height: 0;
+    position: static;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='bi'] .rail .brand {
+    display: none;
+  }
+  .viewport-app[data-suite-app='bi'] .rail .space-label {
+    margin-top: 12px;
+  }
+  .viewport-app[data-suite-app='bi'] .rail .navitem {
+    padding: 8px 12px;
+    min-height: 34px;
+    font-size: 11px;
+  }
+  .viewport-app[data-suite-app='bi'] .main {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='bi'] .topbar {
+    padding: 6px 12px;
+    min-height: 40px;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='bi'] .content {
+    padding: 10px 14px;
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='bi'] .page-head {
+    margin: 0 0 8px;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='bi'] .page-head h1 {
+    font-size: 22px;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='bi']
+    .page-head
+    :is(.eyebrow, .subtitle, .head-actions) {
+    display: none;
+  }
+  .viewport-app[data-suite-app='bi'] .view:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='bi'] .section-header {
+    margin: 0 0 8px;
+    gap: 7px;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='bi'] .section-header h2 {
+    font-size: 15px;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='bi'] .section-header p {
+    font-size: 10px;
+    margin: 4px 0;
+  }
+  .viewport-app[data-suite-app='bi']
+    :is(.work-grid, .work-main, .sql-layout, .dax-layout, .clean-layout) {
+    min-height: 0;
+    flex: 1;
+  }
+  .viewport-app[data-suite-app='bi'] .work-main {
+    overflow: auto;
+  }
+  .viewport-app[data-suite-app='bi'] .filter-panel {
+    min-height: 0;
+    position: static;
+    overflow: hidden;
+    padding: 10px;
+  }
+  .viewport-app[data-suite-app='bi'] .filter-panel label {
+    margin: 4px 0;
+    font-size: 10px;
+  }
+  .viewport-app[data-suite-app='bi'] .filter-panel :is(select, input) {
+    padding: 6px;
+    min-height: 28px;
+    font-size: 11px;
+  }
+  .viewport-app[data-suite-app='bi'] .filter-panel p {
+    font-size: 10px;
+    line-height: 1.35;
+    margin: 4px 0;
+  }
+  .viewport-app[data-suite-app='bi']
+    .filter-panel
+    :is(.side-insight, .filter-sep) {
+    display: none;
+  }
+  .viewport-app[data-suite-app='bi'] #filterChoices {
+    max-height: 100px;
+    overflow: auto;
+  }
+  .viewport-app[data-suite-app='bi']
+    :is(.table-scroll, #sqlResults, .viz-grid) {
+    min-height: 0;
+    overflow: auto;
+  }
+  .viewport-app[data-suite-app='bi'] #view-data > .panel {
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+  .viewport-app[data-suite-app='bi'] #view-data .table-scroll {
+    flex: 1;
+  }
+  .viewport-app[data-suite-app='bi'] footer {
+    display: none;
+  }
+  .viewport-app[data-suite-app='bi'] .viewport-clean {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='bi'] .viewport-clean > .panel {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+    padding: 12px;
+  }
+  .viewport-app[data-suite-app='bi'] .viewport-clean label {
+    margin: 5px 0;
+    font-size: 11px;
+  }
+  .viewport-app[data-suite-app='bi'] .viewport-clean :is(input, select) {
+    min-height: 28px;
+    padding: 6px;
+    font-size: 11px;
+  }
+  .viewport-app[data-suite-app='bi'] .viewport-clean h3 {
+    font-size: 13px;
+    margin: 0 0 7px;
+  }
+  .viewport-app[data-suite-app='bi'] .viewport-clean #cleanColumns {
+    max-height: 110px;
+    overflow: auto;
+  }
+  .bi-model-window {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 10px;
+    min-height: 0;
+    flex: 1;
+  }
+  .bi-model-document {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: 10px;
+    overflow: hidden;
+  }
+  .bi-model-document > .panel {
+    padding: 12px;
+    margin: 0;
+    min-height: 0;
+    overflow: auto;
+    flex: 1;
+  }
+  .bi-model-document > .panel:last-child {
+    flex: 0 1 auto;
+    max-height: 160px;
+  }
+  .bi-model-window > .panel {
+    padding: 12px;
+    margin: 0;
+    overflow: hidden;
+  }
+  .bi-model-window h3 {
+    font-size: 13px;
+    margin: 0 0 8px;
+  }
+  .bi-model-window p {
+    font-size: 10px;
+    line-height: 1.4;
+    margin: 6px 0;
+  }
+  .bi-model-window #relationForm {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .bi-model-window #relationForm label {
+    font-size: 11px;
+    margin: 3px 0;
+  }
+  .bi-model-window #relationForm select {
+    min-height: 29px;
+    padding: 6px;
+    font-size: 11px;
+  }
+  .viewport-app[data-suite-app='bi'] .dax-layout {
+    height: 100%;
+    grid-template-columns: 215px minmax(0, 1fr);
+  }
+  .viewport-app[data-suite-app='bi'] .dax-layout > .panel {
+    padding: 12px;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .viewport-app[data-suite-app='bi'] .dax-layout > .editor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .viewport-app[data-suite-app='bi'] .dax-layout > .editor-panel label {
+    font-size: 11px;
+    margin: 3px 0;
+  }
+  .viewport-app[data-suite-app='bi'] #measureName {
+    padding: 6px;
+    min-height: 28px;
+    font-size: 12px;
+  }
+  .viewport-app[data-suite-app='bi'] #daxSource {
+    flex: 1;
+    min-height: 75px;
+    height: auto;
+    margin: 0;
+  }
+  .viewport-app[data-suite-app='bi'] .quick-templates {
+    margin: 0;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='bi'] .quick-templates button {
+    padding: 4px 7px;
+  }
+  .viewport-app[data-suite-app='bi'] .dax-layout .actionbar {
+    margin: 3px 0;
+    flex-shrink: 0;
+  }
+  .viewport-app[data-suite-app='bi'] #daxResult {
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 8px;
+    margin: 0;
+    max-height: 65px;
+    overflow: auto;
+  }
+  .viewport-app[data-suite-app='bi'] #measuresList {
+    max-height: calc(100% - 45px);
+    overflow: auto;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .ab-editor-scl .pipeline > div {
+    padding: 6px 0;
+    gap: 6px;
+  }
+  .viewport-app .ab-editor-scl .pipeline b {
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .viewport-app .ab-editor-scl .pipeline small {
+    font-size: 9px;
+    line-height: 1.35;
+    margin-top: 3px;
+  }
+  .viewport-app .ab-editor-scl .pipeline .step-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .viewport-app .ab-editor-scl .conversion-result {
+    margin: 8px 10px;
+    padding: 10px;
+  }
+  .viewport-app .ab-editor-scl .conversion-actions {
+    margin: 8px 10px;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .hmi-library .hmi-palette {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .viewport-app .hmi-library .hmi-palette button {
+    min-width: 0;
+    gap: 4px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .viewport-app .hmi-library .hmi-palette b {
+    width: 16px;
+    flex-shrink: 0;
+  }
+  .viewport-app .ab-editor-modbus #read-form .fields label {
+    margin: 0 !important;
+    gap: 2px;
+    line-height: 1.25;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .hmi-library .hmi-palette button {
+    height: 34px;
+    min-height: 34px;
+    padding: 4px;
+    line-height: 12px;
+  }
+  .viewport-app .hmi-library .hmi-palette b {
+    line-height: 18px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .hmi-library > details.viewport-pinned {
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .ab-editor-grafcet #inspector-content {
+    position: relative;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .editable-title {
+    padding-right: 45px;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .badge-id {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content > label:has(#edit-from),
+  .viewport-app .ab-editor-grafcet #inspector-content > label:has(#edit-to) {
+    grid-column: auto;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .list-note {
+    margin: 2px 0;
+    padding: 4px;
+    line-height: 1.25;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .kop-tools .project-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .viewport-app .kop-tools .project-actions :is(button, label) {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+  }
+  .viewport-app .ab-editor-modbus #simulador .fields label {
+    margin: 0 !important;
+    gap: 2px;
+    font-size: 10px !important;
+    line-height: 1.25;
+  }
+  .viewport-app .ab-editor-modbus #simulador .sim-address {
+    padding: 6px;
+    margin: 4px 10px;
+  }
+}

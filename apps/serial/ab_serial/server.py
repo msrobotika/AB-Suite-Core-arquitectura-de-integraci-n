@@ -6,6 +6,7 @@ import argparse,json,secrets,webbrowser
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from .engine import Analyzer
+from .protocol import decode_rtu, append_crc
 
 BASE=Path(__file__).parent/'web'
 ASSETS={'/':('index.html','text/html; charset=utf-8'),
@@ -72,7 +73,14 @@ class Request(BaseHTTPRequestHandler):
             body=json.loads(raw)
             if type(body) is not dict:raise ValueError('Se requiere un objeto JSON')
             a=self.server.engine
-            if self.path=='/api/demo/start' and body=={}:
+            if self.path=='/api/decode' and set(body)=={'hex','append_crc'}:
+                text=body['hex']
+                if not isinstance(text,str) or len(text)>1024 or type(body['append_crc']) is not bool:raise ValueError('Texto hexadecimal o modo inválido')
+                raw=bytes.fromhex(text)
+                if body['append_crc']:raw=append_crc(raw)
+                if not 4<=len(raw)<=256:raise ValueError('La ADU RTU debe tener entre 4 y 256 bytes')
+                result={**decode_rtu(raw),'hex':raw.hex(' ').upper(),'length':len(raw)}
+            elif self.path=='/api/demo/start' and body=={}:
                 a.start_demo();result={'ok':True,'mode':'laboratorio'}
             elif self.path=='/api/stop' and body=={}:
                 a.stop();result={'ok':True}
