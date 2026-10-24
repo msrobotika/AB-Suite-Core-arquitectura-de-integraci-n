@@ -13,7 +13,8 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
       ? { executablePath: process.env.AB_SUITE_BROWSER }
       : {})
   });
-  const first = await browser.newContext({locale: 'es-ES',
+  const first = await browser.newContext({
+    locale: 'es-ES',
     viewport: { width: 1440, height: 1000 },
     acceptDownloads: true
   });
@@ -110,6 +111,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
         await manager.locator('#exercise-new button').click();
         await manager.waitForURL('**/exercises.html?id=*');
         exerciseId = new URL(manager.url()).searchParams.get('id');
+        await manager.locator('.exercise-component').nth(8).waitFor();
         assert.equal(await manager.locator('.exercise-component').count(), 9);
         assert.equal(
           await manager
@@ -361,7 +363,8 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
         assert.deepEqual(result, ['kop', 'scl']);
       }
     );
-    second = await browser.newContext({locale: 'es-ES',
+    second = await browser.newContext({
+      locale: 'es-ES',
       viewport: { width: 1280, height: 720 },
       acceptDownloads: true
     });
@@ -373,6 +376,11 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
         await library.locator('#exercise-import').setInputFiles(filename);
         await library.waitForURL('**/exercises.html?id=*');
         importedId = new URL(library.url()).searchParams.get('id');
+        await library
+          .locator('.exercise-component a')
+          .filter({ hasText: 'Abrir copia guardada' })
+          .nth(8)
+          .waitFor();
         assert.notEqual(importedId, exerciseId);
         assert.equal(
           await library
