@@ -6,13 +6,13 @@ Capturas reales de la aplicación instalada en Windows/Chromium, con proyectos d
 
 ## Trabajo en KOP y Vision
 
-![KOP ejecutando una red](screenshots/KOP.png)
+![KOP ejecutando una red](screenshots/kop.png)
 
-![KOP sin redes](screenshots/KOP-vacio.png)
+![KOP sin redes](screenshots/kop-vacio.png)
 
-![Rango de luminosidad](screenshots/Vision.png)
+![Rango de luminosidad](screenshots/vision.png)
 
-![Vision en inglés](screenshots/Vision-English.png)
+![Vision en inglés](screenshots/vision-english.png)
 
 ## Las nueve ventanas de trabajo
 
