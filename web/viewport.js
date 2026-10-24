@@ -229,6 +229,8 @@ if (id === 'bi') {
   }
   const clean = $('.clean-layout');
   if (clean) {
+    const preview = $('#cleanPreviewPanel');
+    if (preview) clean.append(preview);
     const parts = [...clean.children];
     if (parts.length > 1) {
       clean.classList.add('viewport-clean');

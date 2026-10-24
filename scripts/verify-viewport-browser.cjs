@@ -47,16 +47,38 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
           const documentAreas =
             '.kop-paper,#kop-canvas,.diagram-viewport,.hmi-canvas,#lab-io,#layers,#screens,#watch-results,#measuresList,#profileCards,#relationsList,#cleanRecipe,#cleanColumns,.work-main,.table-scroll';
           for (const el of document.querySelectorAll(
-            'button,input,select,textarea,summary'
+            'button,input,select,textarea,summary,label.file-label,label.file-button,.hmi-file'
           )) {
             if (
               !el.checkVisibility() ||
+              getComputedStyle(el).opacity === '0' ||
               el.closest('dialog:not([open]),svg,' + documentAreas)
             )
               continue;
             const box = el.getBoundingClientRect();
             if (!box.width || !box.height) continue;
+            let clippedBy = '';
+            for (
+              let parent = el.parentElement;
+              parent;
+              parent = parent.parentElement
+            ) {
+              const css = getComputedStyle(parent),
+                clip = parent.getBoundingClientRect();
+              const clipsY = /^(hidden|clip|auto|scroll)$/.test(css.overflowY);
+              const clipsX = /^(hidden|clip|auto|scroll)$/.test(css.overflowX);
+              if (
+                (clipsY &&
+                  (box.top < clip.top - 2 || box.bottom > clip.bottom + 2)) ||
+                (clipsX &&
+                  (box.left < clip.left - 2 || box.right > clip.right + 2))
+              ) {
+                clippedBy = parent.id || parent.className || parent.tagName;
+                break;
+              }
+            }
             if (
+              clippedBy ||
               box.top < -0.5 ||
               box.bottom > innerHeight + 2 ||
               box.left < -0.5 ||
@@ -64,6 +86,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
             )
               off.push({
                 id: el.id,
+                clippedBy,
                 text: (
                   el.textContent ||
                   el.getAttribute('aria-label') ||

@@ -1078,3 +1078,32 @@
     line-height: 18px;
   }
 }
+
+@media (min-width: 1001px) {
+  .viewport-app .hmi-library > details.viewport-pinned {
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 1001px) {
+  .viewport-app .ab-editor-grafcet #inspector-content {
+    position: relative;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .editable-title {
+    padding-right: 45px;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .badge-id {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content > label:has(#edit-from),
+  .viewport-app .ab-editor-grafcet #inspector-content > label:has(#edit-to) {
+    grid-column: auto;
+  }
+  .viewport-app .ab-editor-grafcet #inspector-content .list-note {
+    margin: 2px 0;
+    padding: 4px;
+    line-height: 1.25;
+  }
+}
