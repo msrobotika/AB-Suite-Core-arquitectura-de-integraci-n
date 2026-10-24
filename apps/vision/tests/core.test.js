@@ -5,6 +5,22 @@ const core=require('../src/vision-core.js');
 function img(w,h,v=240){const data=new Uint8ClampedArray(w*h*4);for(let i=0;i<w*h;i++){data[i*4]=data[i*4+1]=data[i*4+2]=v;data[i*4+3]=255;}return {width:w,height:h,data};}
 function pixel(im,x,y,v){const p=(y*im.width+x)*4;im.data[p]=im.data[p+1]=im.data[p+2]=v;}
 const base={mode:'dark',threshold:90,minArea:2,maxDefects:0};
+test('rango luminoso incluye ambos límites, excluye vecinos y respeta ROI',()=>{
+  const image=img(6,1,255);
+  [19,20,60,100,101,255].forEach((v,x)=>pixel(image,x,0,v));
+  const rule={...base,mode:'range',rangeMin:20,rangeMax:100,minArea:1};
+  const result=core.inspect(image,rule);
+  assert.equal(result.candidatePixels,3);
+  assert.deepEqual([...result.mask],[0,1,1,1,0,0]);
+  assert.equal(result.rangeMin,20);assert.equal(result.rangeMax,100);
+  assert.equal(core.inspect(image,rule,{roi:{x:2,y:0,width:2,height:1}}).candidatePixels,2);
+  assert.deepEqual(core.validateRecipe(JSON.parse(JSON.stringify(rule))),rule);
+});
+test('rango rechaza límites invertidos, ausentes, decimales o fuera de 0–255',()=>{
+  for(const [rangeMin,rangeMax] of [[101,100],[undefined,100],[1.5,100],[-1,100],[20,256]])
+    assert.throws(()=>core.validateRecipe({...base,mode:'range',rangeMin,rangeMax}),RangeError);
+  assert.deepEqual(core.validateRecipe(base),base);
+});
 test('detecta dos componentes de 4 pixeles y clasifica NOK',()=>{let im=img(12,10);for(let x=2;x<4;x++)for(let y=2;y<4;y++)pixel(im,x,y,10);for(let x=8;x<10;x++)for(let y=7;y<9;y++)pixel(im,x,y,15);let r=core.inspect(im,base);assert.equal(r.defectCount,2);assert.equal(r.defectPixels,8);assert.equal(r.verdict,'NOK');assert.equal(r.boxes[0].area,4);});
 test('ROI restringe analisis y no afecta fuera',()=>{let im=img(12,10);pixel(im,8,8,0);let r=core.inspect(im,{...base,minArea:1},{roi:{x:0,y:0,width:5,height:5}});assert.equal(r.defectCount,0);assert.equal(r.verdict,'OK');});
 test('minArea filtra ruido, umbral alto detecta brillo',()=>{let im=img(4,3,5);pixel(im,0,0,255);let r=core.inspect(im,{mode:'light',threshold:200,minArea:2,maxDefects:0});assert.equal(r.candidatePixels,1);assert.equal(r.defectCount,0);});

@@ -25,6 +25,11 @@ export function mountVisionWorkspace() {
   select.id = 'vision-task';
   select.setAttribute('aria-label', 'Panel de inspección');
   heading.append(select);
+  const taskBar = make('div', undefined, 'vision-task-tabs');
+  taskBar.setAttribute('role', 'tablist');
+  taskBar.setAttribute('aria-label', 'Panel de inspección');
+  heading.append(taskBar);
+  select.hidden = true;
   rail.prepend(heading);
   const tasks = [
     ['source', 'Fuente de imagen', source],
@@ -40,6 +45,36 @@ export function mountVisionWorkspace() {
     panel.id = 'vision-panel-' + id;
     panel.className = 'vision-task-panel';
     panel.setAttribute('aria-label', label);
+    panel.setAttribute('role', 'tabpanel');
+    const tab = make('button', label);
+    tab.type = 'button';
+    tab.id = 'vision-task-' + id;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', panel.id);
+    panel.setAttribute('aria-labelledby', tab.id);
+    tab.onclick = () => {
+      select.value = id;
+      activate();
+    };
+    tab.onkeydown = (event) => {
+      const buttons = [...taskBar.children];
+      const index = buttons.indexOf(tab);
+      const target =
+        event.key === 'ArrowRight'
+          ? (index + 1) % buttons.length
+          : event.key === 'ArrowLeft'
+            ? (index + buttons.length - 1) % buttons.length
+            : event.key === 'Home'
+              ? 0
+              : event.key === 'End'
+                ? buttons.length - 1
+                : -1;
+      if (target < 0) return;
+      event.preventDefault();
+      buttons[target].click();
+      buttons[target].focus();
+    };
+    taskBar.append(tab);
     rail.append(panel);
   }
   const hint = make(
@@ -71,8 +106,27 @@ export function mountVisionWorkspace() {
   fileLabel.append(fileInput);
   groups[0].append(fileLabel);
   place(groups[0], '#demo');
+  const deviceLabel = make('label', 'Dispositivo de cámara');
+  const device = make('select');
+  device.id = 'camera-device';
+  device.append(new Option('Cámara predeterminada', ''));
+  deviceLabel.append(device);
+  const refresh = make('button', 'Actualizar cámaras');
+  refresh.type = 'button';
+  refresh.id = 'camera-refresh';
+  refresh.onclick = () =>
+    window.dispatchEvent(new Event('ab-vision:refresh-cameras'));
+  groups[1].append(deviceLabel, refresh);
   for (const id of ['camera-start', 'capture', 'camera-stop', 'auto'])
     place(groups[1], '#' + id);
+  const live = $('#camera-live');
+  groups[1].append(
+    live,
+    make(
+      'p',
+      'Directo muestra la máscara sin registrar inspecciones. Capturar congela la imagen; Analizar registra el resultado.'
+    )
+  );
   const ip = place(groups[2], '#ip-camera-panel');
   ip.open = true;
   const ipInfo = ip.querySelector('.small-muted');
@@ -121,8 +175,9 @@ export function mountVisionWorkspace() {
   $('.viewer').append(feed);
   $('.ab-actions').append($('#auto'));
   // Move field wrappers, preserving native labels and events.
-  recipe.append($('#lot').parentElement);
+  files.append($('#lot').parentElement);
   recipe.append($('#mode').parentElement);
+  place(recipe, '#detection-range');
   for (const id of ['threshold', 'min-area'])
     recipe.append($('#' + id).closest('.parameter'));
   recipe.append($('#max-defects').parentElement);
@@ -216,19 +271,33 @@ export function mountVisionWorkspace() {
   open.id = 'vision-open-image';
   open.onclick = () => fileInput.click();
   $('.ab-actions').prepend(open);
+  const connect = make('button', 'Conectar cámara');
+  connect.type = 'button';
+  connect.id = 'vision-open-camera';
+  connect.onclick = () => {
+    if ($('.ab-layout').classList.contains('properties-closed'))
+      $('[aria-controls="ab-properties"]').click();
+    window.ABSuite.workspace?.activate('Inspección');
+    select.value = 'source';
+    activate();
+    sourceType.value = 'usb';
+    sourceType.onchange();
+    refresh.click();
+    $('#camera-start').focus();
+  };
+  $('.ab-actions').prepend(connect);
   function activate() {
-    for (const [id, , panel] of tasks) panel.hidden = id !== select.value;
+    for (const [id, , panel] of tasks) {
+      const active = id === select.value;
+      panel.hidden = !active;
+      const tab = $('#vision-task-' + id);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+    }
   }
   select.value = 'recipe';
   select.onchange = activate;
   activate();
-  $('.ab-document').prepend(
-    make(
-      'p',
-      'Imágenes, piezas y producto continuo · criterios propios',
-      'vision-document-context'
-    )
-  );
   const focus = make('button', 'Ampliar imagen');
   focus.type = 'button';
   focus.id = 'vision-focus';

@@ -1,10 +1,10 @@
-# AB Suite completa · 0.6.0 de revisión
+# AB Suite completa · 0.6.1 de revisión
 
 Esta carpeta contiene las nueve herramientas: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. No necesitas descargarlas por separado.
 
 ## Instalador Windows (recomendado)
 
-Si has recibido `AB-Suite-0.6.0-Windows-x64-Setup.exe`, ábrelo, elige Español o English y sigue el asistente. Incluye Node, Python y los motores: no tienes que prepararlos. Abre AB Suite desde Inicio. El icono de bandeja permite volver a abrirla o cerrarla. La edición portable incluye los mismos motores. [Guía bilingüe de instalación, datos y desinstalación](desktop/README.md).
+Si has recibido `AB-Suite-0.6.1-Windows-x64-Setup.exe`, ábrelo, elige Español o English y sigue el asistente. Incluye Node, Python y los motores: no tienes que prepararlos. Abre AB Suite desde Inicio. El icono de bandeja permite volver a abrirla o cerrarla. La edición portable incluye los mismos motores. [Guía bilingüe de instalación, datos y desinstalación](desktop/README.md).
 
 El idioma inicial sigue el navegador (español o inglés; inglés para otros idiomas). Puedes cambiarlo en la barra sin reiniciar ni perder el documento. Los nombres, datos y código del usuario conservan su idioma original.
 

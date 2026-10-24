@@ -109,7 +109,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/ab-install-qa" | Out-Null
-          python scripts/verify-windows-install.py --installer "$env:RUNNER_TEMP/ab-package/AB-Suite-0.6.0-Windows-x64-Setup.exe" --workspace "$env:RUNNER_TEMP/ab-install-qa"
+          python scripts/verify-windows-install.py --installer "$env:RUNNER_TEMP/ab-package/AB-Suite-0.6.1-Windows-x64-Setup.exe" --workspace "$env:RUNNER_TEMP/ab-install-qa"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

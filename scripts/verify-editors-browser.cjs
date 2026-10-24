@@ -145,6 +145,40 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
       }
     );
     await run(
+      'KOP: borrar la última red, proteger texto, deshacer y persistir el vacío',
+      async () => {
+        const original = await kop.evaluate(() =>
+          ABSuite.adapter.documents.get()
+        );
+        await kop
+          .locator('#edit-name')
+          .fill('No borrar el programa al editar texto');
+        await kop.keyboard.press('Delete');
+        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.locator('.rung').click();
+        await kop.keyboard.press('Delete');
+        assert.equal(await kop.locator('.rung').count(), 0);
+        assert.equal(await kop.locator('#step').isDisabled(), true);
+        await kop.locator('#kop-undo').click();
+        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.locator('#delete-rung').click();
+        assert.equal(await kop.locator('.rung').count(), 0);
+        await kop.reload();
+        await kop.waitForFunction(() => ABSuite.viewportReady);
+        assert.equal(
+          (await kop.evaluate(() => ABSuite.adapter.documents.get())).rungs
+            .length,
+          0
+        );
+        await kop.locator('#rungs button').click();
+        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.evaluate(
+          (doc) => ABSuite.adapter.documents.restore(doc),
+          original
+        );
+      }
+    );
+    await run(
       'KOP: ramas, copia con destino propio, orden y errores recuperables',
       async () => {
         await kop.locator('#add-branch').click();

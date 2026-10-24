@@ -2,7 +2,7 @@
   #error Payload directory required
 #endif
 #ifndef AppVersion
-  #define AppVersion "0.6.0"
+  #define AppVersion "0.6.1"
 #endif
 [Setup]
 AppId={{D71B8D3D-7C4D-49B6-AB09-4125ED5DD81E}

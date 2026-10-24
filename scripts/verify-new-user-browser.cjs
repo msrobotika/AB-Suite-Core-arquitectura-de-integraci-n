@@ -9,6 +9,10 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
   await mkdir(dir, { recursive: true });
   const browser = await chromium.launch({
       headless: true,
+      args: [
+        '--use-fake-device-for-media-stream',
+        '--use-fake-ui-for-media-stream'
+      ],
       ...(process.env.AB_SUITE_BROWSER
         ? { executablePath: process.env.AB_SUITE_BROWSER }
         : {})
@@ -361,7 +365,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
                 'measure',
                 'files'
               ]) {
-                await p.locator('#vision-task').selectOption(task);
+                await p.locator('#vision-task-' + task).click();
                 if (task === 'source')
                   await p.locator('#vision-source-type').selectOption('ip');
                 const size = await p.evaluate(() => {
@@ -396,7 +400,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
                   JSON.stringify(size)
                 );
               }
-              await p.locator('#vision-task').selectOption('measure');
+              await p.locator('#vision-task-measure').click();
               for (const mode of ['scale', 'limits']) {
                 await p.locator('#vision-measure-mode').selectOption(mode);
                 assert.ok(
@@ -407,13 +411,13 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
                 );
               }
               await p.locator('#vision-measure-mode').selectOption('scale');
-              await p.locator('#vision-task').selectOption('recipe');
+              await p.locator('#vision-task-recipe').click();
               await p.screenshot({
                 path: path.join(dir, 'vision-taller-' + width + '.png')
               });
             }
             await p.setViewportSize({ width: 1366, height: 768 });
-            await p.locator('#vision-task').selectOption('source');
+            await p.locator('#vision-task-source').click();
             await p.locator('#vision-source-type').selectOption('ip');
             await p.locator('#vision-ip-credentials').click();
             await p.locator('#ip-user').fill('practice');
@@ -427,7 +431,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
               JSON.stringify(await document(p)).includes('session-only'),
               false
             );
-            await p.locator('#vision-task').selectOption('region');
+            await p.locator('#vision-task-region').click();
             for (const [key, value] of Object.entries({
               x: 20,
               y: 20,
@@ -440,7 +444,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
               (await p.evaluate(() => ABSuite.adapter.recipe())).roi,
               { x: 20, y: 20, width: 50, height: 50 }
             );
-            await p.locator('#vision-task').selectOption('measure');
+            await p.locator('#vision-task-measure').click();
             await p.locator('#vision-calibration-help').click();
             await p
               .getByRole('dialog', { name: 'Guía de calibración' })
@@ -455,7 +459,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
               await p.locator('#vision-focus').getAttribute('aria-pressed'),
               'false'
             );
-            await p.locator('#vision-task').selectOption('recipe');
+            await p.locator('#vision-task-recipe').click();
             await p.setViewportSize({ width: 1600, height: 1000 });
           }
         );
@@ -550,6 +554,152 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
       );
       await p.close();
     }
+    await run(
+      'VISION: rango real, previsualización sin historial y receta recuperable',
+      async () => {
+        const p = await open('vision');
+        await p.waitForFunction(() => ABSuite.viewportReady);
+        await p.setViewportSize({ width: 1280, height: 720 });
+        await p.locator('#vision-task-source').click();
+        await p.locator('#demo').click();
+        await p.locator('#vision-task-recipe').click();
+        await p.locator('#mode').selectOption('range');
+        await p.locator('#range-min').fill('15');
+        await p.locator('#range-max').fill('95');
+        await p.waitForFunction(() =>
+          document
+            .querySelector('#message')
+            .textContent.startsWith('Ajuste previo:')
+        );
+        assert.equal(await p.locator('#count').textContent(), '0');
+        const doc = await document(p);
+        assert.equal(doc.recipe.rangeMin, 15);
+        assert.equal(doc.recipe.rangeMax, 95);
+        assert.ok(
+          await p
+            .locator('#vision-panel-recipe')
+            .evaluate((e) => e.scrollHeight <= e.clientHeight + 1)
+        );
+        await p.locator('#analyze').click();
+        await p.waitForFunction(
+          () => Number(document.querySelector('#count').textContent) === 1
+        );
+        const inspection = await p.evaluate(() => ABSuite.adapter.inspection());
+        assert.equal(inspection.rangeMin, 15);
+        assert.equal(inspection.rangeMax, 95);
+        await create(p, 'Rango vacío');
+        await p.evaluate((doc) => ABSuite.adapter.documents.restore(doc), doc);
+        assert.equal((await document(p)).recipe.rangeMin, 15);
+        assert.equal((await document(p)).recipe.rangeMax, 95);
+        await p.locator('#vision-task-recipe').click();
+        await p.waitForTimeout(200);
+        await p.screenshot({ path: path.join(dir, 'vision-rango-1280.png') });
+        await p.close();
+      }
+    );
+    await run(
+      'VISION: cámara, directo sin registrar, captura, análisis y desconexión',
+      async () => {
+        const ctx = await browser.newContext({
+          permissions: ['camera'],
+          viewport: { width: 1280, height: 720 }
+        });
+        const p = await ctx.newPage();
+        p.on('pageerror', (e) =>
+          errors.push({ id: 'camera', error: e.message })
+        );
+        await p.goto(base + '/apps/vision/');
+        await p.waitForFunction(() => ABSuite.viewportReady);
+        await p.locator('#vision-open-camera').click();
+        assert.ok(await p.locator('#camera-start').isVisible());
+        await p.locator('#camera-start').click();
+        await p.waitForFunction(
+          () =>
+            document
+              .querySelector('#camera-live')
+              .getAttribute('aria-pressed') === 'true'
+        );
+        await p.waitForFunction(() =>
+          document.querySelector('#feed-status').textContent.includes('DIRECTO')
+        );
+        assert.ok((await p.locator('#camera-device option').count()) > 1);
+        assert.equal(await p.locator('#count').textContent(), '0');
+        await p.locator('#capture').click();
+        assert.equal(
+          await p.locator('#camera-live').getAttribute('aria-pressed'),
+          'false'
+        );
+        await p.locator('#analyze').click();
+        await p.waitForFunction(
+          () => Number(document.querySelector('#count').textContent) === 1
+        );
+        await p.locator('#camera-live').click();
+        await p.locator('#camera-stop').click();
+        assert.equal(await p.locator('#camera-live').isDisabled(), true);
+        assert.equal(
+          await p.evaluate(
+            () => document.querySelector('#camera-video').srcObject
+          ),
+          null
+        );
+        assert.ok((await document(p)).image);
+        await p.screenshot({ path: path.join(dir, 'vision-camara-1280.png') });
+        // A late permission response must not reopen a camera after New cleared the project.
+        await p.evaluate(() => {
+          const acquire = navigator.mediaDevices.getUserMedia.bind(
+            navigator.mediaDevices
+          );
+          navigator.mediaDevices.getUserMedia = async (constraints) => {
+            const stream = await acquire(constraints);
+            window.qaPendingCamera = stream;
+            await new Promise((resolve) => {
+              window.qaReleaseCamera = resolve;
+            });
+            return stream;
+          };
+        });
+        await p.locator('#camera-start').click();
+        await p.waitForFunction(() => window.qaReleaseCamera);
+        await create(p, 'Nuevo mientras se conecta');
+        await p.evaluate(() => window.qaReleaseCamera());
+        await p.waitForFunction(() =>
+          window.qaPendingCamera
+            .getTracks()
+            .every((track) => track.readyState === 'ended')
+        );
+        assert.equal((await document(p)).image, null);
+        assert.equal(await p.locator('#camera-live').isDisabled(), true);
+        await ctx.close();
+      }
+    );
+    await run(
+      'VISION: permiso de cámara denegado conserva imagen y permite reintentar',
+      async () => {
+        const ctx = await browser.newContext();
+        await ctx.addInitScript(() => {
+          navigator.mediaDevices.getUserMedia = async () => {
+            throw new DOMException('Permission denied', 'NotAllowedError');
+          };
+        });
+        const p = await ctx.newPage();
+        await p.goto(base + '/apps/vision/');
+        await p.waitForFunction(() => ABSuite.viewportReady);
+        await p.locator('#vision-task-source').click();
+        await p.locator('#demo').click();
+        const before = await document(p);
+        await p.locator('#vision-open-camera').click();
+        await p.locator('#camera-start').click();
+        await p.waitForFunction(() =>
+          document
+            .querySelector('#message')
+            .textContent.startsWith('No se pudo abrir la cámara:')
+        );
+        assert.equal((await document(p)).image, before.image);
+        assert.equal(await p.locator('#camera-start').isDisabled(), false);
+        assert.equal(await p.locator('#camera-stop').isDisabled(), true);
+        await ctx.close();
+      }
+    );
     assert.deepEqual(errors, []);
     await writeFile(
       path.join(dir, 'new-user-results.json'),

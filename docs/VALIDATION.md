@@ -8,7 +8,7 @@ Validación local realizada en Windows, Node 24 y Python 3.13, con Chromium head
 node scripts/check-workspace.mjs
 ```
 
-La comprobación analiza la sintaxis de JavaScript y ejecuta **233 pruebas Node** del bus, contratos, HMI, almacenamiento de CPU y motores PLC/KOP/SCL/GRAFCET/Vision/SCADA histórico. Las 62 pruebas del PLC incluyen ejecución determinista y uso de una misma CPU desde HTTP/Modbus/Core.
+La comprobación analiza la sintaxis de JavaScript y ejecuta **235 pruebas Node** del bus, contratos, HMI, almacenamiento de CPU y motores PLC/KOP/SCL/GRAFCET/Vision/SCADA histórico. Las 62 pruebas del PLC incluyen ejecución determinista y uso de una misma CPU desde HTTP/Modbus/Core.
 
 ```sh
 python -m pip install pytest==9.1.1 httpx==0.28.1
@@ -41,7 +41,7 @@ El tercer script verifica **14 recorridos de edición KOP/HMI**: área de trabaj
 
 El cuarto script añade **29 recorridos de primer uso**: inicio sin demo; trabajo propio y resultado en cada herramienta; reemplazo, recuperación y recarga/móvil en las nueve; y Vision con imagen permanente, cinco paneles sin desplazamiento a 1280×720, 1366×768 y 1920×1080, región por coordenadas, ayuda y ampliación.
 
-En total son **119 recorridos de navegador** (14 generales + 8 BI + 14 editores + 29 primer uso + 4 CPU residente + 17 ejercicios portables + 10 portal y biblioteca). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
+En total son **123 recorridos de navegador** (14 generales + 8 BI + 15 editores + 32 primer uso + 4 CPU residente + 17 ejercicios portables + 10 portal y biblioteca + 14 idiomas + 9 ventana). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
 
 Los scripts rechazan errores JavaScript/CSP y generan capturas/resultados en `.suite-data/qa`. Para usar instalaciones existentes de pruebas, `AB_SUITE_PLAYWRIGHT` permite indicar el módulo y `AB_SUITE_BROWSER` el ejecutable. `AB_SUITE_EVIDENCE` cambia el directorio de evidencia. Estas variables no afectan a la aplicación que usa el estudiante.
 
@@ -71,7 +71,7 @@ El resto de motores de navegador conservan su alcance de pestaña. El histórico
 
 Once pruebas Node nuevas verifican los nueve documentos, límites de archivo, versiones y objetos, ausencia de referencias BI, señales archivadas, cabeceras PNG y parámetros de entrada de los servidores nativos. Siete pruebas Python BI verifican validación semántica de solo lectura, datos rechazados y conservación del espacio activo. Diecisiete recorridos adicionales de navegador reúnen documentos propios de las nueve herramientas, descargan el archivo, importan en otro contexto, abren cada componente y recuperan el trabajo previo. Incluyen SQL sobre los datos recuperados, imagen/ROI/referencia Vision, CPU STOP, archivo Serial, lectura Modbus caducada, error al conservar y error al aplicar, detección de otra vista, migración de biblioteca, conservación de componentes anteriores al actualizarlos, Vision tras recargar sin depender del límite de localStorage y móvil.
 
-El total es 119 recorridos (14 + 8 + 14 + 29 + 4 + 17 + 10). [Contrato, operaciones y límites](EXERCISES.md). Una copia explícita de documentos no se presenta como sincronización automática ni restauración simultánea del entorno de ejecución.
+El total actual es 123 recorridos (14 + 8 + 15 + 32 + 4 + 17 + 10 + 14 + 9). [Contrato, operaciones y límites](EXERCISES.md). Una copia explícita de documentos no se presenta como sincronización automática ni restauración simultánea del entorno de ejecución.
 
 ## Inicio independiente y biblioteca 0.5.1
 
@@ -86,3 +86,13 @@ Diez recorridos adicionales comprueban las nueve aplicaciones visibles con enlac
 `node scripts/verify-viewport-browser.cjs`: 9 recorridos de ventana por aplicación, en español e inglés a 1280×720 y 1366×768. Abre las tareas y paneles reales; crea redes/etapas y los 14 tipos HMI; verifica que ningún mando activo quede fuera de la ventana. El documento (programa, imagen, tablas, histórico o capas) puede desplazarse dentro de su área; la página y las barras de control permanecen fijas.
 
 Modbus verifica respuestas HTTP 413 ante tres tamaños de petición excesiva. El servidor descarta un cuerpo acotado antes de cerrar para que Windows no sustituya la respuesta por un reinicio TCP; no analiza ni ejecuta esas solicitudes.
+
+## Edición y adquisición 0.6.1
+
+KOP permite eliminar la última red con el mando del lienzo o Supr, deshacer y conservar el programa sin redes al recargar. Supr dentro de un campo sigue editando el texto. El comando nativo de nuevo proyecto también crea cero redes.
+
+Vision separa Fuente, Detección, Región, Medición y Archivos mediante pestañas. Conectar cámara abre la fuente USB y permite escoger dispositivo. Directo presenta una máscara sin registrar inspecciones; Capturar congela y Analizar registra. El rango de luminosidad incluye ambos extremos 0–255, se valida en el motor y viaja en recetas, documentos e historial CSV. Cambiar parámetros invalida la comparación del resultado anterior hasta analizar otra vez.
+
+Dos pruebas de motor verifican extremos inclusivos, ROI, serialización y rangos rechazados. Los recorridos nuevos cubren borrado y persistencia, rango sin resultados ficticios, cámara sintética de Chromium, captura y liberación del stream, y denegación simulada de getUserMedia. No certifican una cámara USB física ni una instalación de cámara IP concreta. El auditor de ventana recorre también cada pestaña, fuente y método de Vision en ES/EN a 1280×720 y 1366×768.
+
+[Normas de interacción y referencias](WORKSPACE_INTERACTION.md). Continúan pendientes las pruebas físicas y con usuarios externos.

@@ -92,13 +92,14 @@ export function translate(text, target = language) {
         ' charts. Project data loaded successfully.'
     ],
     [
-      /^(Instalador Windows|Portable Windows) · (\d+) MB ↓$/,
+      /^(Instalador Windows|Portable Windows) · (?:(\d+\.\d+\.\d+) · )?(\d+) MB ↓$/,
       (m) =>
         (m[1] === 'Instalador Windows'
           ? 'Windows installer'
           : 'Windows portable') +
         ' · ' +
-        m[2] +
+        (m[2] ? m[2] + ' · ' : '') +
+        m[3] +
         ' MB ↓'
     ],
     [/^(.+) · Nueva transición$/, (m) => m[1] + ' · New transition'],
@@ -139,7 +140,7 @@ export function translate(text, target = language) {
       /^(.+) retirada de favoritas\.$/,
       (m) => m[1] + ' removed from favorites.'
     ],
-    [/^0\.6\.0 · en desarrollo$/, () => '0.6.0 · development build'],
+    [/^(\d+\.\d+\.\d+) · en desarrollo$/, (m) => m[1] + ' · development build'],
     [
       /^No se pudo (.+): (.+)$/,
       (m) => 'Could not ' + translate(m[1]) + ': ' + translate(m[2])

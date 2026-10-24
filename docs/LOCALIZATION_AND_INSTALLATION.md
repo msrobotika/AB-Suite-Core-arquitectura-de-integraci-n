@@ -15,7 +15,7 @@ Use a Windows CPython 3.13 x64 host with the .NET Framework C# compiler and Inno
 ```powershell
 node scripts/build-locales.mjs
 python scripts/build-windows.py --output C:\build\ab-suite --iscc "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-python scripts/verify-windows-install.py --installer C:\build\ab-suite\AB-Suite-0.6.0-Windows-x64-Setup.exe --workspace C:\build\verification --browser-tests
+python scripts/verify-windows-install.py --installer C:\build\ab-suite\AB-Suite-0.6.1-Windows-x64-Setup.exe --workspace C:\build\verification --browser-tests
 ```
 
 Create the disposable verification directory before running the last command. Browser verification needs the build host's Playwright/Chromium, not an end-user dependency. `AB_SUITE_PLAYWRIGHT` and `AB_SUITE_BROWSER` select their paths. Do not use a real installation or a user-data directory for verification.

@@ -131,6 +131,10 @@ export async function mount(sdk) {
   new MutationObserver(updateActions).observe(byId('count'), {
     childList: true
   });
+  new MutationObserver(updateActions).observe(byId('feed-status'), {
+    childList: true
+  });
+  document.addEventListener('input', updateActions);
   updateActions();
   const region = el('details', undefined, 'ab-roi-form');
   region.append(el('summary', 'Región por coordenadas (px)'));

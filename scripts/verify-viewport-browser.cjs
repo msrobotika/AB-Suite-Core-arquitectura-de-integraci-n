@@ -177,6 +177,27 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
           await page.locator('.sidebar [data-view=' + view + ']').click();
           await audit('view ' + view);
         }
+      if (id === 'vision') {
+        for (const task of ['source', 'recipe', 'region', 'measure', 'files']) {
+          await page.locator('#vision-task-' + task).click();
+          await audit('vision ' + task);
+          if (task === 'source')
+            for (const type of ['file', 'usb', 'ip']) {
+              await page.locator('#vision-source-type').selectOption(type);
+              await audit('vision source ' + type);
+            }
+          if (task === 'recipe')
+            for (const mode of ['dark', 'light', 'range', 'reference']) {
+              await page.locator('#mode').selectOption(mode);
+              await audit('vision detection ' + mode);
+            }
+          if (task === 'measure')
+            for (const mode of ['scale', 'limits']) {
+              await page.locator('#vision-measure-mode').selectOption(mode);
+              await audit('vision measurement ' + mode);
+            }
+        }
+      }
       if (id === 'bi')
         for (const view of [
           'model',

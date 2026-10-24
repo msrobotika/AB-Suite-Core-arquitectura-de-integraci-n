@@ -108,6 +108,11 @@
     selected = id;
     renderRungs();
     renderInspector();
+    renderMetrics();
+    const card = [...$('rungs').children].find(
+      (node) => node.dataset.id === id
+    );
+    card?.focus({ preventScroll: true });
   }
   function activeSignals() {
     const x = Object.assign(Object.create(null), model.inputs, state.outputs);
@@ -480,8 +485,14 @@
         open.id = 'kop-signals';
         document.querySelector('.studio-command .toolbar').append(open);
       }
-      const close = makeButton('Cerrar ×', () => dialog.close(), 'suite-action');
-      const feedback = el('p');feedback.id = 'kop-signal-feedback';feedback.setAttribute('role', 'status');
+      const close = makeButton(
+        'Cerrar ×',
+        () => dialog.close(),
+        'suite-action'
+      );
+      const feedback = el('p');
+      feedback.id = 'kop-signal-feedback';
+      feedback.setAttribute('role', 'status');
       dialog.replaceChildren(close, definitions, feedback);
     }
     return definitions;
@@ -598,6 +609,7 @@
       'add-contact',
       'add-branch',
       'rung-copy',
+      'delete-rung',
       'rung-up',
       'rung-down'
     ])
@@ -718,10 +730,13 @@
     );
   }
   function removeRung() {
+    if (!model.rungs.some((r) => r.id === selected)) return;
     edit((m) => {
-      m.rungs = m.rungs.filter((r) => r.id !== selected);
-      selected = m.rungs[0]?.id ?? null;
+      const index = m.rungs.findIndex((r) => r.id === selected);
+      m.rungs.splice(index, 1);
+      selected = m.rungs[Math.min(index, m.rungs.length - 1)]?.id ?? null;
     }, 'Red eliminada');
+    $('kop-paper').focus({ preventScroll: true });
   }
   function save(name, body, mime) {
     const blob = new Blob([body], { type: mime }),
@@ -911,15 +926,7 @@
           description: '',
           inputs: { I0: false },
           outputs: { Q0: false },
-          rungs: [
-            {
-              id: 'R1',
-              name: 'Red 1',
-              operation: 'COIL',
-              target: 'Q0',
-              branches: [[{ kind: 'NO', variable: 'I0' }]]
-            }
-          ]
+          rungs: []
         });
         selected = null;
       }, 'Proyecto vacío creado; puedes deshacer');
@@ -990,7 +997,16 @@
         selected = r.id;
       }, 'Red duplicada con destino propio');
     document.addEventListener('keydown', (e) => {
-      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+      if (
+        e.target.closest(
+          'input, textarea, select, [contenteditable="true"], dialog[open]'
+        )
+      )
+        return;
+      if (e.key === 'Delete' && e.target.closest('#kop-paper')) {
+        e.preventDefault();
+        removeRung();
+      }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
         e.preventDefault();
         history(e.shiftKey ? 'redo' : 'undo');
@@ -1001,6 +1017,7 @@
       }
     });
     $('add-rung').addEventListener('click', addRung);
+    $('delete-rung').addEventListener('click', removeRung);
     $('add-contact').addEventListener('click', addContact);
     $('add-branch').addEventListener('click', addBranch);
     $('step').addEventListener('click', step);

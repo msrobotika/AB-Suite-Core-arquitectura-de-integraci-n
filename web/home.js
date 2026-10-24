@@ -2,16 +2,42 @@ import { catalog } from './catalog.js';
 import { translate } from './i18n.js';
 import { PREFIX, parseSnapshot, quality } from './signal-contract.js';
 import { createResidentSource } from './resident-source.js';
-fetch('/suite/distribution').then((response) => response.json()).then(({ files }) => {
-  const list = document.getElementById('distribution-files');
-  for (const file of files) {
-    const link = document.createElement('a');
-    link.className = 'suite-action suite-primary'; link.href = file.href;
-    link.textContent = (file.name.endsWith('Setup.exe') ? 'Instalador Windows · ' : 'Portable Windows · ') + Math.ceil(file.bytes / 1048576) + ' MB ↓';
-    link.download = file.name; list.append(link);
-  }
-  if (!files.length) document.getElementById('distribution-note').textContent = 'Esta copia no incluye archivos de distribución para descargar. Usa el instalador entregado con la revisión o descarga el código fuente.';
-}).catch(() => { document.getElementById('distribution-note').textContent = 'No se pudo consultar la descarga del instalador. Puedes usar el paquete entregado con la revisión.'; });
+fetch('/suite/distribution')
+  .then((response) => response.json())
+  .then(({ files }) => {
+    const list = document.getElementById('distribution-files');
+    // Show one coherent review revision when older installers remain in the local folder.
+    const version = (file) =>
+      file.name.match(/^AB-Suite-(\d+\.\d+\.\d+)-/)?.[1] || '0.0.0';
+    files.sort((a, b) => {
+      const av = version(a).split('.').map(Number),
+        bv = version(b).split('.').map(Number);
+      return bv[0] - av[0] || bv[1] - av[1] || bv[2] - av[2];
+    });
+    const latest = files.filter((file) => version(file) === version(files[0]));
+    for (const file of latest) {
+      const link = document.createElement('a');
+      link.className = 'suite-action suite-primary';
+      link.href = file.href;
+      link.textContent =
+        (file.name.endsWith('Setup.exe')
+          ? 'Instalador Windows · '
+          : 'Portable Windows · ') +
+        version(file) +
+        ' · ' +
+        Math.ceil(file.bytes / 1048576) +
+        ' MB ↓';
+      link.download = file.name;
+      list.append(link);
+    }
+    if (!files.length)
+      document.getElementById('distribution-note').textContent =
+        'Esta copia no incluye archivos de distribución para descargar. Usa el instalador entregado con la revisión o descarga el código fuente.';
+  })
+  .catch(() => {
+    document.getElementById('distribution-note').textContent =
+      'No se pudo consultar la descarga del instalador. Puedes usar el paquete entregado con la revisión.';
+  });
 const $ = (id) => document.getElementById(id),
   node = (tag, text, cls) => {
     const e = document.createElement(tag);

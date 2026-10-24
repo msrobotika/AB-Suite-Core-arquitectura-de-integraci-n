@@ -1,5 +1,94 @@
 /* A single bounded work window on desktop. Panning belongs to documents and data lists. */
 @media (min-width: 1001px) {
+  body.viewport-app .suite-bar {
+    min-height: 44px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  body.viewport-app .suite-bar :is(.suite-action, select) {
+    min-height: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  body.viewport-app .suite-brand small {
+    display: none;
+  }
+  body.viewport-app .suite-mark {
+    font-size: 28px !important;
+  }
+  body.viewport-app .ab-command {
+    min-height: 40px;
+    padding: 4px 12px !important;
+  }
+  body.viewport-app .ab-command h1 {
+    font-size: 16px !important;
+  }
+  body.viewport-app .ab-command small {
+    display: none;
+  }
+  body.viewport-app .ab-notice {
+    min-height: 24px !important;
+    padding: 4px 12px !important;
+  }
+  .viewport-app .kop-studio .studio-command {
+    min-height: 44px;
+    padding: 4px 12px;
+    gap: 12px;
+  }
+  .viewport-app .kop-studio .studio-command h1 {
+    font-size: 16px !important;
+  }
+  .viewport-app .kop-studio .studio-kicker {
+    display: none;
+  }
+  .viewport-app .kop-studio .notice {
+    min-height: 24px;
+    padding: 4px 12px;
+  }
+  .viewport-app .kop-document {
+    padding: 6px 12px;
+  }
+  .viewport-app .kop-editbar {
+    padding: 4px 10px;
+  }
+}
+
+.vision-task-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.vision-task-tabs button {
+  flex: 1 0 auto;
+  font-size: 11px !important;
+  min-height: 28px !important;
+  padding: 4px 7px !important;
+}
+.vision-task-tabs [aria-selected='true'] {
+  background: var(--suite-accent) !important;
+  color: #101820 !important;
+  border-color: var(--suite-accent) !important;
+}
+.vision-inspector-heading {
+  padding: 8px 10px;
+  gap: 6px;
+}
+.vision-task-panel {
+  gap: 7px;
+  padding: 10px;
+}
+.vision-task-panel input[type='range'] {
+  width: 100%;
+  accent-color: var(--suite-accent);
+}
+.vision-task-panel #detection-range .parameter + .parameter {
+  margin-top: 6px;
+}
+.vision-workspace #vision-panel-recipe .reference-box {
+  margin-top: auto;
+}
+
+@media (min-width: 1001px) {
   body.viewport-app {
     height: 100dvh;
     overflow: hidden !important;
@@ -8,8 +97,8 @@
     height: calc(100dvh - var(--suite-bar-height, 68px));
   }
   .viewport-app .ab-command {
-    min-height: 49px;
-    padding: 6px 12px !important;
+    min-height: 40px;
+    padding: 4px 12px !important;
     flex-shrink: 0;
   }
   .viewport-app .ab-dock {

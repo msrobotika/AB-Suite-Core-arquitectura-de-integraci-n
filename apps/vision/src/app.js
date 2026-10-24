@@ -22,7 +22,10 @@
     roi = null;
   let entries = [],
     autoBusy = false,
-    cameraDevices = [];
+    cameraDevices = [],
+    previewTimer = null,
+    liveTimer = null,
+    cameraGeneration = 0;
   let ipActive = false,
     ipFetchBusy = false,
     ipAbort = null,
@@ -46,11 +49,11 @@
     $('message').textContent = String(message);
     $('message').classList.toggle('error', error);
   }
-  function setFeed(message, active = false) {
+  function setFeed(message, active = false, persist = true) {
     $('feed-status').textContent = message;
     $('analyze').disabled = !imageReady;
     $('feed-status').classList.toggle('ready', active);
-    window.dispatchEvent(new Event('ab-suite:document-changed'));
+    if (persist) window.dispatchEvent(new Event('ab-suite:document-changed'));
   }
   function formatNumber(n) {
     return Number(n).toLocaleString('es-ES');
@@ -309,7 +312,7 @@
       $('image-file').value = '';
     }
   }
-  function captureFrame() {
+  function captureFrame(persist = true) {
     if (!stream || !camera || camera.readyState < 2) {
       invalidateCalibration('Cámara USB sin fotograma actual');
       info('La cámara no ha entregado un fotograma válido.', true);
@@ -333,7 +336,7 @@
     lastAnalysis = null;
     lastSource = 'webcam';
     $('source-label').textContent = 'CÁMARA · CAPTURA LOCAL';
-    setFeed('● CÁMARA ACTIVA', true);
+    setFeed('● CÁMARA ACTIVA', true, persist);
     renderPicture();
     return true;
   }
@@ -349,31 +352,59 @@
     stopCamera();
     stopIp();
     invalidateCalibration('Cambio de cámara: recalibra');
+    const request = cameraGeneration;
+    $('camera-start').disabled = true;
+    $('camera-stop').disabled = false;
+    if ($('camera-device')) $('camera-device').disabled = true;
+    info('Solicitando acceso a la cámara…');
     try {
-      stream = await navigator.mediaDevices.getUserMedia({
+      const acquired = await navigator.mediaDevices.getUserMedia({
         video: {
           width: { ideal: 1280 },
           height: { ideal: 720 },
-          facingMode: 'environment'
+          ...($('camera-device')?.value
+            ? { deviceId: { exact: $('camera-device').value } }
+            : { facingMode: 'environment' })
         },
         audio: false
       });
+      if (request !== cameraGeneration) {
+        acquired.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      stream = acquired;
       camera = $('camera-video');
       camera.srcObject = stream;
       await camera.play();
+      if (request !== cameraGeneration) return;
       $('camera-start').disabled = true;
       $('camera-stop').disabled = false;
       $('capture').disabled = false;
       captureFrame();
+      await refreshCameras();
+      if (request !== cameraGeneration) return;
+      if ($('camera-device')) $('camera-device').disabled = true;
+      stream.getVideoTracks()[0].addEventListener('ended', () => {
+        stopAuto();
+        stopCamera();
+        info(
+          'La cámara se ha desconectado. La última captura se conserva.',
+          true
+        );
+      });
+      startLive();
       info(
         'Cámara activa. Captura imagen para analizar o utiliza inspección continua.'
       );
     } catch (err) {
+      if (request !== cameraGeneration) return;
       stopCamera();
       info('No se pudo abrir la cámara: ' + err.message, true);
     }
   }
   function stopCamera() {
+    cameraGeneration++;
+    pauseLive();
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       stream = null;
@@ -384,15 +415,43 @@
       camera = null;
     }
     $('camera-start').disabled = false;
+    if ($('camera-device')) $('camera-device').disabled = false;
     $('camera-stop').disabled = true;
     $('capture').disabled = true;
+    if ($('camera-live')) $('camera-live').disabled = true;
     if (imageReady) setFeed('● IMAGEN CARGADA', true);
     else setFeed('● SIN FUENTE');
+  }
+  function pauseLive() {
+    clearInterval(liveTimer);
+    liveTimer = null;
+    if ($('camera-live')) {
+      $('camera-live').textContent = 'Reanudar directo';
+      $('camera-live').setAttribute('aria-pressed', 'false');
+    }
+  }
+  function startLive() {
+    if (!stream) return;
+    pauseLive();
+    $('camera-live').disabled = false;
+    $('camera-live').textContent = 'Pausar directo';
+    $('camera-live').setAttribute('aria-pressed', 'true');
+    liveTimer = setInterval(() => {
+      if (document.hidden || !captureFrame(false)) return;
+      try {
+        renderPicture(core.inspect(getFrame(), recipe(), { roi, reference }));
+      } catch {
+        renderPicture();
+      }
+      setFeed('● DIRECTO · SIN REGISTRAR', true, false);
+    }, 300);
   }
   function recipe() {
     return core.validateRecipe({
       mode: $('mode').value,
       threshold: Number($('threshold').value),
+      rangeMin: Number($('range-min').value),
+      rangeMax: Number($('range-max').value),
       minArea: Number($('min-area').value),
       maxDefects: Number($('max-defects').value)
     });
@@ -442,6 +501,8 @@
     $('history-rows').append(frag);
   }
   function inspectOnce() {
+    clearTimeout(previewTimer);
+    pauseLive();
     if (!imageReady) {
       info('Primero carga una imagen o captura de cámara.', true);
       return null;
@@ -549,6 +610,9 @@
         mode: result.mode,
         roi: result.roi,
         threshold: result.threshold,
+        ...(result.mode === 'range'
+          ? { rangeMin: result.rangeMin, rangeMax: result.rangeMax }
+          : {}),
         minArea: result.minArea,
         maxDefects: result.maxDefects,
         defects: result.defectCount,
@@ -623,6 +687,7 @@
     if (autoTimer) autoTimer = setTimeout(autoCycle, 1500);
   }
   function toggleAuto() {
+    pauseLive();
     if (autoTimer) {
       stopAuto();
       info('Inspección continua detenida.');
@@ -663,11 +728,19 @@
     const valid = core.validateRecipe(settings);
     $('mode').value = valid.mode;
     $('threshold').value = valid.threshold;
+    $('range-min').value = valid.rangeMin ?? 0;
+    $('range-max').value = valid.rangeMax ?? valid.threshold;
     $('min-area').value = valid.minArea;
     $('max-defects').value = valid.maxDefects;
     updateSliders();
   }
   function updateSliders() {
+    lastAnalysis = null;
+    const range = $('mode').value === 'range';
+    $('detection-range').hidden = !range;
+    $('threshold').closest('.parameter').hidden = range;
+    $('range-min-value').value = $('range-min').value;
+    $('range-max-value').value = $('range-max').value;
     $('threshold-value').value = $('threshold').value;
     $('min-area-value').value = $('min-area').value;
     $('threshold-hint').textContent =
@@ -676,6 +749,40 @@
         : $('mode').value === 'light'
           ? 'Detecta luminosidad superior al umbral.'
           : 'Detecta diferencia RGB máxima respecto a la referencia.';
+  }
+  function previewDetection() {
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(() => {
+      if (!imageReady) return;
+      try {
+        renderPicture(core.inspect(getFrame(), recipe(), { roi, reference }));
+        info(
+          'Ajuste previo: la máscara no añade resultados al historial. Pulsa Analizar imagen para registrar.'
+        );
+      } catch (err) {
+        renderPicture();
+        info(err.message, true);
+      }
+    }, 100);
+  }
+  async function refreshCameras() {
+    const field = $('camera-device');
+    if (!field || !navigator.mediaDevices?.enumerateDevices) return;
+    try {
+      const selected =
+        stream?.getVideoTracks()[0]?.getSettings().deviceId || field.value;
+      cameraDevices = (await navigator.mediaDevices.enumerateDevices()).filter(
+        (d) => d.kind === 'videoinput'
+      );
+      field.replaceChildren(new Option('Cámara predeterminada', ''));
+      cameraDevices.forEach((d, i) =>
+        field.add(new Option(d.label || 'Cámara ' + (i + 1), d.deviceId))
+      );
+      if (cameraDevices.some((d) => d.deviceId === selected))
+        field.value = selected;
+    } catch (err) {
+      info('No se pudieron enumerar las cámaras: ' + err.message, true);
+    }
   }
   function storeRecipe() {
     try {
@@ -742,6 +849,8 @@
       'mmPerPixel',
       'duration',
       'threshold',
+      'rangeMin',
+      'rangeMax',
       'minArea',
       'maxDefects'
     ];
@@ -1156,11 +1265,43 @@
           invalidateCalibration('Parámetros IP modificados; vuelve a calibrar');
         }
       });
-    $('capture').addEventListener('click', captureFrame);
+    $('capture').addEventListener('click', () => {
+      pauseLive();
+      if (captureFrame())
+        info('Captura congelada. Ajusta la detección y pulsa Analizar imagen.');
+    });
     $('analyze').addEventListener('click', inspectOnce);
     $('auto').addEventListener('click', toggleAuto);
-    for (const id of ['threshold', 'min-area', 'mode'])
-      $(id).addEventListener('input', updateSliders);
+    for (const id of [
+      'threshold',
+      'min-area',
+      'mode',
+      'range-min',
+      'range-max',
+      'max-defects'
+    ])
+      $(id).addEventListener('input', () => {
+        if (
+          id === 'range-min' &&
+          Number($('range-min').value) > Number($('range-max').value)
+        )
+          $('range-max').value = $('range-min').value;
+        if (
+          id === 'range-max' &&
+          Number($('range-max').value) < Number($('range-min').value)
+        )
+          $('range-min').value = $('range-max').value;
+        updateSliders();
+        previewDetection();
+      });
+    window.addEventListener('ab-vision:refresh-cameras', refreshCameras);
+    $('camera-live').addEventListener('click', () => {
+      if (liveTimer !== null) pauseLive();
+      else {
+        stopAuto();
+        startLive();
+      }
+    });
     $('roi-reset').addEventListener('click', () => {
       roi = null;
       selection = null;
@@ -1321,7 +1462,8 @@
       },
       restore: restoreVision
     },
-    inspection: () => (entries.length ? structuredClone(entries.at(-1)) : null),
+    inspection: () =>
+      lastAnalysis && entries.length ? structuredClone(entries.at(-1)) : null,
     recipe: () => ({
       ...recipe(),
       roi: roi ? { ...roi } : null,
