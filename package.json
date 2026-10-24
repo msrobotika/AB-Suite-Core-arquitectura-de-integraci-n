@@ -3,7 +3,7 @@
   "version": "0.6.1",
   "type": "module",
   "private": false,
-  "description": "AB Suite Ã‚Â· laboratorio local de programaciÃƒÂ³n, HMI, comunicaciones y datos",
+  "description": "AB Suite: laboratorio local de programación, HMI, comunicaciones y datos",
   "exports": {
     ".": "./src/index.js",
     "./protocol": "./src/protocol.js",
