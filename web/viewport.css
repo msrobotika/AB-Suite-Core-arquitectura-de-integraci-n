@@ -1107,3 +1107,26 @@
     line-height: 1.25;
   }
 }
+
+@media (min-width: 1001px) {
+  .viewport-app .kop-tools .project-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .viewport-app .kop-tools .project-actions :is(button, label) {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+  }
+  .viewport-app .ab-editor-modbus #simulador .fields label {
+    margin: 0 !important;
+    gap: 2px;
+    font-size: 10px !important;
+    line-height: 1.25;
+  }
+  .viewport-app .ab-editor-modbus #simulador .sim-address {
+    padding: 6px;
+    margin: 4px 10px;
+  }
+}
