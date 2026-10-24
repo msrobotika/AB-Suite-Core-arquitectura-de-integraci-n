@@ -1045,3 +1045,24 @@
     margin: 8px 10px;
   }
 }
+
+@media (min-width: 1001px) {
+  .viewport-app .hmi-library .hmi-palette {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .viewport-app .hmi-library .hmi-palette button {
+    min-width: 0;
+    gap: 4px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .viewport-app .hmi-library .hmi-palette b {
+    width: 16px;
+    flex-shrink: 0;
+  }
+  .viewport-app .ab-editor-modbus #read-form .fields label {
+    margin: 0 !important;
+    gap: 2px;
+    line-height: 1.25;
+  }
+}

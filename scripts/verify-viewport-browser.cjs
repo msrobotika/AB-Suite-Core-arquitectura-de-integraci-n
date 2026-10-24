@@ -71,6 +71,8 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
                 )
                   .trim()
                   .slice(0, 65),
+                left: Math.round(box.left),
+                right: Math.round(box.right),
                 top: Math.round(box.top),
                 bottom: Math.round(box.bottom)
               });
