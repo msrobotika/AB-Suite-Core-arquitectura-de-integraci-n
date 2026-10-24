@@ -4,6 +4,14 @@ Un laboratorio local de programación y automatización con nueve herramientas p
 
 **Una entrada:** abre el catálogo y pulsa **Abrir herramienta**. Los editores, simuladores y herramientas con backend se presentan en la misma dirección y comparten navegación, guía y lenguaje visual. Exportar un proyecto es una operación separada.
 
+## Descargar toda la suite
+
+**[Descargar AB Suite completa · ZIP de revisión](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/codex/suite-workspace.zip)**
+
+Esta rama contiene las nueve herramientas integradas. Descarga un solo ZIP, pulsa **Extraer todo** y abre `iniciar.bat` dentro de la carpeta extraída. No abras los HTML sueltos ni descargues nueve repositorios. La revisión sigue en desarrollo; el [cambio completo está en la PR #3](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/pull/3).
+
+Consulta [LEEME-PRIMERO.md](LEEME-PRIMERO.md) para instalación, requisitos y solución de problemas.
+
 ## Empezar
 
 Requisitos: **Node.js 20+**, **Python 3.11+** y un navegador moderno. No se requiere npm para ejecutar los motores. La primera preparación necesita Internet para las dependencias Python de BI.
@@ -18,6 +26,12 @@ node scripts/workspace.mjs
 ```
 
 Abre **[AB Suite local](http://127.0.0.1:4170)**. Ctrl+C detiene la suite. `AB_SUITE_PORT` permite elegir otro puerto y `AB_SUITE_PYTHON` un intérprete ya preparado. Si falta Python, las herramientas de navegador siguen disponibles y el catálogo identifica los motores pendientes.
+
+## Tu primer proyecto
+
+En cualquiera de las nueve herramientas, pulsa **＋ Nuevo** en la barra común, escribe un nombre y crea tu trabajo. El anterior queda recuperable en **Proyectos**. Los ejemplos son opcionales y no se cargan al iniciar KOP, SCL, GRAFCET o Vision.
+
+KOP y PLC empiezan sin redes: añade la primera y define tus contactos. GRAFCET conserva una única etapa inicial sin acciones; SCADA un lienzo sin objetos; Vision no tiene imagen; Modbus y Serial no muestran resultados anteriores; BI crea otro espacio sin tablas. La [guía de primer uso](docs/NEW_USER_WORKFLOW.md) explica una práctica propia en cada herramienta y qué se conserva al cerrar.
 
 ## Herramientas y conexiones reales
 
@@ -57,7 +71,8 @@ No se impone una línea de producción. Si una fuente no actualiza sus señales 
 
 - `.suite-data/`: espacios BI, copias de limpieza, perfiles Modbus y programa residente de la CPU. No se versiona ni se distribuye.
 - Navegador: proyectos KOP/GRAFCET/HMI, borrador SCL, recetas Vision y progreso de las guías. Exporta archivos para trasladarlos a otro navegador/equipo.
-- Serial e históricos de ejecución: buffers limitados de sesión; exportación explícita.
+- Serial e históricos de ejecución: buffers limitados de sesión; exportación explícita. Las capturas recuperadas son archivos de lectura, no una conexión en directo.
+- Proyectos: hasta ocho puntos de vuelta por herramienta en este navegador. No sustituyen a la exportación portable ni a las copias del disco. Vision conserva imagen/receta; Modbus configuración/última lectura; Serial una captura acotada. Un fallo de almacenamiento se indica y permite exportar.
 
 La suite escucha en loopback. No necesita cuentas ni CDN, y no envía proyectos a una nube. La captura BI es una acción explícita. Las contraseñas de cámaras y tokens de motores no se incorporan a los proyectos.
 
@@ -74,11 +89,12 @@ El segundo comando debe usar el Python preparado de `.venv` y requiere las depen
 node scripts/verify-browser.cjs
 node scripts/verify-bi-browser.cjs
 node scripts/verify-editors-browser.cjs
+node scripts/verify-new-user-browser.cjs
 ```
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
 
-La versión 0.3.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
+La versión 0.4.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 

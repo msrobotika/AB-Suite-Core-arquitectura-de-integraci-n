@@ -57,7 +57,7 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
   };
   try {
     await kop.goto(base + '/apps/kop/');
-    await hmi.goto(base + '/apps/scada/');
+    await hmi.goto(base + '/apps/scada/');await kop.locator('#project summary').click();await kop.locator('#restore').click();await kop.locator('#project summary').click();
     await run(
       'KOP: área de trabajo principal y paneles plegables',
       async () => {
@@ -77,8 +77,9 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
     await run(
       'KOP: programa propio, contacto NC, ejecución real, deshacer y rehacer',
       async () => {
-        await kop.locator('#new-project').click();
-        assert.equal(await kop.locator('.rung').count(), 1);
+        await kop.locator('#suite-new').click();await kop.locator('#suite-document-name').fill('Mi programa de prueba');await kop.locator('#suite-document-create').click();await kop.locator('#suite-document-dialog').waitFor({state:'hidden'});
+        assert.equal(await kop.locator('.rung').count(), 0);
+        await kop.locator('#add-rung').click();
         await kop.locator('#edit-name').fill('Borrador en curso');
         await kop.locator('#step').click();
         assert.equal(
@@ -156,7 +157,7 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
         assert.match(drawing, /<svg/);
         assert.match(drawing, /MOTOR/);
         assert.match(drawing, /<path/);
-        await kop.locator('#new-project').click();
+        await kop.locator('#suite-new').click();await kop.locator('#suite-document-name').fill('Mi programa de prueba');await kop.locator('#suite-document-create').click();await kop.locator('#suite-document-dialog').waitFor({state:'hidden'});
         await upload(kop, '#import-json', program);
         assert.equal(await kop.locator('.rung').count(), 4);
         await kop.locator('#step').click();

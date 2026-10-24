@@ -13,7 +13,7 @@ function validate(model){
  ensure(model.outputs&&typeof model.outputs==='object'&&!Array.isArray(model.outputs)&&Object.keys(model.outputs).length<=60,'Salidas inválidas.');
  for(const group of [model.inputs,model.outputs])for(const [k,v]of Object.entries(group))ensure(validName(k)&&typeof v==='boolean','Variable o valor booleano inválido: '+k);
  ensure(!Object.keys(model.inputs).some(k=>own(model.outputs,k)),'Una señal no puede ser a la vez entrada y salida.');
- ensure(Array.isArray(model.rungs)&&model.rungs.length>=1&&model.rungs.length<=40,'Se requieren entre 1 y 40 redes.');
+ ensure(Array.isArray(model.rungs)&&model.rungs.length<=40,'Máximo 40 redes.');
  const rungIds=new Set(),writers=new Map(),tonTargets=new Set();
  for(const r of model.rungs){
   ensure(r&&validName(r.id)&&!rungIds.has(r.id),'ID de red duplicado o inválido.');rungIds.add(r.id);

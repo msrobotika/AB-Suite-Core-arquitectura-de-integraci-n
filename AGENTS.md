@@ -8,6 +8,7 @@ Este repositorio es la fuente de la distribución integrada. `apps/sources.json`
 - Toda herramienta declara propósito, capacidades reales, límites y una práctica reproducible en `web/catalog.js`.
 - Usar la barra, los tokens y componentes de `web/shell.css`. No crear otro menú global ni un sistema de estilos independiente.
 - Programar, ejecutar e inspeccionar deben actuar sobre el mismo proyecto/motor. No introducir una segunda CPU ni datos de demostración como sustituto silencioso de una conexión fallida.
+- Toda aplicación implementa el contrato `documents.get/create/restore` y usa Nuevo/Proyectos de la barra común. Crear conserva un punto anterior, nombra el nuevo trabajo y no carga ejemplos. KOP/PLC admiten cero redes; GRAFCET explica su etapa inicial mínima. Añadir un recorrido de creación, resultado propio, reemplazo, recuperación y recarga/móvil a `verify-new-user-browser.cjs`.
 - BI comienza vacío. Crear, importar y abrir un ejemplo deben conservar los demás espacios. Validar todos los archivos antes de crear un espacio de importación.
 - No reemplazar trabajo del usuario sin una acción explícita y una vía de recuperación. Importaciones y restauraciones deben ser reversibles o abrir un espacio nuevo.
 - Nunca representar una señal ausente/caducada como cero. Mantener origen, calidad, tiempo y unidades. No afirmar interconexión si solo existe una captura o un enlace al repositorio.

@@ -43,7 +43,7 @@ async function jsonBody(req){
 
 export function suiteLiveState(cpu){
   return {schema:"msrobotika.suite.live.v1",snapshot:cpu.snapshot(),
-    program:cpu.program,samples:cpu.samples.slice(-140),events:cpu.events.slice(0,40)};
+    program:cpu.program,preparedInputs:{...cpu.manual},samples:cpu.samples.slice(-140),events:cpu.events.slice(0,40)};
 }
 export function suiteLiveCommand(cpu,data){
   if(!data||typeof data!=="object"||Array.isArray(data))throw ERROR("Comando inválido");

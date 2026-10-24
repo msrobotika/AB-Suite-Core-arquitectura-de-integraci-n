@@ -57,8 +57,8 @@ function validateExpr(expr, depth = 0) {
 export function validateProgram(program) {
   assert(program && typeof program === "object" && !Array.isArray(program), "Programa inválido");
   assert(program.version === 1, "Versión de programa no soportada (se requiere 1)");
-  assert(Array.isArray(program.rungs) && program.rungs.length > 0 && program.rungs.length <= 100,
-    "Se requieren entre 1 y 100 redes");
+  assert(Array.isArray(program.rungs) && program.rungs.length <= 100,
+    "Máximo 100 redes");
   const ids = new Set();
   for (const rung of program.rungs) {
     assert(rung && typeof rung === "object", "Red inválida");

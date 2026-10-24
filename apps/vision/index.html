@@ -16,7 +16,7 @@
 <div class="notice-rail"><span class="notice-icon">ⓘ</span><div><strong>Modo de laboratorio.</strong> El resultado OK/NOK es orientativo. Esta versión no está validada para seguridad, rechazo automático de piezas ni control de maquinaria.</div></div>
 <div class="main-grid">
 <section class="work-card" id="vision"><div class="card-head"><div><span class="overline">01 / ÁREA DE VISIÓN</span><h2>Inspección de imagen</h2></div><span class="live-status" id="feed-status">● SIN FUENTE</span></div>
-  <div class="viewer"><canvas id="overlay" width="1280" height="720" aria-label="Área de inspección: arrastra para seleccionar región de interés"></canvas><video id="camera-video" autoplay muted playsinline hidden></video><div class="viewer-status"><span id="source-label">Imagen de demostración</span><span id="image-size">1280 × 720</span></div><div class="viewer-corner tl"></div><div class="viewer-corner tr"></div><div class="viewer-corner bl"></div><div class="viewer-corner br"></div></div>
+  <div class="viewer"><canvas id="overlay" width="1280" height="720" aria-label="Área de inspección: arrastra para seleccionar región de interés"></canvas><video id="camera-video" autoplay muted playsinline hidden></video><div class="viewer-status"><span id="source-label">Sin imagen</span><span id="image-size">—</span></div><div class="viewer-corner tl"></div><div class="viewer-corner tr"></div><div class="viewer-corner bl"></div><div class="viewer-corner br"></div></div>
   <div class="tool-bar"><button id="demo" class="primary">◈ Cargar demostración</button><label class="button file-button">↑ Abrir imagen<input id="image-file" type="file" accept="image/png,image/jpeg,image/webp,image/bmp"></label><button id="camera-start">◉ Iniciar cámara</button><button id="capture" disabled>◎ Capturar</button><button id="camera-stop" disabled>■ Detener</button></div>
 
   <div class="connect-panels">
@@ -37,7 +37,7 @@
   <div class="selection-bar"><label class="check"><input type="checkbox" id="roi-mode"><span>Seleccionar ROI arrastrando sobre la imagen</span></label><button class="text-button" id="roi-reset">Restablecer región</button><span id="roi-label">Imagen completa</span></div>
 </section>
 <section class="config-card" id="config"><div class="card-head"><div><span class="overline">02 / PARÁMETROS</span><h2>Receta de inspección</h2></div><span class="small-pill">EDITABLE</span></div>
-  <div class="config-body"><label>Identificador de pieza / lote<input type="text" id="lot" value="LOTE-DEMO-001" maxlength="64" placeholder="Ej. PCB-LINEA-01"></label>
+  <div class="config-body"><label>Identificador de pieza / lote<input type="text" id="lot" value="" maxlength="64" placeholder="Ej. Lote 001 o tramo 001"></label>
   <label>Método de detección<select id="mode"><option value="dark">Imperfecciones oscuras</option><option value="light">Zonas claras</option><option value="reference">Diferencia frente a referencia</option></select></label>
   <div class="parameter"><div class="parameter-head"><label for="threshold">Umbral de detección</label><output id="threshold-value">90</output></div><input type="range" id="threshold" min="0" max="255" value="90"><p id="threshold-hint">Píxeles con luminosidad inferior a 90.</p></div>
   <div class="parameter"><div class="parameter-head"><label for="min-area">Área mínima por defecto (px)</label><output id="min-area-value">20</output></div><input type="range" id="min-area" min="1" max="3000" value="20"></div>
@@ -63,7 +63,7 @@
   </details>
   <div class="config-actions"><button id="analyze" class="big primary">▶ Analizar imagen</button><button id="auto" class="big">⟳ Inspección continua: OFF</button></div>
   <div class="recipe-actions"><button id="save-recipe" class="flat">Guardar receta</button><button id="export-recipe" class="flat">Exportar JSON</button><label class="flat file-button">Importar JSON<input id="recipe-file" type="file" accept="application/json,.json"></label></div>
-  <div class="status-msg" id="message" role="status" aria-live="polite">Listo para inspeccionar. Puedes empezar con la demostración.</div>
+  <div class="status-msg" id="message" role="status" aria-live="polite">Abre una imagen para empezar. El ejemplo es opcional.</div>
   </div></section>
 </div>
 <div class="metrics"><div class="metric"><span>RESULTADO DE INSPECCIÓN</span><strong id="verdict" class="pending">SIN ANALIZAR</strong><small id="duration">Esperando imagen</small></div><div class="metric"><span>DEFECTOS DETECTADOS</span><strong id="defects">—</strong><small>Componentes que superan el área mínima</small></div><div class="metric"><span>SUPERFICIE AFECTADA</span><strong id="coverage">—</strong><small>Porcentaje de la región inspeccionada</small></div><div class="metric"><span>ANCHO × ALTO (mm)</span><strong id="measured-size">SIN CALIBRAR</strong><small id="dimension-status">Sin metrología verificada</small></div><div class="metric"><span>INSPECCIONES EN SESIÓN</span><strong id="count">0</strong><small>Historial exportable a CSV</small></div></div>

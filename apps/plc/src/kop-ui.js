@@ -104,7 +104,7 @@ export function mountKopEditor({ element, getProgram, applyProgram, readTag, not
     try { dirty = history.dirty; } catch { dirty = true; }
     toolbar.querySelector("#kop-count").textContent = history.current.rungs.length + " REDES";
     canvas.innerHTML = history.current.rungs.map((r, i) =>
-      rungCard(r, i, readTag, history.current.rungs.length)).join("");
+      rungCard(r, i, readTag, history.current.rungs.length)).join("") || '<section class="kop-empty"><h2>Tu programa empieza aquí</h2><p>No hay redes. Pulsa + Nueva red para definir contactos y acciones; después valida y carga tus cambios.</p></section>';
     buttons.undo.disabled = !history.past.length;
     buttons.redo.disabled = !history.future.length;
     buttons.save.disabled = !valid || !dirty;

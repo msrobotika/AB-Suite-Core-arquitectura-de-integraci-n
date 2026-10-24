@@ -21,3 +21,5 @@ body[data-suite-app] :is(aside.rail,.sidebar,.side) nav button{background:transp
 body[data-suite-app] .kop-studio .kop-paper .rung{background-color:transparent!important;border-radius:0!important;border-color:transparent!important;border-bottom-color:#39506366!important;box-shadow:none!important}
 body[data-suite-app] .kop-studio .kop-paper .rung.selected{border-left-color:var(--suite-accent)!important;background-color:#77dfc706!important}
 body[data-suite-app] .kop-studio .kop-inspector{border-radius:0!important}
+
+[hidden]{display:none!important}

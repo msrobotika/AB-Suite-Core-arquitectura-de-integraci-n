@@ -806,3 +806,5 @@ else if (screen().widgets.length)
       '. Selecciona un objeto o pulsa Probar.'
   );
 setInterval(updateValues, 750);
+
+window.ABSuite?.register({documents:{get:()=>structuredClone(project),create:name=>mutate(()=>{project=validateProject(blankProject());project.name=name;screenId=project.screens[0].id;selected=null;preview=false},'Proyecto HMI nuevo y vacío.'),restore:doc=>{const next=validateProject(doc);mutate(()=>{project=next;screenId=next.screens[0].id;selected=null;preview=false},'Proyecto HMI recuperado.')}},arrange:kind=>{if(!widget())throw Error('Selecciona un objeto');mutate(()=>{const w=widget();if(kind==='center-x')w.x=Math.round((screen().width-w.width)/2);if(kind==='center-y')w.y=Math.round((screen().height-w.height)/2)},'Objeto centrado.')}});

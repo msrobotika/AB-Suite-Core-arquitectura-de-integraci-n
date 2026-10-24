@@ -4,11 +4,20 @@
   const E = window.ABKopEngine,
     $ = (id) => document.getElementById(id),
     STORE = 'ab-kop-studio-model-v1';
-  let model = E.sample(),
+  const blankKop = (name = 'Mi programa Ladder') => ({
+    schema: 1,
+    name,
+    description: '',
+    inputs: { I0: false },
+    outputs: { Q0: false },
+    rungs: []
+  });
+  let model = blankKop(),
     state = E.initial(model),
-    selected = 'R1',
+    selected = null,
     running = null,
     storageFailed = false,
+    inputsDirty = false,
     events = [],
     undo = [],
     redo = [],
@@ -62,6 +71,7 @@
     }
   }
   function resetSilent() {
+    inputsDirty = false;
     state = E.initial(model);
     timeline = [];
   }
@@ -139,6 +149,18 @@
   function renderRungs() {
     const root = $('rungs');
     root.replaceChildren();
+    if (!model.rungs.length) {
+      const empty = el('section', undefined, 'kop-empty');
+      empty.append(
+        el('h2', 'Tu programa empieza aquí'),
+        el(
+          'p',
+          'No hay redes ni lógica de ejemplo. Crea la primera red, define sus contactos y comprueba el resultado con Paso.'
+        ),
+        makeButton('Crear primera red', addRung)
+      );
+      root.append(empty);
+    }
     const signals = activeSignals();
     for (const rung of model.rungs) {
       const tr = state.traces.find((t) => t.id === rung.id),
@@ -150,6 +172,8 @@
         'rung' + (selected === rung.id ? ' selected' : '')
       );
       card.dataset.id = rung.id;
+      card.dataset.power =
+        tr && !inputsDirty ? (tr.energized ? 'on' : 'off') : 'pending';
       card.tabIndex = 0;
       card.setAttribute('role', 'button');
       card.setAttribute(
@@ -173,6 +197,18 @@
             : 'Serie / AND'
         )
       );
+      const power = el(
+        'span',
+        inputsDirty
+          ? '◷ TRAZA PENDIENTE'
+          : tr
+            ? tr.energized
+              ? '● CONDUCE'
+              : '○ SIN PASO'
+            : '○ SIN EJECUTAR',
+        'network-power'
+      );
+      head.append(power);
       card.append(head);
       const circuit = el('div', undefined, 'ladder'),
         paths = el('div', undefined, 'paths');
@@ -180,14 +216,16 @@
       for (let i = 0; i < rung.branches.length; i++) {
         const branch = el('div', undefined, 'branch');
         let powered = true;
-        branch.append(el('span', undefined, 'wire live'));
+        branch.append(
+          el('span', undefined, tr && !inputsDirty ? 'wire live' : 'wire')
+        );
         for (let j = 0; j < rung.branches[i].length; j++) {
           const c = rung.branches[i][j],
             ok = trace[i].contacts[j].pass,
             component = el(
               'div',
               undefined,
-              'contact' + (ok && powered ? ' live' : '')
+              'contact' + (ok && powered && tr && !inputsDirty ? ' live' : '')
             );
           component.setAttribute(
             'title',
@@ -205,7 +243,11 @@
           powered = powered && ok;
           branch.append(
             component,
-            el('span', undefined, 'wire' + (powered ? ' live' : ''))
+            el(
+              'span',
+              undefined,
+              'wire' + (powered && tr && !inputsDirty ? ' live' : '')
+            )
           );
         }
         paths.append(branch);
@@ -433,6 +475,7 @@
       btn.append(el('strong', k), el('span', v ? 'ON · 1' : 'OFF · 0'));
       btn.addEventListener('click', () => {
         model.inputs[k] = !v;
+        inputsDirty = true;
         store();
         render(true);
         log('Entrada ' + k + ' = ' + (model.inputs[k] ? '1' : '0'));
@@ -528,6 +571,16 @@
           : 'CICLO COMPLETO';
     $('scan-label').textContent = 'Ciclo ' + state.scan;
     $('back').disabled = !timeline.length;
+    $('step').disabled = $('auto').disabled = !model.rungs.length;
+    if (!model.rungs.length) $('status').textContent = 'SIN PROGRAMA';
+    for (const id of [
+      'add-contact',
+      'add-branch',
+      'rung-copy',
+      'rung-up',
+      'rung-down'
+    ])
+      if ($(id)) $(id).disabled = !model.rungs.some((r) => r.id === selected);
   }
   function render(keepInspector = false) {
     $('kop-undo').disabled = !undo.length;
@@ -551,6 +604,7 @@
       });
       if (timeline.length > 200) timeline.shift();
       state = E.scan(model, state);
+      inputsDirty = false;
       render(true);
       log(
         'Exploración ' +
@@ -574,6 +628,7 @@
     if (!timeline.length) return;
     const old = timeline.pop();
     state = old.state;
+    inputsDirty = false;
     model.inputs = old.inputs;
     render(true);
     log('Restaurado ciclo ' + state.scan);
@@ -593,7 +648,10 @@
       let i = 1;
       while (m.rungs.some((r) => r.id === 'R' + i)) i++;
       const id = 'R' + i;
-      const target = 'Q_' + id;
+      const target =
+        Object.keys(m.outputs).find(
+          (key) => !m.rungs.some((r) => r.target === key)
+        ) || 'Q_' + id;
       m.outputs[target] = false;
       const variable = Object.keys(m.inputs)[0] || target;
       m.rungs.push({
@@ -640,10 +698,8 @@
   }
   function removeRung() {
     edit((m) => {
-      if (m.rungs.length <= 1)
-        throw Error('El proyecto necesita al menos una red.');
       m.rungs = m.rungs.filter((r) => r.id !== selected);
-      selected = m.rungs[0].id;
+      selected = m.rungs[0]?.id ?? null;
     }, 'Red eliminada');
   }
   function save(name, body, mime) {
@@ -799,7 +855,7 @@
         E.validate(parsed);
         model = parsed;
         state = E.initial(model);
-        selected = model.rungs[0].id;
+        selected = model.rungs[0]?.id ?? null;
       }
     } catch (_) {
       model = {
@@ -819,7 +875,7 @@
         ]
       };
       state = E.initial(model);
-      selected = 'R1';
+      selected = null;
       recoveryMessage =
         'No se pudo abrir el proyecto guardado. Se conserva sin sobrescribir hasta tu próxima edición; recupera el archivo anterior desde el almacenamiento del navegador o importa una copia JSON.';
     }
@@ -844,7 +900,7 @@
             }
           ]
         });
-        selected = 'R1';
+        selected = null;
       }, 'Proyecto vacío creado; puedes deshacer');
     };
     const history = (direction) => {
@@ -979,7 +1035,7 @@
         if (undo.length > 40) undo.shift();
         redo = [];
         model = JSON.parse(JSON.stringify(next));
-        selected = model.rungs[0].id;
+        selected = model.rungs[0]?.id ?? null;
         resetSilent();
         store();
         render();
@@ -997,7 +1053,7 @@
       if (undo.length > 40) undo.shift();
       redo = [];
       model = E.sample();
-      selected = 'R1';
+      selected = null;
       resetSilent();
       store();
       render();
@@ -1026,7 +1082,36 @@
         ...Object.entries(state.outputs).map(([k, v]) => ['outputs.' + k, v]),
         ['scan', state.scan]
       ]),
-    project: () => cl()
+    project: () => (model.rungs.length ? cl() : null),
+    documents: {
+      get: () => cl(),
+      create: (name) => {
+        if (
+          !edit((m) => {
+            for (const k of Object.keys(m)) delete m[k];
+            Object.assign(m, blankKop(name));
+            selected = null;
+          }, 'Programa nuevo creado')
+        )
+          throw Error('No se pudo crear el programa');
+      },
+      restore: (doc) => {
+        E.validate(doc);
+        if (
+          !edit((m) => {
+            for (const k of Object.keys(m)) delete m[k];
+            Object.assign(m, structuredClone(doc));
+            selected = doc.rungs[0]?.id ?? null;
+          }, 'Programa recuperado')
+        )
+          throw Error('No se pudo recuperar el programa');
+      }
+    },
+    test: (steps) => E.scenario(model, steps),
+    runtime: () => ({
+      inputs: { ...model.inputs },
+      outputs: { ...state.outputs }
+    })
   });
   init();
 })();

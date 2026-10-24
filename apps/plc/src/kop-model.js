@@ -101,7 +101,6 @@ export function editDraft(draft, operation) {
     return result;
   }
   if (type === "delete-rung") {
-    if (result.rungs.length === 1) throw new Error("El programa debe tener al menos una red");
     result.rungs.splice(ri, 1);
     return result;
   }

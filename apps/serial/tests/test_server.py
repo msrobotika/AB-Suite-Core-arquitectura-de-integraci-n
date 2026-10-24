@@ -39,3 +39,15 @@ class ServerTests(unittest.TestCase):
             'data_bits':8,'stop_bits':1,'authorized':True})[0],400)
         self.assertEqual(self.request('/api/serial/open','POST',{
             'port':'COM1','baud':9600,'parity':'N','data_bits':8,'stop_bits':1,'authorized':False})[0],400)
+
+    def test_manual_decode_uses_native_crc_without_capture(self):
+        status,_,raw=self.request('/api/decode','POST',{'hex':'01 03 00 00 00 02','append_crc':True})
+        self.assertEqual(status,200);data=json.loads(raw);self.assertTrue(data['crc_ok']);self.assertEqual(data['hex'],'01 03 00 00 00 02 C4 0B')
+        self.assertEqual(data['quantity'],2);self.assertEqual(json.loads(self.request()[2])['count'],0)
+    def test_manual_bad_crc_is_not_a_trusted_reading(self):
+        status,_,raw=self.request('/api/decode','POST',{'hex':'01 03 00 00 00 02 C4 FF','append_crc':False})
+        self.assertEqual(status,200);self.assertFalse(json.loads(raw)['valid'])
+    def test_manual_decode_rejects_bad_bodies_and_unauthorized_requests(self):
+        for body in [{'hex':'GG','append_crc':False},{'hex':'01','append_crc':False},{'hex':'01 03','append_crc':'yes'},{'hex':'00 '*257,'append_crc':False}]:
+            self.assertEqual(self.request('/api/decode','POST',body)[0],400)
+        self.assertEqual(self.request('/api/decode','POST',{'hex':'01 03 00 00 00 02','append_crc':True},authorized=False)[0],401)
