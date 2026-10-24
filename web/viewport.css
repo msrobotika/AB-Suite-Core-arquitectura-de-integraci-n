@@ -1076,6 +1076,9 @@
   }
   .viewport-app .hmi-library .hmi-palette b {
     line-height: 18px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow-wrap: normal;
   }
 }
 
