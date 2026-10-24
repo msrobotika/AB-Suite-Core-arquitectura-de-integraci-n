@@ -8,7 +8,7 @@ Un laboratorio local de programación y automatización con nueve herramientas p
 
 **[Descargar AB Suite completa · ZIP de revisión](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/codex/suite-workspace.zip)**
 
-Esta rama contiene las nueve herramientas integradas. Descarga un solo ZIP, pulsa **Extraer todo** y abre `iniciar.bat` dentro de la carpeta extraída. No abras los HTML sueltos ni descargues nueve repositorios. La revisión sigue en desarrollo; el [cambio completo está en la PR #3](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/pull/3).
+Esta rama contiene las nueve herramientas integradas. Descarga un solo ZIP, pulsa **Extraer todo** y abre `iniciar.bat` dentro de la carpeta extraída. No abras los HTML sueltos ni descargues nueve repositorios. La revisión sigue en desarrollo; el [cambio completo está en la PR #4](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/pull/4).
 
 Consulta [LEEME-PRIMERO.md](LEEME-PRIMERO.md) para instalación, requisitos y solución de problemas.
 
