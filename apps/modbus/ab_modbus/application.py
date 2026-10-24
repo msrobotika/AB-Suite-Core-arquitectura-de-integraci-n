@@ -158,6 +158,23 @@ class Handler(BaseHTTPRequestHandler):
         try:
             length = int(lengths[0])
             if not 1 <= length <= 65536:
+                # Closing a Windows TCP socket with an unread body can reset it
+                # before the client receives 413. Discard a bounded oversized
+                # payload; never parse it or run the requested operation.
+                if 65536 < length <= 1024 * 1024:
+                    timeout = self.connection.gettimeout()
+                    self.connection.settimeout(0.5)
+                    try:
+                        remaining = length
+                        while remaining:
+                            chunk = self.rfile.read(min(65536, remaining))
+                            if not chunk:
+                                break
+                            remaining -= len(chunk)
+                    except OSError:
+                        pass
+                    finally:
+                        self.connection.settimeout(timeout)
                 self.respond(413, {"error": "Petición fuera del límite de 64 KiB"})
                 return
             raw = self.rfile.read(length)

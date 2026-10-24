@@ -16,16 +16,19 @@ class SuiteHost : ApplicationContext {
     StreamWriter log;
     readonly object logLock = new object();
     readonly string folder = Environment.GetEnvironmentVariable("AB_SUITE_DESKTOP_HOME") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AB Suite");
-    readonly bool spanish = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "es";
+    readonly bool spanish;
+    readonly string initialLanguage;
     string url;
     bool stopping;
     bool noBrowser;
     EventWaitHandle quitSignal;
     System.Windows.Forms.Timer quitTimer;
     string Text(string es, string en) { return spanish ? es : en; }
-    void Open() { Process.Start(new ProcessStartInfo(url) { UseShellExecute = true }); }
+    void Open(bool first = false) { Process.Start(new ProcessStartInfo(url + (first && initialLanguage != null ? "?defaultLang=" + initialLanguage : "")) { UseShellExecute = true }); }
     void Write(string value) { lock(logLock) { if(log != null) { log.WriteLine(DateTime.UtcNow.ToString("o") + " " + value); log.Flush(); } } }
-    public SuiteHost(bool headless) {
+    public SuiteHost(bool headless, string choice) {
+        initialLanguage = choice == "spanish" ? "es" : choice == "english" ? "en" : null;
+        spanish = initialLanguage == "es" || initialLanguage == null && System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "es";
         noBrowser = headless;
         quitSignal = new EventWaitHandle(false, EventResetMode.AutoReset, "Local\\ABSuite.Quit");
         quitTimer = new System.Windows.Forms.Timer { Interval = 300 };
@@ -79,7 +82,7 @@ class SuiteHost : ApplicationContext {
                     } catch(WebException) {}
                     if(body != null && body.Contains("\"desktopSession\":\"" + start.EnvironmentVariables["AB_SUITE_DESKTOP_SESSION"] + "\"")) {
                         Write("READY " + url);
-                        if(!noBrowser) Open();
+                        if(!noBrowser) Open(true);
                         return;
                     }
                     await Task.Delay(200);
@@ -108,13 +111,15 @@ class SuiteHost : ApplicationContext {
         using(var mutex=new Mutex(true,"Local\\ABSuite.Desktop",out owner)) {
             if(!owner) {
                 if(Array.IndexOf(args,"--quit") >= 0) { using(var signal=EventWaitHandle.OpenExisting("Local\\ABSuite.Quit")) signal.Set(); return; }
+                if(Array.IndexOf(args,"--no-browser") >= 0) return;
                 var port=Environment.GetEnvironmentVariable("AB_SUITE_PORT")??"4170";
                 Process.Start(new ProcessStartInfo("http://127.0.0.1:"+port+"/") { UseShellExecute=true }); return;
             }
             if(Array.IndexOf(args,"--quit") >= 0) return;
             Environment.SetEnvironmentVariable("AB_SUITE_DESKTOP_SESSION", Guid.NewGuid().ToString("N"));
             Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
-            try { Application.Run(new SuiteHost(Array.IndexOf(args,"--no-browser") >= 0)); }
+            var language=Array.Find(args,arg=>arg.StartsWith("--language="));
+            try { Application.Run(new SuiteHost(Array.IndexOf(args,"--no-browser") >= 0,language == null ? null : language.Substring(11))); }
             catch(Exception error) { MessageBox.Show(error.Message,"AB Suite",MessageBoxButtons.OK,MessageBoxIcon.Error); }
         }
     }

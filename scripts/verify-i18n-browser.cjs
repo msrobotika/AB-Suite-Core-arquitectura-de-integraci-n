@@ -116,13 +116,11 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/i18n';
             .waitFor();
           assert.deepEqual(await model(), before);
           if (id === 'bi') {
-            await page
-              .locator('#uploadInput')
-              .setInputFiles({
-                name: 'own_labels.csv',
-                mimeType: 'text/csv',
-                buffer: Buffer.from('Nombre,Valor\nDatos,42\n')
-              });
+            await page.locator('#uploadInput').setInputFiles({
+              name: 'own_labels.csv',
+              mimeType: 'text/csv',
+              buffer: Buffer.from('Nombre,Valor\nDatos,42\n')
+            });
             await page.locator('#import-destination-dialog[open]').waitFor();
             await page.locator('#import-destination').selectOption('current');
             await page
@@ -254,6 +252,28 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/i18n';
             .waitFor();
           await fresh.close();
         }
+        const installed = await browser.newContext({ locale: 'en-US' });
+        const initial = watch(await installed.newPage());
+        await initial.goto(base + '/?defaultLang=es');
+        await initial
+          .getByRole('heading', {
+            name: 'Nueve herramientas. Tú eliges.',
+            exact: true
+          })
+          .waitFor();
+        await initial.goto(base + '/apps/kop/');
+        await initial.waitForFunction(
+          () => document.documentElement.lang === 'es' && ABSuite.documentsReady
+        );
+        await initial.locator('#suite-language').selectOption('en');
+        await initial.goto(base + '/?defaultLang=es');
+        await initial
+          .getByRole('heading', {
+            name: 'Nine tools. Your choice.',
+            exact: true
+          })
+          .waitFor();
+        await installed.close();
       }
     );
     await run(

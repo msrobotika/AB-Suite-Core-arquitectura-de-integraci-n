@@ -43,8 +43,8 @@ Name: "desktopicon"; Description: "{cm:DesktopShortcut}"; GroupDescription: "{cm
 [Files]
 Source: "{#Payload}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 [Icons]
-Name: "{group}\AB Suite"; Filename: "{app}\AB Suite.exe"
-Name: "{autodesktop}\AB Suite"; Filename: "{app}\AB Suite.exe"; Tasks: desktopicon
+Name: "{group}\AB Suite"; Filename: "{app}\AB Suite.exe"; Parameters: "--language={language}"
+Name: "{autodesktop}\AB Suite"; Filename: "{app}\AB Suite.exe"; Parameters: "--language={language}"; Tasks: desktopicon
 Name: "{group}\{cm:UninstallProgram,AB Suite}"; Filename: "{uninstallexe}"
 [Run]
-Filename: "{app}\AB Suite.exe"; Description: "{cm:RunSuite}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\AB Suite.exe"; Parameters: "--language={language}"; Description: "{cm:RunSuite}"; Flags: nowait postinstall skipifsilent

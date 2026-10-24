@@ -7,12 +7,20 @@ const message = (text) =>
 let language = navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en';
 try {
   const requested = new URLSearchParams(location.search).get('lang');
+  const initial = new URLSearchParams(location.search).get('defaultLang');
   const stored = localStorage.getItem(key);
   language = ['es', 'en'].includes(requested)
     ? requested
     : ['es', 'en'].includes(stored)
       ? stored
-      : language;
+      : ['es', 'en'].includes(initial)
+        ? initial
+        : language;
+  if (
+    ['es', 'en'].includes(requested) ||
+    (!['es', 'en'].includes(stored) && ['es', 'en'].includes(initial))
+  )
+    localStorage.setItem(key, language);
 } catch {}
 const originals = new WeakMap();
 const attributes = new WeakMap();

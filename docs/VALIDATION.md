@@ -15,7 +15,7 @@ python -m pip install pytest==9.1.1 httpx==0.28.1
 python scripts/verify-python.py
 ```
 
-Usar el intérprete preparado de `.venv`. Se ejecutan **143 pruebas Python**: 45 Modbus, 17 Serial, 15 Vision y 66 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
+Usar el intérprete preparado de `.venv`. Se ejecutan **144 pruebas Python**: 46 Modbus, 17 Serial, 15 Vision y 66 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
 
 Las pruebas Python históricas de navegador no se incluyen en este comando. La nueva distribución se recorre mediante las pruebas de navegador comunes; no se contabilizan pruebas omitidas como aprobadas. FastAPI/Starlette emite un aviso de deprecación de su adaptador httpx de pruebas; no produjo fallos.
 
@@ -84,3 +84,5 @@ Diez recorridos adicionales comprueban las nueve aplicaciones visibles con enlac
 `python scripts/verify-windows-install.py --installer <exe> --workspace <carpeta de pruebas> --browser-tests`: instalación en inglés sin elevación, nueve herramientas con PATH vacío, recorridos del paquete instalado, actualización en español, salida de los procesos y desinstalación conservando datos. Solo ejecutarlo sobre carpetas de pruebas descartables. La compilación se documenta en `desktop/README.md`.
 
 `node scripts/verify-viewport-browser.cjs`: 9 recorridos de ventana por aplicación, en español e inglés a 1280×720 y 1366×768. Abre las tareas y paneles reales; crea redes/etapas y los 14 tipos HMI; verifica que ningún mando activo quede fuera de la ventana. El documento (programa, imagen, tablas, histórico o capas) puede desplazarse dentro de su área; la página y las barras de control permanecen fijas.
+
+Modbus verifica respuestas HTTP 413 ante tres tamaños de petición excesiva. El servidor descarta un cuerpo acotado antes de cerrar para que Windows no sustituya la respuesta por un reinicio TCP; no analiza ni ejecuta esas solicitudes.

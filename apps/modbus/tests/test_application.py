@@ -99,6 +99,14 @@ class ApplicationTests(unittest.TestCase):
         finally:
             second.simulator.stop()
 
+    def test_oversized_requests_return_errors_without_resetting_the_client(self):
+        for size in (65537, 70000, 131072):
+            status, headers, raw = self.request("POST", "/api/monitor/clear", "x" * size)
+            self.assertEqual(status, 413)
+            self.assertEqual(int(headers["Content-Length"]), len(raw))
+            self.assertIn("64 KiB", json.loads(raw)["error"])
+        self.assertEqual(self.request()[0], 200)
+
     def test_memory_api_is_local(self):
         self.app.simulator.start(0)
         self.assertEqual(self.request("POST", "/api/simulator/memory", {"function": 3, "address": 0, "value": 234})[0], 200)
