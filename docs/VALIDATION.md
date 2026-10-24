@@ -8,7 +8,7 @@ Validación local realizada en Windows, Node 24 y Python 3.13, con Chromium head
 node scripts/check-workspace.mjs
 ```
 
-La comprobación analiza la sintaxis de JavaScript y ejecuta **216 pruebas Node** del bus, contratos, HMI, almacenamiento de CPU y motores PLC/KOP/SCL/GRAFCET/Vision/SCADA histórico. Las 62 pruebas del PLC incluyen ejecución determinista y uso de una misma CPU desde HTTP/Modbus/Core.
+La comprobación analiza la sintaxis de JavaScript y ejecuta **220 pruebas Node** del bus, contratos, HMI, almacenamiento de CPU y motores PLC/KOP/SCL/GRAFCET/Vision/SCADA histórico. Las 62 pruebas del PLC incluyen ejecución determinista y uso de una misma CPU desde HTTP/Modbus/Core.
 
 ```sh
 python -m pip install pytest==9.1.1 httpx==0.28.1
@@ -28,6 +28,7 @@ node scripts/verify-browser.cjs
 node scripts/verify-bi-browser.cjs
 node scripts/verify-editors-browser.cjs
 node scripts/verify-new-user-browser.cjs
+node scripts/verify-resident-browser.cjs
 ```
 
 El primer script verifica **14 recorridos**: apertura de las nueve herramientas, ejecución KOP, HMI vinculado/caducidad/persistencia/errores, transferencia SCL a PLC, etapas GRAFCET, lecturas Modbus auténticas, comparación con la CPU compartida, captura/exportación Serial, inspección Vision, datos propios/SQL/exportación BI , caída/recuperación de servicios sin publicar señales obsoletas y adaptación a 390 px de las nueve herramientas y catálogo.
@@ -38,7 +39,7 @@ El tercer script verifica **14 recorridos de edición KOP/HMI**: área de trabaj
 
 El cuarto script añade **29 recorridos de primer uso**: inicio sin demo; trabajo propio y resultado en cada herramienta; reemplazo, recuperación y recarga/móvil en las nueve; y Vision con imagen permanente, cinco paneles sin desplazamiento a 1280×720, 1366×768 y 1920×1080, región por coordenadas, ayuda y ampliación.
 
-En total son **65 recorridos de navegador** (14 generales + 8 BI + 14 editores + 29 primer uso). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
+En total son **69 recorridos de navegador** (14 generales + 8 BI + 14 editores + 29 primer uso + 4 CPU residente). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
 
 Los scripts rechazan errores JavaScript/CSP y generan capturas/resultados en `.suite-data/qa`. Para usar instalaciones existentes de pruebas, `AB_SUITE_PLAYWRIGHT` permite indicar el módulo y `AB_SUITE_BROWSER` el ejecutable. `AB_SUITE_EVIDENCE` cambia el directorio de evidencia. Estas variables no afectan a la aplicación que usa el estudiante.
 
@@ -57,3 +58,9 @@ La difusión sigue aplazada según [RELEASE_READINESS.md](RELEASE_READINESS.md).
 CI de 0.4.0 detectó desbordamiento real en el panel IP de Vision sobre Linux. Las credenciales opcionales se trasladan a un diálogo; se mantiene la aserción sin scroll y se prueba que la contraseña no entra en el documento. Se añaden contratos públicos tipados, compilación de consumidores en CI, pruebas de identidad de validadores y errores de red accionables. No se cuenta el CI anterior fallido como aprobado.
 
 Tras instalar dependencias de desarrollo, `npm run test:contracts` verifica consumidores TypeScript. El runtime continúa usando los validadores originales; los tipos no sustituyen permisos, límites ni validación de datos recibidos.
+
+## CPU residente y SCADA 0.4.2
+
+Cuatro pruebas de motor/HTTP comprueban proyección del estado ejecutado, autorización, Origin, lectura sin comandos, error 503 y que una caída no refresca timestamps. Cuatro recorridos de navegador comprueban salida/ciclo reales, cerrar PLC manteniendo CPU y HMI, caída/caducidad sin recurrir a datos de otra pestaña y recarga de SCADA sin reabrir PLC.
+
+El resto de motores de navegador conservan su alcance de pestaña. No se anuncia un proyecto universal `.absuite`, historial SCADA en SQLite ni un ejecutable nativo que todavía no se ha entregado.

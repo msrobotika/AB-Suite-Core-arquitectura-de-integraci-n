@@ -6,7 +6,7 @@ Editor de pantallas HMI sobre un lienzo libre. Biblioteca de 14 tipos: rectángu
 
 Permite arrastrar, redimensionar, editar coordenadas, dimensiones, colores y trazo, ordenar capas, duplicar y deshacer/rehacer. Rejilla opcional de 10 px, zoom y ajuste al área disponible. El inspector y la biblioteca son plegables; en móvil se abren como paneles.
 
-Los componentes de supervisión leen señales de otras pestañas de AB Suite. El depósito visualiza un valor según su escala; no simula un proceso hidráulico. Una señal desconocida o caducada nunca se convierte en cero. Probar conserva la composición y permite utilizar la navegación; no escribe sobre hardware.
+Los componentes de supervisión leen la CPU residente de AB Suite sin necesitar su pestaña abierta. Las demás fuentes de navegador necesitan su pestaña para publicar. El depósito visualiza un valor según su escala; no simula un proceso hidráulico. Una señal desconocida o caducada nunca se convierte en cero. Probar conserva la composición y permite utilizar la navegación; no escribe sobre hardware.
 
 Los proyectos `.hmi.json` guardan pantallas, objetos, capas y enlaces. Los proyectos v1 anteriores reciben geometría predeterminada al abrirse. Límite: 12 pantallas, 30 objetos por pantalla y 120 por proyecto; lienzos de hasta 3840 × 2160. No incluye scripting, grupos, importación de SVG externo ni conexiones automáticas entre tuberías.
 

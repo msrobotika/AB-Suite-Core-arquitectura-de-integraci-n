@@ -5,7 +5,8 @@
 | KOP/SCL → PLC | Transferencia validada del proyecto | Aceptación, mapa de símbolos y carga en CPU residente |
 | PLC → Modbus | TCP FC01–04 | La misma CPU de edición/laboratorio; solo lectura |
 | PLC → BI | Captura HTTP explícita al espacio activo | Tabla SuitePLC; cambiar espacio detiene la captura anterior |
-| PLC/KOP/SCL/GRAFCET/Vision/Modbus/Serial → HMI | Señales de navegador del mismo origen | Publicación real; caducidad a cinco segundos; mantener pestañas de origen abiertas |
+| PLC → HMI | HTTP autenticado al estado residente | CPU independiente de pestañas; caducidad a cinco segundos si el servicio falla |
+| KOP/SCL/GRAFCET/Vision/Modbus/Serial → HMI | Señales de navegador del mismo origen | Publicación real; caducidad a cinco segundos; mantener pestañas de origen abiertas |
 | Serial/Vision/Modbus → BI | Exportar/importar archivos | No afirmar streaming donde solo existe un CSV |
 | CPU → Core aislado | Puente versionado y HTTP/SSE autenticado | Adaptadores independientes; no es el mecanismo de todas las conexiones de la suite |
 

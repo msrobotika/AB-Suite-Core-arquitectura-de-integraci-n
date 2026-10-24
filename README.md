@@ -35,7 +35,7 @@ En cualquiera de las nueve herramientas, pulsa **＋ Nuevo** en la barra común,
 
 KOP y PLC empiezan sin redes: añade la primera y define tus contactos. GRAFCET conserva una única etapa inicial sin acciones; SCADA un lienzo sin objetos; Vision no tiene imagen; Modbus y Serial no muestran resultados anteriores; BI crea otro espacio sin tablas. La [guía de primer uso](docs/NEW_USER_WORKFLOW.md) explica una práctica propia en cada herramienta y qué se conserva al cerrar.
 
-Para comprobar la interconexión, sigue la [práctica PLC → Modbus → BI](docs/WORKFLOW_PLC_MODBUS_BI.md). La [revisión de la auditoría externa](docs/AUDIT_FOLLOWUP.md) distingue lo implementado, lo corregido y lo pendiente.
+Para comprobar la interconexión, sigue la [práctica PLC → Modbus → BI](docs/WORKFLOW_PLC_MODBUS_BI.md). La [revisión de la auditoría externa](docs/AUDIT_FOLLOWUP.md) distingue lo implementado, lo corregido y lo pendiente. La [estrategia de plataforma](docs/PLATFORM_STRATEGY.md) ordena las siguientes entregas y contrasta la segunda auditoría con el código real.
 
 ## Herramientas y conexiones reales
 
@@ -69,7 +69,7 @@ Mueve y redimensiona con el ratón o escribe coordenadas y dimensiones en el ins
 
 Crea pantallas independientes y usa el componente **Navegación** para abrirlas en modo **Probar**. Exporta el proyecto `.hmi.json`; los proyectos v1 de tarjetas se adaptan al lienzo sin perder sus señales. Consulta la [guía de editores](docs/EDITORS.md).
 
-No se impone una línea de producción. Si una fuente no actualiza sus señales durante cinco segundos, se muestran como caducadas. Mantén abiertas las pestañas que publican señales.
+No se impone una línea de producción. Si una fuente no actualiza sus señales durante cinco segundos, se muestran como caducadas. La CPU PLC permanece en el servidor y SCADA la consulta directamente: cerrar PLC no detiene la CPU ni sus lecturas en el HMI. Los demás editores que publican desde el navegador necesitan su pestaña abierta.
 
 ## Guardado y privacidad
 
@@ -94,11 +94,12 @@ node scripts/verify-browser.cjs
 node scripts/verify-bi-browser.cjs
 node scripts/verify-editors-browser.cjs
 node scripts/verify-new-user-browser.cjs
+node scripts/verify-resident-browser.cjs
 ```
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
 
-La versión 0.4.1 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
+La versión 0.4.2 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 

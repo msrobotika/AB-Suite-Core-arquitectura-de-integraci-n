@@ -7,6 +7,7 @@ import {
   SIGNAL_TYPES
 } from './hmi-model.js';
 import { PREFIX, parseSnapshot, signalValue } from '/suite/signal-contract.js';
+import { createResidentSource } from '/suite/resident-source.js';
 const $ = (id) => document.getElementById(id),
   KEY = 'ab-suite:hmi-project:v1';
 const el = (tag, text, cls) => {
@@ -25,6 +26,17 @@ let project = validateProject(blankProject()),
   redo = [];
 const trends = new Map(),
   acks = new Set();
+const resident = window.ABSuitePLC?.token
+  ? createResidentSource({
+      fetcher: window.fetch.bind(window),
+      token: window.ABSuitePLC.token,
+      onChange: () => updateValues()
+    })
+  : null;
+resident?.start();
+window.addEventListener('pagehide', (event) => {
+  if (!event.persisted) resident?.stop();
+});
 let recoverError = '';
 try {
   const raw = localStorage.getItem(KEY);
@@ -93,6 +105,11 @@ function snapshots() {
     'serial',
     'bi'
   ]) {
+    if (name === 'plc' && resident) {
+      const current = resident.get();
+      if (current) result.plc = current;
+      continue;
+    }
     try {
       const s = parseSnapshot(localStorage.getItem(PREFIX + name));
       if (s) result[name] = s;
@@ -348,7 +365,9 @@ function updateValues() {
             ? 'Vincula una señal'
             : value.quality === 'stale'
               ? 'Señal caducada · origen sin actualizar'
-              : 'Sin señal · abre el origen',
+              : w.source === 'plc' && resident
+                ? 'CPU sin señal · comprueba el servicio de la suite'
+                : 'Sin señal · abre el origen',
           'widget-quality'
         )
       );
@@ -588,7 +607,7 @@ $('preview-mode').onclick = () => {
   render();
   fit();
   notice(
-    'Vista previa: comprueba tu pantalla con los datos de las otras pestañas.'
+    'Vista previa: comprueba tu pantalla con la CPU residente y las fuentes conectadas.'
   );
 };
 $('design-mode').onclick = () => {
@@ -807,4 +826,34 @@ else if (screen().widgets.length)
   );
 setInterval(updateValues, 750);
 
-window.ABSuite?.register({documents:{get:()=>structuredClone(project),create:name=>mutate(()=>{project=validateProject(blankProject());project.name=name;screenId=project.screens[0].id;selected=null;preview=false},'Proyecto HMI nuevo y vacío.'),restore:doc=>{const next=validateProject(doc);mutate(()=>{project=next;screenId=next.screens[0].id;selected=null;preview=false},'Proyecto HMI recuperado.')}},arrange:kind=>{if(!widget())throw Error('Selecciona un objeto');mutate(()=>{const w=widget();if(kind==='center-x')w.x=Math.round((screen().width-w.width)/2);if(kind==='center-y')w.y=Math.round((screen().height-w.height)/2)},'Objeto centrado.')}});
+window.ABSuite?.register({
+  documents: {
+    get: () => structuredClone(project),
+    create: (name) =>
+      mutate(() => {
+        project = validateProject(blankProject());
+        project.name = name;
+        screenId = project.screens[0].id;
+        selected = null;
+        preview = false;
+      }, 'Proyecto HMI nuevo y vacío.'),
+    restore: (doc) => {
+      const next = validateProject(doc);
+      mutate(() => {
+        project = next;
+        screenId = next.screens[0].id;
+        selected = null;
+        preview = false;
+      }, 'Proyecto HMI recuperado.');
+    }
+  },
+  arrange: (kind) => {
+    if (!widget()) throw Error('Selecciona un objeto');
+    mutate(() => {
+      const w = widget();
+      if (kind === 'center-x') w.x = Math.round((screen().width - w.width) / 2);
+      if (kind === 'center-y')
+        w.y = Math.round((screen().height - w.height) / 2);
+    }, 'Objeto centrado.');
+  }
+});

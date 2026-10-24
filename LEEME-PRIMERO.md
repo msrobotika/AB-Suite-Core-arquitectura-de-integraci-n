@@ -1,4 +1,4 @@
-# AB Suite completa · 0.4.1 de revisión
+# AB Suite completa · 0.4.2 de revisión
 
 Esta carpeta contiene las nueve herramientas: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. No necesitas descargarlas por separado.
 
@@ -34,3 +34,5 @@ Consulta [una práctica propia por herramienta](docs/NEW_USER_WORKFLOW.md).
 - Para salir: Ctrl+C en la consola. Los proyectos guardados quedan en el navegador o `.suite-data`; exporta los archivos antes de cambiar de ordenador o borrar esa carpeta.
 
 Los ocho puntos de vuelta por herramienta son una ayuda local, no una copia externa. Exporta tus proyectos y conserva `.suite-data` para no perder los espacios BI y el programa de CPU.
+
+La CPU virtual sigue en el servidor al cerrar PLC. SCADA consulta directamente esa CPU; si detienes la suite, las lecturas caducan. Los editores KOP/SCL/GRAFCET que ejecutan en navegador conservan su alcance de pestaña.
