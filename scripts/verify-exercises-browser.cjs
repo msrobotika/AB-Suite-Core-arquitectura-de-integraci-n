@@ -244,6 +244,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
           await p.locator('#suite-projects').click();
           await p.locator('#suite-exercise-manage').click();
           if (tool === 'kop') {
+            await p.setViewportSize({ width: 1280, height: 720 });
             await p.screenshot({
               path: path.join(dir, 'anadir-ejercicio-dialogo.png')
             });
@@ -253,6 +254,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
                 .evaluate((e) => e.scrollHeight <= e.clientHeight + 2),
               true
             );
+            await p.setViewportSize({ width: 1440, height: 1000 });
           }
           await p
             .locator('#suite-exercise-select option')

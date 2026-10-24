@@ -25,3 +25,4 @@ body[data-suite-app] .kop-studio .kop-inspector{border-radius:0!important}
 [hidden]{display:none!important}
 .suite-exercise-actions{margin-top:24px;padding-top:15px;border-top:1px solid #40516a;display:grid;gap:12px}.suite-exercise-actions h3,.suite-exercise-actions p{margin:0}.suite-exercise-actions label{display:grid;gap:8px}.suite-exercise-actions a{color:#8ce2d1;font-size:12px}.suite-exercise-actions select,.suite-exercise-actions input{min-width:0;width:100%;box-sizing:border-box;padding:10px}.suite-documents{max-height:85dvh;overflow:auto}
 .suite-exercise-capture{max-width:560px}.suite-exercise-capture .suite-exercise-actions{border:0;margin-top:20px;padding:0}.suite-exercise-capture .suite-exercise-actions h3{font-size:22px}.suite-exercise-capture .suite-exercise-actions label{font-size:12px;color:#becbe0}
+.suite-exercise-capture>button:first-child{float:none;display:block;margin-left:auto}
