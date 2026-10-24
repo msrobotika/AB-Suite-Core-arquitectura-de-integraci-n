@@ -30,6 +30,7 @@ node scripts/verify-editors-browser.cjs
 node scripts/verify-new-user-browser.cjs
 node scripts/verify-resident-browser.cjs
 node scripts/verify-exercises-browser.cjs
+node scripts/verify-portal-browser.cjs
 ```
 
 El primer script verifica **14 recorridos**: apertura de las nueve herramientas, ejecución KOP, HMI vinculado/caducidad/persistencia/errores, transferencia SCL a PLC, etapas GRAFCET, lecturas Modbus auténticas, comparación con la CPU compartida, captura/exportación Serial, inspección Vision, datos propios/SQL/exportación BI , caída/recuperación de servicios sin publicar señales obsoletas y adaptación a 390 px de las nueve herramientas y catálogo.
@@ -40,7 +41,7 @@ El tercer script verifica **14 recorridos de edición KOP/HMI**: área de trabaj
 
 El cuarto script añade **29 recorridos de primer uso**: inicio sin demo; trabajo propio y resultado en cada herramienta; reemplazo, recuperación y recarga/móvil en las nueve; y Vision con imagen permanente, cinco paneles sin desplazamiento a 1280×720, 1366×768 y 1920×1080, región por coordenadas, ayuda y ampliación.
 
-En total son **86 recorridos de navegador** (14 generales + 8 BI + 14 editores + 29 primer uso + 4 CPU residente + 17 ejercicios portables). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
+En total son **96 recorridos de navegador** (14 generales + 8 BI + 14 editores + 29 primer uso + 4 CPU residente + 17 ejercicios portables + 10 portal y biblioteca). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
 
 Los scripts rechazan errores JavaScript/CSP y generan capturas/resultados en `.suite-data/qa`. Para usar instalaciones existentes de pruebas, `AB_SUITE_PLAYWRIGHT` permite indicar el módulo y `AB_SUITE_BROWSER` el ejecutable. `AB_SUITE_EVIDENCE` cambia el directorio de evidencia. Estas variables no afectan a la aplicación que usa el estudiante.
 
@@ -70,4 +71,8 @@ El resto de motores de navegador conservan su alcance de pestaña. El histórico
 
 Once pruebas Node nuevas verifican los nueve documentos, límites de archivo, versiones y objetos, ausencia de referencias BI, señales archivadas, cabeceras PNG y parámetros de entrada de los servidores nativos. Siete pruebas Python BI verifican validación semántica de solo lectura, datos rechazados y conservación del espacio activo. Diecisiete recorridos adicionales de navegador reúnen documentos propios de las nueve herramientas, descargan el archivo, importan en otro contexto, abren cada componente y recuperan el trabajo previo. Incluyen SQL sobre los datos recuperados, imagen/ROI/referencia Vision, CPU STOP, archivo Serial, lectura Modbus caducada, error al conservar y error al aplicar, detección de otra vista, migración de biblioteca, conservación de componentes anteriores al actualizarlos, Vision tras recargar sin depender del límite de localStorage y móvil.
 
-El total es 86 recorridos (14 + 8 + 14 + 29 + 4 + 17). [Contrato, operaciones y límites](EXERCISES.md). Una copia explícita de documentos no se presenta como sincronización automática ni restauración simultánea del entorno de ejecución.
+El total es 96 recorridos (14 + 8 + 14 + 29 + 4 + 17 + 10). [Contrato, operaciones y límites](EXERCISES.md). Una copia explícita de documentos no se presenta como sincronización automática ni restauración simultánea del entorno de ejecución.
+
+## Inicio independiente y biblioteca 0.5.1
+
+Diez recorridos adicionales comprueban las nueve aplicaciones visibles con enlaces de apertura dentro de tres tamaños de escritorio, favoritas persistentes con inicio en Todas, búsqueda/filtros, diálogos por teclado y apertura de una herramienta sin cargar servicios de otras. El panel opcional consulta la CPU residente sin necesitar su vista, exporta muestras y verifica caducidad/recuperación ante 503 sin recurrir a una caché falsa reciente. Verifican migración desde IndexedDB v2 conservando documentos y copias, listado solo de índices sin getAll de cargas completas, renombrado con fallo de almacenamiento, duplicado independiente, archivo/restauración, bloqueo de captura sobre archivados, retirada/recuperación de componentes, cambios desde otra pestaña, concurrencia y móvil. No se afirma una auditoría completa de accesibilidad.

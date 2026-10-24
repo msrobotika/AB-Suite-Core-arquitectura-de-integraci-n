@@ -1,7 +1,7 @@
 /** Explicit capture and non-destructive component opening. No background synchronization. MIT. */
 import { validateComponent } from './exercise-contract.js';
 import {
-  allExercises,
+  listExercises,
   getExercise,
   createExercise,
   addComponent,
@@ -187,12 +187,14 @@ export function mountExerciseActions(dialog) {
   document.body.append(capture);
   let busy = false;
   async function refresh(selected = picker.value) {
-    const records = await allExercises();
+    const records = (await listExercises()).filter(
+      (record) => !record.archivedAt
+    );
     picker.replaceChildren();
     for (const record of records.sort((a, b) =>
       b.updatedAt.localeCompare(a.updatedAt)
     )) {
-      const option = element('option', record.document.name);
+      const option = element('option', record.name);
       option.value = record.id;
       picker.append(option);
     }
@@ -213,6 +215,11 @@ export function mountExerciseActions(dialog) {
       add.disabled = !picker.options.length;
     }
   }
+  for (const event of ['focus', 'ab-suite:library-changed'])
+    window.addEventListener(event, () => {
+      if (capture.open && !busy)
+        refresh().catch((error) => (message.textContent = error.message));
+    });
   create.onclick = () =>
     run(async () => {
       const record = await createExercise(name.value);
@@ -280,7 +287,10 @@ export async function offerExerciseComponent() {
     try {
       await requireSingleView();
       const before = await portableDocument();
-      await saveRecovery(tool, before);
+      await saveRecovery(tool, before, {
+        exerciseId: request.exercise ?? null,
+        reason: 'Antes de abrir un componente'
+      });
       try {
         await apply(next);
       } catch (error) {

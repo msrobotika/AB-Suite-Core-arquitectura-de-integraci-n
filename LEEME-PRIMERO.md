@@ -1,4 +1,4 @@
-# AB Suite completa · 0.5.0 de revisión
+# AB Suite completa · 0.5.1 de revisión
 
 Esta carpeta contiene las nueve herramientas: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. No necesitas descargarlas por separado.
 

@@ -43,6 +43,17 @@
           hidden
           aria-label="Archivo de ejercicio"
         />
+        <label for="exercise-search">Buscar ejercicio</label
+        ><input
+          id="exercise-search"
+          type="search"
+          placeholder="Nombre o componente"
+        /><label for="exercise-view">Mostrar</label
+        ><select id="exercise-view">
+          <option value="active">En curso</option>
+          <option value="archived">Archivados</option>
+        </select>
+        <p id="exercise-count" role="status"></p>
         <div id="exercise-list" aria-label="Ejercicios guardados"></div>
       </aside>
       <section class="exercise-workspace">
@@ -53,13 +64,25 @@
             </p>
             <h2 id="exercise-title">Empieza un ejercicio</h2>
           </div>
-          <button
-            id="exercise-export"
-            class="suite-action suite-primary"
-            disabled
-          >
-            Descargar .absuite
-          </button>
+          <div class="exercise-toolbar">
+            <details id="exercise-organize">
+              <summary class="suite-action">Organizar</summary>
+              <div class="exercise-menu">
+                <button id="exercise-rename" type="button">Renombrar</button
+                ><button id="exercise-duplicate" type="button">Duplicar</button
+                ><button id="exercise-archive" type="button">
+                  Archivar ejercicio
+                </button>
+              </div>
+            </details>
+            <button
+              id="exercise-export"
+              class="suite-action suite-primary"
+              disabled
+            >
+              Descargar .absuite
+            </button>
+          </div>
         </div>
         <p id="exercise-message" role="status" aria-live="polite"></p>
         <p id="exercise-intro">
@@ -69,7 +92,14 @@
         <div id="exercise-components" class="exercise-components"></div>
         <details class="exercise-recoveries">
           <summary>Trabajos conservados</summary>
+          <label for="recovery-tool">Herramienta de las copias</label
+          ><select id="recovery-tool">
+            <option value="all">Todas las herramientas</option>
+          </select>
           <div id="exercise-recoveries"></div>
+          <button id="recovery-more" class="suite-action" type="button" hidden>
+            Ver más copias
+          </button>
         </details>
         <p class="exercise-note">
           Cada componente es una copia del momento en que lo añades. Los cambios
@@ -79,5 +109,24 @@
         </p>
       </section>
     </main>
+    <dialog id="exercise-name-dialog" class="suite-guide">
+      <form id="exercise-name-form">
+        <h2 id="exercise-name-title">Renombrar ejercicio</h2>
+        <label for="exercise-edit-name">Nombre</label
+        ><input id="exercise-edit-name" required maxlength="90" />
+        <p id="exercise-name-error" role="alert"></p>
+        <div class="suite-document-actions">
+          <button id="exercise-name-cancel" class="suite-action" type="button">
+            Cancelar</button
+          ><button
+            id="exercise-name-save"
+            class="suite-action suite-primary"
+            type="submit"
+          >
+            Guardar nombre
+          </button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>

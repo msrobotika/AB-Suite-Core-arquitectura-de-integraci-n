@@ -41,3 +41,5 @@ El navegador sigue necesitando los servicios locales de las herramientas que los
 ## Biblioteca de ejercicios portables
 
 `web/exercise-contract.js` valida manifiestos y documentos con motores nativos; BI valida semántica mediante un endpoint de solo lectura. `exercise-store.js` conserva ejercicios y copias previas en transacciones IndexedDB. `exercise-bridge.js` captura documentos desde la herramienta activa y abre un componente tras conservar una copia persistente; BI exporta datos completos y abre otro espacio. El gestor `/suite/exercises.html` importa en una entrada nueva tras validar todo. No modifica aplicaciones durante esa importación ni promete sincronizar las copias. [Operaciones y formato](EXERCISES.md).
+
+IndexedDB v3 añade índices de ejercicios y recuperación sin cargas completas para listar. La actualización de documento/índice y la conservación de componentes retirados comparten transacción. Renombrar, duplicar y archivar no modifican aplicaciones activas. El catálogo siempre abre mostrando las nueve herramientas; las favoritas son preferencias locales, no dependencias entre motores.

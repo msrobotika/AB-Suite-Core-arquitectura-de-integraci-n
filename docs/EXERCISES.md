@@ -1,5 +1,7 @@
 # Ejercicios portables de AB Suite
 
+Cada herramienta se puede usar por separado desde el catálogo; la biblioteca de ejercicios es opcional.
+
 Un `.absuite` reúne copias completas de documentos de las nueve herramientas. Puedes empezar con una sola y añadir las demás conforme avance tu práctica. Los formatos nativos siguen disponibles.
 
 ## Crear y llevarte tu ejercicio
@@ -12,6 +14,14 @@ Un `.absuite` reúne copias completas de documentos de las nueve herramientas. P
 6. Pulsa **Abrir copia guardada** en un componente. Antes de aplicarlo, la suite conserva el trabajo actual en **Trabajos conservados**. BI abre otro espacio y mantiene el anterior en su biblioteca.
 
 **Las copias son explícitas.** Editar después en una herramienta no actualiza automáticamente el ejercicio ni un archivo ya descargado. Vuelve a añadir la copia y descargar el archivo cuando quieras incorporar los cambios.
+
+## Organizar sin perder el trabajo
+
+Busca por nombre de ejercicio o componente. Cada entrada muestra su última actualización y número de componentes. **Organizar** permite renombrar, crear una copia independiente y archivar. Los archivados conservan sus datos, siguen siendo descargables y aparecen al elegir **Archivados**; **Restaurar ejercicio** los devuelve a los destinos de captura. Archivar no libera espacio ni borra archivos.
+
+El menú de un componente permite **Retirar del ejercicio** sin modificar la herramienta activa. Su documento completo queda en **Trabajos conservados**, donde puedes filtrar por herramienta, abrirlo o volver a añadirlo al ejercicio seleccionado. Antes de sustituir un componente al recuperarlo se conserva también el que estuviera en su lugar.
+
+La biblioteca lista índices pequeños con nombres, fechas y herramientas. Las imágenes, tablas y fuentes completas se leen al abrir, descargar, modificar, duplicar o recuperar. Las migraciones conservan los documentos y las copias guardadas en versiones anteriores.
 
 ## Contenido y límites
 

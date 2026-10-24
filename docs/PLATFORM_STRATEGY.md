@@ -2,6 +2,8 @@
 
 24 de octubre de 2026. Criterio: completar recorridos útiles y verificables antes de ampliar tecnologías o difusión. La etiqueta «premium» no sustituye pruebas ni observación con usuarios.
 
+La entrada de la plataforma presenta las nueve herramientas como productos independientes. Cada persona puede utilizar solo las que necesita. Los ejercicios portables y las conexiones son capacidades opcionales; no son requisitos para abrir una herramienta ni una ruta obligatoria.
+
 ## Orden de trabajo
 
 | Prioridad | Entrega | Criterio de aceptación |

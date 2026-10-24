@@ -29,6 +29,10 @@ node scripts/workspace.mjs
 
 Abre **[AB Suite local](http://127.0.0.1:4170)**. Ctrl+C detiene la suite. `AB_SUITE_PORT` permite elegir otro puerto y `AB_SUITE_PYTHON` un intérprete ya preparado. Si falta Python, las herramientas de navegador siguen disponibles y el catálogo identifica los motores pendientes.
 
+## Tú eliges las herramientas
+
+El inicio muestra las nueve aplicaciones al mismo nivel. Puedes usar una sola, marcar favoritas o buscar por función; no exige seguir una ruta ni crear un ejercicio conjunto. La ayuda, las conexiones y la descarga se abren desde la cabecera. En cada entrada se muestran de nuevo las nueve, conservando las estrellas que hayas marcado.
+
 ## Tu primer proyecto
 
 En cualquiera de las nueve herramientas, pulsa **＋ Nuevo** en la barra común, escribe un nombre y crea tu trabajo. El anterior queda recuperable en **Proyectos**. Los ejemplos son opcionales y no se cargan al iniciar KOP, SCL, GRAFCET o Vision.
@@ -106,7 +110,7 @@ node scripts/verify-exercises-browser.cjs
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
 
-La versión 0.5.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
+La versión 0.5.1 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 

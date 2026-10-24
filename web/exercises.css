@@ -204,3 +204,190 @@ input:focus-visible {
     font-size: 24px;
   }
 }
+
+.exercise-library > label {
+  display: block;
+  margin: 15px 0 8px;
+}
+.exercise-library > select {
+  padding: 10px;
+  width: 100%;
+  background: #101824;
+  border: 1px solid #3b4a61;
+  border-radius: 8px;
+  color: #dce5f4;
+  min-height: 40px;
+}
+#exercise-count {
+  font-size: 11px;
+  color: #9eafc4;
+}
+.exercise-list-item {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
+}
+.exercise-list-item small {
+  font-weight: 400;
+  font-size: 10px;
+  color: #aabbd0;
+}
+.exercise-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.exercise-toolbar details {
+  position: relative;
+}
+.exercise-toolbar summary {
+  cursor: pointer;
+  list-style: none;
+}
+.exercise-menu {
+  position: absolute;
+  right: 0;
+  top: 43px;
+  min-width: 190px;
+  z-index: 3;
+  background: #1a2636;
+  border: 1px solid #4a5b75;
+  border-radius: 10px;
+  padding: 7px;
+  box-shadow: 0 16px 32px #0006;
+}
+.exercise-menu button {
+  display: block;
+  text-align: left;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #e5edf7;
+  padding: 12px;
+  border-radius: 6px;
+  font:
+    13px 'Segoe UI',
+    sans-serif;
+  cursor: pointer;
+}
+.exercise-menu button:hover {
+  background: #2c3c51;
+}
+.exercise-component-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 6px;
+}
+.component-options {
+  position: relative;
+  margin-top: -5px;
+}
+.component-options summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0 8px;
+  color: #c3d5eb;
+  font-size: 20px;
+}
+.component-options button {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  min-width: 155px;
+  padding: 12px;
+  border: 1px solid #52637d;
+  background: #263448;
+  color: #edf3fb;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.recovery-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  border-bottom: 1px solid #303e51;
+  padding: 10px 0;
+  align-items: center;
+}
+.recovery-row strong,
+.recovery-row small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.recovery-row small {
+  font-size: 10px;
+  color: #a6b8cc;
+  margin-top: 5px;
+}
+.recovery-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.recovery-actions .suite-action {
+  font-size: 10px;
+}
+#recovery-tool {
+  margin: 12px 0;
+  padding: 9px;
+  min-height: 38px;
+  background: #111b28;
+  color: #dce7f8;
+  border: 1px solid #43536b;
+  border-radius: 6px;
+}
+#exercise-name-form {
+  display: grid;
+  gap: 15px;
+}
+#exercise-name-form input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  height: auto;
+  padding: 10px;
+  background: #101824;
+  color: #edf3fc;
+  border: 1px solid #53637a;
+  border-radius: 8px;
+  font:
+    14px/1.4 'Segoe UI',
+    sans-serif;
+}
+#exercise-name-error {
+  margin: 0;
+  color: #ffc6b8;
+}
+.exercise-heading > div:first-child {
+  min-width: 0;
+}
+@media (max-width: 800px) {
+  .exercise-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .recovery-row {
+    grid-template-columns: 1fr;
+  }
+  .recovery-actions {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 650px) {
+  .exercise-toolbar {
+    flex-wrap: wrap;
+  }
+  .exercise-library #exercise-list {
+    margin-top: 12px;
+    max-height: 220px;
+    overflow: auto;
+  }
+  .exercise-menu {
+    right: auto;
+    left: 0;
+  }
+}

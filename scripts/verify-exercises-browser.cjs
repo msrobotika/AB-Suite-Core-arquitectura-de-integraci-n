@@ -442,7 +442,10 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
             await view.evaluate(() => {
               window.__nativeTx = IDBDatabase.prototype.transaction;
               IDBDatabase.prototype.transaction = function (...args) {
-                if (args[0] === 'recoveries')
+                if (
+                  [].concat(args[0]).includes('recoveries') &&
+                  args[1] === 'readwrite'
+                )
                   throw Error('Fallo de almacenamiento inyectado');
                 return window.__nativeTx.apply(this, args);
               };
@@ -586,8 +589,9 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
         await library.reload();
         await library.locator('.exercise-recoveries summary').click();
         const recovery = library
-          .locator('#exercise-recoveries a')
+          .locator('#exercise-recoveries .recovery-row')
           .filter({ hasText: 'Trabajo anterior kop' })
+          .locator('a')
           .first();
         await recovery.waitFor();
         await recovery.click();

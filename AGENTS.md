@@ -4,6 +4,7 @@ Este repositorio es la fuente de la distribución integrada. `apps/sources.json`
 
 ## Requisitos de producto
 
+- El inicio es un lanzador de las nueve herramientas al mismo nivel. Se pueden usar de forma independiente; ejercicios, conexiones y ayuda son opcionales. La vista inicial siempre muestra las nueve, aunque existan favoritas. En escritorio verificar apertura visible de todas a 1280×720, 1366×768 y 1920×1080.
 - Toda herramienta se abre desde el catálogo en `/apps/<id>/`. Abrir y exportar son acciones distintas.
 - Toda herramienta declara propósito, capacidades reales, límites y una práctica reproducible en `web/catalog.js`.
 - Usar la barra, los tokens y componentes de `web/shell.css`. No crear otro menú global ni un sistema de estilos independiente.
@@ -28,3 +29,5 @@ Ejecutar `node scripts/check-workspace.mjs` y las pruebas Python de los motores 
 No presentar una prueba omitida o un error HTTP esperado como un éxito general. Distinguir pruebas de motor, de red y recorridos de interfaz. Una captura decorativa no sustituye a ninguna de ellas.
 
 Mantener actualizados README, matriz de capacidades y evidencia de validación. No versionar `.suite-data`, `.venv`, credenciales, proyectos del usuario o resultados temporales.
+
+La biblioteca lista metadatos sin cargar imágenes/tablas completas. Toda modificación mantiene documento e índice en una transacción; archivar es reversible. Retirar componentes conserva su contenido completo e índice de recuperación. Las migraciones IndexedDB conservan ejercicios, copias y documentos activos anteriores.

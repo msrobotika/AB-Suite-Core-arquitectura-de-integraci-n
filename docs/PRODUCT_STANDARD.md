@@ -2,9 +2,13 @@
 
 ## Identidad
 
-AB Suite es un taller de programación y experimentación. Su unidad de trabajo es un ejercicio que el usuario puede crear, ejecutar, observar y explicar. La suite se organiza por tarea: programación, ejecución, interfaces, comunicaciones, visión y datos. No es un catálogo de fábricas de demostración.
+AB Suite es un taller de programación y experimentación. Cada herramienta se puede utilizar de forma independiente para crear, ejecutar, observar y explicar trabajo propio. Reunir documentos en un ejercicio de suite es opcional. La suite se organiza por tarea: programación, ejecución, interfaces, comunicaciones, visión y datos. No es un catálogo de fábricas de demostración.
 
 La marca común es **AB Suite · MS ROBOTIKA**. Los identificadores cortos Pl/Ko/Sc/Gr/Hm/Mb/Se/Vi/Bi, los colores por disciplina y la composición tipográfica son una implementación propia. No se incorporan activos, iconos, tipografías descargadas ni código de productos comerciales.
+
+## Entrada y libertad de uso
+
+El inicio muestra las nueve herramientas al mismo nivel, con su propósito y apertura directa. El usuario elige una, varias o todas. No se impone una ruta de aprendizaje ni un proyecto conjunto para abrir una aplicación. Las favoritas se recuerdan en este navegador; una entrada nueva al catálogo muestra las nueve. Ayuda, conexiones e instalación son paneles opcionales. En escritorio las nueve aperturas deben quedar visibles a 1280×720, 1366×768 y 1920×1080.
 
 ## Sistema visual
 
