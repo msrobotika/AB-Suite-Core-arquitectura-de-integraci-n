@@ -15,7 +15,7 @@ python -m pip install pytest==9.1.1 httpx==0.28.1
 python scripts/verify-python.py
 ```
 
-Usar el intérprete preparado de `.venv`. Se ejecutan **144 pruebas Python**: 46 Modbus, 17 Serial, 15 Vision y 66 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
+Usar el intérprete preparado de `.venv`. Se ejecutan **145 pruebas Python**: 47 Modbus, 17 Serial, 15 Vision y 66 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
 
 Las pruebas Python históricas de navegador no se incluyen en este comando. La nueva distribución se recorre mediante las pruebas de navegador comunes; no se contabilizan pruebas omitidas como aprobadas. FastAPI/Starlette emite un aviso de deprecación de su adaptador httpx de pruebas; no produjo fallos.
 
@@ -96,3 +96,5 @@ Vision separa Fuente, Detección, Región, Medición y Archivos mediante pestañ
 Dos pruebas de motor verifican extremos inclusivos, ROI, serialización y rangos rechazados. Los recorridos nuevos cubren borrado y persistencia, rango sin resultados ficticios, cámara sintética de Chromium, captura y liberación del stream, y denegación simulada de getUserMedia. No certifican una cámara USB física ni una instalación de cámara IP concreta. El auditor de ventana recorre también cada pestaña, fuente y método de Vision en ES/EN a 1280×720 y 1366×768.
 
 [Normas de interacción y referencias](WORKSPACE_INTERACTION.md). Continúan pendientes las pruebas físicas y con usuarios externos.
+
+Modbus descarta cuerpos rechazados antes de cerrar la conexión, con máximo de 1 MiB y plazo total de 0,5 s. La prueba nueva exige errores JSON 401/403/415 con cuerpo recibido y confirma que no se ejecuta ninguna acción rechazada. Esto amplía el manejo anterior de errores 413 para evitar reinicios TCP en Windows.

@@ -99,6 +99,25 @@ class ApplicationTests(unittest.TestCase):
         finally:
             second.simulator.stop()
 
+    def test_rejected_posts_deliver_json_without_executing_the_body(self):
+        cases = [
+            (False, {}, 401),
+            (True, {"Authorization": "Bearer wrong"}, 401),
+            (True, {"Origin": "https://attacker.example"}, 403),
+            (True, {"Sec-Fetch-Site": "cross-site"}, 403),
+            (True, {"Content-Type": "text/plain"}, 415),
+        ]
+        with patch.object(self.app, "action") as action:
+            for token, headers, expected in cases:
+                with self.subTest(expected=expected, headers=headers):
+                    status, response_headers, raw = self.request(
+                        "POST", "/api/monitor/clear", "x" * 32000,
+                        token=token, headers=headers)
+                    self.assertEqual(status, expected)
+                    self.assertIn("error", json.loads(raw))
+                    self.assertEqual(int(response_headers["Content-Length"]), len(raw))
+            action.assert_not_called()
+
     def test_oversized_requests_return_errors_without_resetting_the_client(self):
         for size in (65537, 70000, 131072):
             status, headers, raw = self.request("POST", "/api/monitor/clear", "x" * size)
