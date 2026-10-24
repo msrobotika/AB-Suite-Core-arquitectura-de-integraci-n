@@ -186,7 +186,13 @@ export async function startWorkspace({
           {
             host: '127.0.0.1',
             port: engine.port,
-            path: match[2] + url.search,
+            // Entry parameters belong to the common shell. These native HTTP
+            // servers match '/' literally; their API query strings stay intact.
+            path:
+              match[2] +
+              (['modbus', 'serial'].includes(id) && match[2] === '/'
+                ? ''
+                : url.search),
             method: req.method,
             headers
           },

@@ -79,6 +79,14 @@
   function getFrame() {
     return sctx.getImageData(0, 0, source.width, source.height);
   }
+  function referenceImage() {
+    if (!reference) return null;
+    const canvas = document.createElement('canvas');
+    canvas.width = reference.width;
+    canvas.height = reference.height;
+    canvas.getContext('2d').putImageData(reference, 0, 0);
+    return canvas.toDataURL('image/png');
+  }
   function renderPicture(result = null) {
     vctx.clearRect(0, 0, view.width, view.height);
     vctx.drawImage(source, 0, 0);
@@ -1024,6 +1032,7 @@
     $('source-label').textContent =
       'Sin imagen · abre una imagen o el ejemplo opcional';
     $('roi-label').textContent = 'Imagen completa';
+    $('reference-label').textContent = 'Sin referencia';
     $('count').textContent = '0';
     $('defects').textContent = '—';
     $('coverage').textContent = '—';
@@ -1046,16 +1055,54 @@
     )
       throw Error('Proyecto Vision inválido');
     core.validateRecipe(doc.recipe);
+    let restoredReference = null;
+    if (doc.referenceImage) {
+      restoredReference = new Image();
+      restoredReference.src = doc.referenceImage;
+      await restoredReference.decode();
+    }
+    let restoredImage = null;
+    if (doc.image) {
+      restoredImage = new Image();
+      restoredImage.src = doc.image;
+      await restoredImage.decode();
+      if (
+        restoredImage.naturalWidth * restoredImage.naturalHeight > 2000000 ||
+        restoredImage.naturalWidth > 4096 ||
+        restoredImage.naturalHeight > 4096
+      )
+        throw Error('La imagen supera los límites de Vision');
+      if (
+        restoredReference &&
+        (restoredReference.naturalWidth !== restoredImage.naturalWidth ||
+          restoredReference.naturalHeight !== restoredImage.naturalHeight)
+      )
+        throw Error('La referencia necesita las mismas dimensiones');
+    }
     clearVision();
     applyRecipe(doc.recipe);
+    if (doc.metrology) applyMetrology(doc.metrology);
     $('lot').value = doc.name || '';
     if (doc.image) {
-      const image = new Image();
-      image.src = doc.image;
-      await image.decode();
+      const image = restoredImage;
       updateSizes(image.naturalWidth, image.naturalHeight);
       sctx.drawImage(image, 0, 0);
       imageReady = true;
+      if (restoredReference) {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(restoredReference, 0, 0);
+        reference = context.getImageData(0, 0, canvas.width, canvas.height);
+        $('reference-label').textContent =
+          `Patrón ${reference.width}×${reference.height} · recuperado`;
+      }
+      if (doc.roi) {
+        roi = { ...doc.roi };
+        $('roi-label').textContent =
+          `ROI: ${roi.x},${roi.y} · ${roi.width}×${roi.height}`;
+      }
       lastSource = doc.sourceName || doc.name || 'Imagen recuperada';
       $('source-label').textContent = lastSource;
       renderPicture();
@@ -1263,6 +1310,9 @@
         name: $('lot').value || 'Inspección de imagen',
         recipe: recipe(),
         sourceName: lastSource,
+        referenceImage: referenceImage(),
+        roi: roi ? { ...roi } : null,
+        metrology: metrologySettings(),
         image: imageReady ? source.toDataURL('image/png') : null
       }),
       create: (name) => {

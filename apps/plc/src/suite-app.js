@@ -143,12 +143,21 @@ window.addEventListener('pagehide', () => lab.dispose());
 view('lab');
 
 window.ABSuite.adapter.documents = {
-  get: () => ({
-    schema: 'ab.plc.document.v1',
-    name: lab.cpu.program.name || 'Programa PLC',
-    scenario: lab.cpu.scenario,
-    program: structuredClone(lab.cpu.program)
-  }),
+  get: async () => {
+    const response = await fetch('/apps/plc/api/live/state', {
+      headers: { Authorization: 'Bearer ' + ABSuitePLC.token },
+      cache: 'no-store'
+    });
+    if (!response.ok)
+      throw Error('No se pudo leer el programa de la CPU residente');
+    const current = await response.json();
+    return {
+      schema: 'ab.plc.document.v1',
+      name: current.program.name || 'Programa PLC',
+      scenario: current.snapshot.scenario,
+      program: current.program
+    };
+  },
   create: async (name) => {
     await lab.cpu.loadScenario('rack', { version: 1, name, rungs: [] });
     await lab.cpu.setMode('STOP');

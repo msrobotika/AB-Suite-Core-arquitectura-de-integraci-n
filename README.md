@@ -37,6 +37,12 @@ KOP y PLC empiezan sin redes: añade la primera y define tus contactos. GRAFCET 
 
 Para comprobar la interconexión, sigue la [práctica PLC → Modbus → BI](docs/WORKFLOW_PLC_MODBUS_BI.md). La [revisión de la auditoría externa](docs/AUDIT_FOLLOWUP.md) distingue lo implementado, lo corregido y lo pendiente. La [estrategia de plataforma](docs/PLATFORM_STRATEGY.md) ordena las siguientes entregas y contrasta la segunda auditoría con el código real.
 
+## Un ejercicio con varias herramientas
+
+Abre **Mis ejercicios** desde el catálogo y crea uno vacío. En **Proyectos** de cada herramienta, selecciona ese ejercicio y pulsa **Añadir copia actual**. La biblioteca reúne los documentos incorporados y permite descargarlos en un solo `.absuite`, con datos BI completos e imágenes/recetas de Vision.
+
+Importar valida el conjunto y crea una entrada nueva. Abrir un componente conserva primero el trabajo actual; la CPU queda en STOP y las comunicaciones no arrancan. Las copias se actualizan expresamente al añadirlas: no se sincronizan solas con ediciones posteriores. Consulta [contenido, recuperación y límites](docs/EXERCISES.md).
+
 ## Herramientas y conexiones reales
 
 | Herramienta | Trabajo propio | Conexión integrada |
@@ -74,7 +80,7 @@ No se impone una línea de producción. Si una fuente no actualiza sus señales 
 ## Guardado y privacidad
 
 - `.suite-data/`: espacios BI, copias de limpieza, perfiles Modbus y programa residente de la CPU. No se versiona ni se distribuye.
-- Navegador: proyectos KOP/GRAFCET/HMI, borrador SCL, recetas Vision y progreso de las guías. Exporta archivos para trasladarlos a otro navegador/equipo.
+- Navegador: proyectos KOP/GRAFCET/HMI, borrador SCL, recetas Vision y progreso de las guías. IndexedDB conserva ejercicios `.absuite`, copias previas y trabajo activo Vision/Modbus/Serial. Exporta archivos para trasladarlos a otro navegador/equipo.
 - Serial e históricos de ejecución: buffers limitados de sesión; exportación explícita. Las capturas recuperadas son archivos de lectura, no una conexión en directo.
 - Proyectos: hasta ocho puntos de vuelta por herramienta en este navegador. No sustituyen a la exportación portable ni a las copias del disco. Vision conserva imagen/receta; Modbus configuración/última lectura; Serial una captura acotada. Un fallo de almacenamiento se indica y permite exportar.
 
@@ -95,11 +101,12 @@ node scripts/verify-bi-browser.cjs
 node scripts/verify-editors-browser.cjs
 node scripts/verify-new-user-browser.cjs
 node scripts/verify-resident-browser.cjs
+node scripts/verify-exercises-browser.cjs
 ```
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
 
-La versión 0.4.2 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
+La versión 0.5.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 

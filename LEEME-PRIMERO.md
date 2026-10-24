@@ -1,4 +1,4 @@
-# AB Suite completa · 0.4.2 de revisión
+# AB Suite completa · 0.5.0 de revisión
 
 Esta carpeta contiene las nueve herramientas: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. No necesitas descargarlas por separado.
 
@@ -14,6 +14,10 @@ Necesitas **Node.js 20+**, **Python 3.11+** y un navegador moderno. La primera p
 Descargas oficiales de los requisitos: [Node.js](https://nodejs.org/en/download) y [Python](https://www.python.org/downloads/). En Windows, activa la opción de añadir Python al PATH durante su instalación y reinicia la terminal después.
 
 El enlace de GitHub descarga la rama de revisión y recibirá los cambios que se suban a ella. El ZIP versionado entregado junto a la revisión es una instantánea. Sigue siendo una versión en desarrollo, sin lanzamiento en redes.
+
+## Llevarte un ejercicio completo
+
+Desde el catálogo abre **Mis ejercicios** y crea uno vacío. En **Proyectos** de cada herramienta usa **Añadir copia actual**. Después descarga el `.absuite` desde Mis ejercicios. Al importarlo en otro equipo se crea una entrada nueva; cada componente se abre con copia previa del trabajo actual. Las copias no se actualizan automáticamente: vuelve a añadir los cambios antes de descargar. [Guía y límites](docs/EXERCISES.md).
 
 ## Empezar desde cero
 

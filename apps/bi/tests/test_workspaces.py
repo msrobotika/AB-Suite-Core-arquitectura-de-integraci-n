@@ -63,6 +63,28 @@ def test_invalid_ids_cannot_escape_the_library(client):
     with pytest.raises(ValueError):server.LIBRARY.activate('../../outside')
     response=client.post('/api/workspaces',json={'name':''});assert response.status_code==422
 
+def test_exercise_validation_is_read_only_and_accepts_complete_model(client):
+    original=client.get('/api/model').json();spaces=client.get('/api/workspaces').json()
+    model=empty_project('Sensores propios');model['tables']={'Sensores':[{'valor':17}]}
+    model['measures']={'Filas':'COUNTROWS(Sensores)'}
+    model['visuals']=[{'id':'v1','type':'hbar','title':'Filas','measure':'Filas','dimension':'Sensores[valor]'}]
+    response=client.post('/api/project/validate',json=model)
+    assert response.status_code==200,response.text
+    assert response.json()=={'valid':True,'tables':1,'rows':1}
+    assert client.get('/api/model').json()==original
+    assert client.get('/api/workspaces').json()==spaces
+
+@pytest.mark.parametrize('change',[
+    {'format':'unknown'}, {'tables':{'Mal':[{'x':[]}] }},
+    {'relationships':{}}, {'visuals':[{'type':'unknown','measure':'Filas'}]},
+    {'filters':{'NoExiste[x]':1}}, {'name':''}
+])
+def test_invalid_exercise_component_never_creates_or_activates_a_space(client,change):
+    original=client.get('/api/workspaces').json()
+    response=client.post('/api/project/validate',json={**empty_project('Prueba'),**change})
+    assert response.status_code==422,response.text
+    assert client.get('/api/workspaces').json()==original
+
 def test_legacy_workspace_is_migrated_once_without_inserting_demo(tmp_path):
     project=empty_project('Proyecto existente');project['tables']={'Datos':[{'x':7}]}
     (tmp_path/'workspace.json').write_text(json.dumps(project),encoding='utf-8')

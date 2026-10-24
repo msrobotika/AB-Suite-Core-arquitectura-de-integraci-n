@@ -12,7 +12,7 @@
 | 4. Distribución sencilla | Runtimes incluidos y un lanzador por sistema | Arrancar en equipo limpio sin Node/Python instalados; comprobar permisos, actualización, cierre y recuperación |
 | 5. Adopción | Prácticas breves y evaluación con usuarios nuevos | Instalan, crean y explican un resultado sin ayuda. Después se decide difusión con el propietario |
 
-Las prioridades 1 y parte de 2 ya tienen evidencia. La revisión 0.4.2 completa la lectura residente de PLC desde SCADA. Las prioridades posteriores no se anuncian como funciones entregadas.
+Las prioridades 1 y parte de 2 ya tienen evidencia. La revisión 0.4.2 completa la lectura residente de PLC desde SCADA. La revisión 0.5.0 añade ejercicios portables `.absuite` mediante copias explícitas y apertura recuperable por componente; no restaura las nueve herramientas en una única operación. Históricos persistentes, instalación con runtimes y evaluación con usuarios continúan pendientes.
 
 ## Afirmaciones que requieren corrección
 
@@ -26,6 +26,10 @@ Las prioridades 1 y parte de 2 ya tienen evidencia. La revisión 0.4.2 completa 
 ## Próximas especificaciones concretas
 
 ### Documento `.absuite`
+
+Entregado en 0.5.0: biblioteca transaccional del navegador, componentes completos de las nueve herramientas, importación en una entrada nueva y apertura individual con recuperación previa. [Contrato y límites](EXERCISES.md). La sincronización automática y la restauración simultánea son operaciones distintas, todavía no implementadas.
+
+Criterios para futuras ampliaciones:
 
 Definir un manifiesto versionado que identifique documentos nativos, capacidades y límites. Incluir programa/escenario PLC, pantallas HMI, recetas y datos opcionales de Vision y contenido portable de BI, no solo el identificador de su espacio. Separar datos sensibles, imágenes opcionales e históricos voluminosos. No reanudar automáticamente RUN, cámaras o permisos LAN al importar.
 

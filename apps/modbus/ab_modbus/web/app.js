@@ -145,6 +145,8 @@ window.ABSuite?.register({
       );
     },
     restore: (doc) => {
+      stopPolling();
+      if (busy) throw Error("Espera a que termine la lectura actual antes de abrir otro documento");
       if (
         doc.schema !== "ab.modbus.document.v1" ||
         !doc.profile ||

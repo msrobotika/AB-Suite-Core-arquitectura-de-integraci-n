@@ -475,6 +475,30 @@ async def import_project(file:UploadFile=File(...)):
             LIBRARY.create(model);STATE=LIBRARY.state_path;MODEL=model;return summary()
     except Exception as e:fail(e)
 
+@app.post('/api/project/validate')
+def validate_portable_project(model:dict=Body(...)):
+    """Validate an exercise component without creating/activating a workspace."""
+    try:
+        if len(json.dumps(model,ensure_ascii=False,allow_nan=False).encode('utf-8'))>30*1024*1024:
+            raise SemanticError('El proyecto BI supera 30 MB')
+        if model.get('format')!='AB-BI Project' or model.get('version')!=3:
+            raise SemanticError('Formato de proyecto BI incompatible')
+        empty_project(model.get('name'))
+        if not isinstance(model.get('relationships'),list) or not isinstance(model.get('measures'),dict):
+            raise SemanticError('Relaciones o expresiones BI inválidas')
+        visuals=model.get('visuals')
+        if not isinstance(visuals,list) or len(visuals)>32 or any(not isinstance(v,dict) for v in visuals):
+            raise SemanticError('Máximo 32 visualizaciones BI válidas')
+        model_validate(model)
+        engine=Engine(model)
+        engine.context(model.get('filters',{}))
+        for visual in visuals:
+            if visual.get('type') not in ('bar','hbar','line','area','donut','kpi','table') or visual.get('measure') not in model['measures']:
+                raise SemanticError('Visualización BI incompatible')
+            engine.visualize(visual,model.get('filters',{}))
+        return {'valid':True,'tables':len(model['tables']),'rows':sum(len(rows) for rows in model['tables'].values())}
+    except Exception as error:fail(error)
+
 # A separate read-only SQL exploration engine, built from tables in the semantic model.
 # SQLite is available on every CPython; DuckDB can be added in later builds.
 @app.post('/api/sql')

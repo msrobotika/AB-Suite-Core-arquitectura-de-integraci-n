@@ -37,3 +37,7 @@ La captura de CPU es explícita desde BI. `src/bi-capture.js` envía muestras a 
 Las nueve aplicaciones son código propio incorporado con sus licencias MIT y revisiones de origen en `apps/sources.json`. Este repositorio contiene la versión integrada; actualizar una copia independiente no actualiza automáticamente la suite. Las siguientes versiones deben migrar fuentes conscientemente y repetir las pruebas comunes.
 
 El navegador sigue necesitando los servicios locales de las herramientas que los requieren. La suite no es un conjunto de HTML autónomos de doble clic ni se presenta como un servicio alojado multiusuario. Después de preparar dependencias, la entrada y los motores funcionan sin CDN.
+
+## Biblioteca de ejercicios portables
+
+`web/exercise-contract.js` valida manifiestos y documentos con motores nativos; BI valida semántica mediante un endpoint de solo lectura. `exercise-store.js` conserva ejercicios y copias previas en transacciones IndexedDB. `exercise-bridge.js` captura documentos desde la herramienta activa y abre un componente tras conservar una copia persistente; BI exporta datos completos y abre otro espacio. El gestor `/suite/exercises.html` importa en una entrada nueva tras validar todo. No modifica aplicaciones durante esa importación ni promete sincronizar las copias. [Operaciones y formato](EXERCISES.md).

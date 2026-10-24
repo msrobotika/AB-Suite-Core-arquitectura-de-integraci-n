@@ -1,6 +1,10 @@
 /** The same create/recover contract for all disciplines; each native engine owns its document. MIT. */
 const sdk = window.ABSuite,
   app = sdk.id;
+const { mountExerciseActions, offerExerciseComponent } = await import(
+  './exercise-bridge.js'
+);
+const { getActive, putActive } = await import('./exercise-store.js');
 const getAPI = () => sdk.documents ?? sdk.adapter?.documents;
 const el = (tag, text, cls) => {
   const n = document.createElement(tag);
@@ -90,6 +94,7 @@ dialog.append(
   )
 );
 document.body.append(dialog);
+mountExerciseActions(dialog);
 function persist() {
   try {
     localStorage.setItem(key, JSON.stringify(copies));
@@ -221,7 +226,7 @@ async function saveActive() {
   if (!api?.get) return;
   try {
     const data = await api.get();
-    if (data) localStorage.setItem(activeKey, JSON.stringify(data));
+    if (data) await putActive(app, data);
     sdk.documentStorageError = false;
   } catch {
     sdk.documentStorageError = true;
@@ -241,10 +246,16 @@ for (const event of ['input', 'change', 'click'])
 window.addEventListener('ab-suite:document-changed', scheduleActive);
 if (retainsActive) {
   try {
-    const raw = localStorage.getItem(activeKey);
-    if (raw) {
-      restoring = true;
-      await getAPI()?.restore(JSON.parse(raw), { automatic: true });
+    restoring = true;
+    let saved = await getActive(app);
+    if (!saved) {
+      const raw = localStorage.getItem(activeKey);
+      if (raw) saved = JSON.parse(raw);
+    }
+    if (saved) {
+      await getAPI()?.restore(saved, { automatic: true });
+      await putActive(app, saved);
+      localStorage.removeItem(activeKey);
     }
   } catch {
     sdk.documentStorageError = true;
@@ -257,3 +268,4 @@ if (retainsActive) {
 
 sdk.documentsReady = true;
 window.dispatchEvent(new Event('ab-suite:documents-ready'));
+await offerExerciseComponent();

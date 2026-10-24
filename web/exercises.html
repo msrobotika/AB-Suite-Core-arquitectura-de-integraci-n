@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mis ejercicios · AB Suite</title>
+    <link rel="stylesheet" href="/suite/shell.css" />
+    <link rel="stylesheet" href="/suite/exercises.css" />
+    <script type="module" src="/suite/exercises.js"></script>
+  </head>
+  <body class="exercise-page">
+    <header class="exercise-header">
+      <a class="suite-brand" href="/"
+        ><span class="suite-mark">ab<span>·</span></span
+        ><span>SUITE<small>MS ROBOTIKA</small></span></a
+      ><strong>Mis ejercicios</strong><a href="/">Herramientas ↗</a>
+    </header>
+    <main class="exercise-layout">
+      <aside class="exercise-library">
+        <h1>Tu biblioteca</h1>
+        <form id="exercise-new">
+          <label for="exercise-name">Nombre del ejercicio</label
+          ><input
+            id="exercise-name"
+            maxlength="90"
+            required
+            placeholder="Mi práctica"
+          /><button class="suite-action suite-primary" type="submit">
+            Crear ejercicio vacío
+          </button>
+        </form>
+        <button
+          id="exercise-import-button"
+          class="suite-action file-action"
+          type="button"
+        >
+          Importar archivo .absuite
+        </button>
+        <input
+          id="exercise-import"
+          type="file"
+          accept=".absuite,application/json"
+          hidden
+          aria-label="Archivo de ejercicio"
+        />
+        <div id="exercise-list" aria-label="Ejercicios guardados"></div>
+      </aside>
+      <section class="exercise-workspace">
+        <div class="exercise-heading">
+          <div>
+            <p class="suite-eyebrow">
+              DOCUMENTOS PROPIOS · UN ARCHIVO PORTABLE
+            </p>
+            <h2 id="exercise-title">Empieza un ejercicio</h2>
+          </div>
+          <button
+            id="exercise-export"
+            class="suite-action suite-primary"
+            disabled
+          >
+            Descargar .absuite
+          </button>
+        </div>
+        <p id="exercise-message" role="status" aria-live="polite"></p>
+        <p id="exercise-intro">
+          Crea un ejercicio vacío o importa un archivo. Después añade tu trabajo
+          desde Proyectos dentro de cada herramienta.
+        </p>
+        <div id="exercise-components" class="exercise-components"></div>
+        <details class="exercise-recoveries">
+          <summary>Trabajos conservados</summary>
+          <div id="exercise-recoveries"></div>
+        </details>
+        <p class="exercise-note">
+          Cada componente es una copia del momento en que lo añades. Los cambios
+          posteriores se incorporan expresamente desde su herramienta. La
+          biblioteca pertenece a este navegador y dirección local: descarga el
+          archivo para trasladarlo o tener una copia fuera del navegador.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
