@@ -245,6 +245,10 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
           await p.locator('#suite-exercise-manage').click();
           if (tool === 'kop') {
             await p.setViewportSize({ width: 1280, height: 720 });
+            assert.ok(
+              (await p.locator('#suite-exercise-name').boundingBox()).height >=
+                40
+            );
             await p.screenshot({
               path: path.join(dir, 'anadir-ejercicio-dialogo.png')
             });
