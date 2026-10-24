@@ -13,7 +13,8 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
         ? { executablePath: process.env.AB_SUITE_BROWSER }
         : {})
     }),
-    context = await browser.newContext({locale: 'es-ES',
+    context = await browser.newContext({
+      locale: 'es-ES',
       viewport: { width: 1600, height: 1000 },
       acceptDownloads: true
     });
@@ -240,6 +241,10 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
                 Number(document.querySelector('#kpi-frames').textContent) > 1
             );
             await p.locator('#stop').click();
+            // The click starts an asynchronous stop; snapshot the settled capture.
+            await p.waitForFunction(
+              () => document.querySelector('#stop').disabled
+            );
           }
           if (id === 'vision') {
             const png = await p.evaluate(() => {
