@@ -14,7 +14,7 @@
   padding: 12px 24px;
   border-bottom: 1px solid var(--suite-border);
 }
-.exercise-header > a:last-child {
+.exercise-header > a:not(.suite-brand) {
   margin-left: auto;
   color: #b4c2d5;
   font-size: 13px;
@@ -172,13 +172,14 @@ input:focus-visible {
     display: block;
   }
   .exercise-header {
+    flex-wrap: wrap;
     gap: 15px;
     padding: 14px;
   }
   .exercise-header strong {
     font-size: 12px;
   }
-  .exercise-header > a:last-child {
+  .exercise-header > a:not(.suite-brand) {
     font-size: 11px;
   }
   .exercise-layout {
