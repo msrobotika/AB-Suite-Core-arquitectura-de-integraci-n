@@ -82,7 +82,16 @@ const documents = {
     frames: [],
     reading: {
       at: Date.now(),
-      result: { function: 3, address: 0, values: [17] }
+      result: {
+        function: 3,
+        address: 0,
+        values: [17],
+        host: '127.0.0.1',
+        port: 1502,
+        unit: 1,
+        transaction: 1,
+        elapsed_ms: 1
+      }
     }
   },
   bi: {
@@ -248,6 +257,35 @@ test('Vision validates PNG dimensions before decoding; invalid or oversized imag
   );
 });
 test('Modbus value and capture bounds reject malformed rendering inputs', async () => {
+  await assert.rejects(
+    validateComponent('modbus', {
+      ...documents.modbus,
+      frames: [{ id: 1, time: {}, source: 'cliente' }]
+    }),
+    /Trama/
+  );
+  await assert.rejects(
+    validateComponent('serial', {
+      ...documents.serial,
+      state: {
+        events: [
+          {
+            id: 1,
+            time: at,
+            source: 'RX',
+            hex: '01',
+            length: 1,
+            values: 'bad',
+            valid: false,
+            crc_ok: false,
+            unit: null,
+            function: null
+          }
+        ]
+      }
+    }),
+    /Trama/
+  );
   await assert.rejects(
     validateComponent('modbus', {
       ...documents.modbus,

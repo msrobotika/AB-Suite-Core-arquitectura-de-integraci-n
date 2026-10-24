@@ -51,6 +51,17 @@ function frames(items) {
     Array.isArray(items) && items.length <= 500 && items.every(object),
     'Máximo 500 tramas archivadas'
   );
+  ensure(
+    items.every(
+      (e) =>
+        integer(e.id, 0, Number.MAX_SAFE_INTEGER) &&
+        date(e.time) &&
+        text(e.source, 100) &&
+        text(e.hex ?? '', 4096) &&
+        text(e.detail ?? '', 4096)
+    ),
+    'Trama archivada inválida: identificador, fecha u origen incompatibles'
+  );
 }
 function pngSize(data) {
   ensure(
@@ -254,7 +265,14 @@ export async function validateComponent(tool, original, { validateBI } = {}) {
           r.values.every(
             (x) => typeof x === 'boolean' || integer(x, 0, 65535)
           ) &&
-          Number.isFinite(doc.reading.at),
+          Number.isFinite(doc.reading.at) &&
+          text(r.host, 253) &&
+          integer(r.port, 1, 65535) &&
+          integer(r.unit, 0, 255) &&
+          integer(r.transaction, 0, 65535) &&
+          Number.isFinite(r.elapsed_ms) &&
+          r.elapsed_ms >= 0 &&
+          r.address + r.values.length <= 65536,
         'Lectura Modbus inválida'
       );
       // Archived data must never be presented as live telemetry after opening.
@@ -273,7 +291,16 @@ export async function validateComponent(tool, original, { validateBI } = {}) {
           text(e.hex ?? '', 4096) &&
           text(e.detail ?? '', 4096) &&
           Number.isFinite(e.length) &&
-          e.length >= 0
+          e.length >= 0 &&
+          Array.isArray(e.values) &&
+          e.values.length <= 2000 &&
+          e.values.every(
+            (x) => typeof x === 'boolean' || integer(x, 0, 65535)
+          ) &&
+          typeof e.valid === 'boolean' &&
+          typeof e.crc_ok === 'boolean' &&
+          (e.function === null || integer(e.function, 0, 255)) &&
+          (e.unit === null || integer(e.unit, 0, 255))
       ),
       'Trama Serial inválida'
     );
