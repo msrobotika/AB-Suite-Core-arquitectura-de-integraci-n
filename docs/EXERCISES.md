@@ -5,7 +5,7 @@ Un `.absuite` reúne copias completas de documentos de las nueve herramientas. P
 ## Crear y llevarte tu ejercicio
 
 1. En el catálogo abre **Mis ejercicios** y crea uno vacío con tu nombre.
-2. Trabaja en una herramienta. Desde **Proyectos**, elige el ejercicio de destino y pulsa **Añadir copia actual**. También puedes crear el ejercicio desde ese diálogo.
+2. Trabaja en una herramienta. Desde **Proyectos → Añadir a un ejercicio**, elige el ejercicio de destino y pulsa **Añadir copia actual**. También puedes crear el ejercicio desde ese diálogo.
 3. Repite con las herramientas que necesites. Añadir de nuevo la misma herramienta actualiza su componente dentro del ejercicio y conserva la copia anterior en Trabajos conservados. La herramienta activa se conserva.
 4. Vuelve a **Mis ejercicios** y pulsa **Descargar .absuite**. Cada tarjeta indica la fecha de la copia incorporada.
 5. En otro navegador o equipo, arranca AB Suite y usa **Importar .absuite**. El archivo se valida completo y crea una entrada nueva. No cambia documentos abiertos ni activa motores.

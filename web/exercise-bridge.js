@@ -119,6 +119,27 @@ async function requireSingleView() {
     );
 }
 export function mountExerciseActions(dialog) {
+  const capture = element('dialog'),
+    launch = element('button', 'Añadir a un ejercicio'),
+    back = element('button', 'Volver a Proyectos');
+  capture.className = 'suite-guide suite-exercise-capture';
+  capture.id = 'suite-exercise-capture';
+  capture.setAttribute('aria-labelledby', 'suite-exercise-capture-title');
+  launch.className = back.className = 'suite-action';
+  launch.type = back.type = 'button';
+  launch.id = 'suite-exercise-manage';
+  dialog.querySelector('.suite-document-actions').append(launch);
+  launch.onclick = () => {
+    dialog.close();
+    message.textContent = '';
+    capture.showModal();
+    refresh().catch((error) => (message.textContent = error.message));
+  };
+  back.onclick = () => {
+    if (busy) return;
+    capture.close();
+    dialog.showModal();
+  };
   const section = element('section'),
     heading = element('h3', 'Ejercicios de la suite'),
     label = element('label', 'Ejercicio de destino'),
@@ -130,6 +151,7 @@ export function mountExerciseActions(dialog) {
     link = element('a', 'Gestionar ejercicios y archivos .absuite ↗'),
     message = element('p');
   section.className = 'suite-exercise-actions';
+  heading.id = 'suite-exercise-capture-title';
   picker.id = 'suite-exercise-select';
   picker.setAttribute('aria-label', 'Ejercicio de destino');
   name.id = 'suite-exercise-name';
@@ -161,7 +183,8 @@ export function mountExerciseActions(dialog) {
     link,
     message
   );
-  dialog.append(section);
+  capture.append(back, section);
+  document.body.append(capture);
   let busy = false;
   async function refresh(selected = picker.value) {
     const records = await allExercises();
@@ -204,10 +227,6 @@ export function mountExerciseActions(dialog) {
       message.textContent =
         'Copia completa añadida. Descarga el .absuite desde Gestionar ejercicios para conservarla fuera del navegador.';
     });
-  new MutationObserver(() => {
-    if (dialog.open && !busy)
-      refresh().catch((error) => (message.textContent = error.message));
-  }).observe(dialog, { attributes: true, attributeFilter: ['open'] });
 }
 export async function offerExerciseComponent() {
   const request = sdk.exerciseRequest;

@@ -17,7 +17,7 @@ El enlace de GitHub descarga la rama de revisión y recibirá los cambios que se
 
 ## Llevarte un ejercicio completo
 
-Desde el catálogo abre **Mis ejercicios** y crea uno vacío. En **Proyectos** de cada herramienta usa **Añadir copia actual**. Después descarga el `.absuite` desde Mis ejercicios. Al importarlo en otro equipo se crea una entrada nueva; cada componente se abre con copia previa del trabajo actual. Las copias no se actualizan automáticamente: vuelve a añadir los cambios antes de descargar. [Guía y límites](docs/EXERCISES.md).
+Desde el catálogo abre **Mis ejercicios** y crea uno vacío. En **Proyectos → Añadir a un ejercicio** de cada herramienta usa **Añadir copia actual**. Después descarga el `.absuite` desde Mis ejercicios. Al importarlo en otro equipo se crea una entrada nueva; cada componente se abre con copia previa del trabajo actual. Las copias no se actualizan automáticamente: vuelve a añadir los cambios antes de descargar. [Guía y límites](docs/EXERCISES.md).
 
 ## Empezar desde cero
 

@@ -242,6 +242,18 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
               await ABSuite.bi.refresh();
             });
           await p.locator('#suite-projects').click();
+          await p.locator('#suite-exercise-manage').click();
+          if (tool === 'kop') {
+            await p.screenshot({
+              path: path.join(dir, 'anadir-ejercicio-dialogo.png')
+            });
+            assert.equal(
+              await p
+                .locator('#suite-exercise-capture')
+                .evaluate((e) => e.scrollHeight <= e.clientHeight + 2),
+              true
+            );
+          }
           await p
             .locator('#suite-exercise-select option')
             .first()

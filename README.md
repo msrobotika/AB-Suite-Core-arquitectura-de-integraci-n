@@ -39,7 +39,7 @@ Para comprobar la interconexión, sigue la [práctica PLC → Modbus → BI](doc
 
 ## Un ejercicio con varias herramientas
 
-Abre **Mis ejercicios** desde el catálogo y crea uno vacío. En **Proyectos** de cada herramienta, selecciona ese ejercicio y pulsa **Añadir copia actual**. La biblioteca reúne los documentos incorporados y permite descargarlos en un solo `.absuite`, con datos BI completos e imágenes/recetas de Vision.
+Abre **Mis ejercicios** desde el catálogo y crea uno vacío. En **Proyectos → Añadir a un ejercicio** de cada herramienta, selecciona ese ejercicio y pulsa **Añadir copia actual**. La biblioteca reúne los documentos incorporados y permite descargarlos en un solo `.absuite`, con datos BI completos e imágenes/recetas de Vision.
 
 Importar valida el conjunto y crea una entrada nueva. Abrir un componente conserva primero el trabajo actual; la CPU queda en STOP y las comunicaciones no arrancan. Las copias se actualizan expresamente al añadirlas: no se sincronizan solas con ediciones posteriores. Consulta [contenido, recuperación y límites](docs/EXERCISES.md).
 
