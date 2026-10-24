@@ -1,3 +1,5 @@
+> Política de la distribución integrada: [SECURITY.md](../../SECURITY.md). En la suite, Proyectos puede conservar imagen/receta en el navegador; los apartados históricos sobre almacenamiento solo en memoria describen la aplicación anterior, no ese documento integrado.
+
 # Seguridad y privacidad
 
 - La aplicación se sirve únicamente en IPv4 `127.0.0.1` y no abre puertos accesibles en red.

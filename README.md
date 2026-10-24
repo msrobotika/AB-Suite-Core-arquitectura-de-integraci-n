@@ -1,5 +1,7 @@
 # AB Suite · MS ROBOTIKA
 
+[![CI de la suite](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml/badge.svg?branch=codex%2Fsuite-workspace)](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml) · [Licencia MIT](LICENSE) · [Contribuir](CONTRIBUTING.md) · [Seguridad](SECURITY.md)
+
 Un laboratorio local de programación y automatización con nueve herramientas propias: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. Código abierto bajo MIT; las dependencias mantienen sus licencias.
 
 **Una entrada:** abre el catálogo y pulsa **Abrir herramienta**. Los editores, simuladores y herramientas con backend se presentan en la misma dirección y comparten navegación, guía y lenguaje visual. Exportar un proyecto es una operación separada.
@@ -32,6 +34,8 @@ Abre **[AB Suite local](http://127.0.0.1:4170)**. Ctrl+C detiene la suite. `AB_S
 En cualquiera de las nueve herramientas, pulsa **＋ Nuevo** en la barra común, escribe un nombre y crea tu trabajo. El anterior queda recuperable en **Proyectos**. Los ejemplos son opcionales y no se cargan al iniciar KOP, SCL, GRAFCET o Vision.
 
 KOP y PLC empiezan sin redes: añade la primera y define tus contactos. GRAFCET conserva una única etapa inicial sin acciones; SCADA un lienzo sin objetos; Vision no tiene imagen; Modbus y Serial no muestran resultados anteriores; BI crea otro espacio sin tablas. La [guía de primer uso](docs/NEW_USER_WORKFLOW.md) explica una práctica propia en cada herramienta y qué se conserva al cerrar.
+
+Para comprobar la interconexión, sigue la [práctica PLC → Modbus → BI](docs/WORKFLOW_PLC_MODBUS_BI.md). La [revisión de la auditoría externa](docs/AUDIT_FOLLOWUP.md) distingue lo implementado, lo corregido y lo pendiente.
 
 ## Herramientas y conexiones reales
 
@@ -94,7 +98,7 @@ node scripts/verify-new-user-browser.cjs
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
 
-La versión 0.4.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
+La versión 0.4.1 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 

@@ -397,6 +397,20 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
               });
             }
             await p.setViewportSize({ width: 1366, height: 768 });
+            await p.locator('#vision-task').selectOption('source');
+            await p.locator('#vision-source-type').selectOption('ip');
+            await p.locator('#vision-ip-credentials').click();
+            await p.locator('#ip-user').fill('practice');
+            await p.locator('#ip-password').fill('session-only');
+            await p
+              .getByRole('dialog', { name: 'Credenciales de cámara IP' })
+              .getByRole('button', { name: 'Guardar y volver' })
+              .click();
+            assert.equal(await p.locator('#ip-user').inputValue(), 'practice');
+            assert.equal(
+              JSON.stringify(await document(p)).includes('session-only'),
+              false
+            );
             await p.locator('#vision-task').selectOption('region');
             for (const [key, value] of Object.entries({
               x: 20,

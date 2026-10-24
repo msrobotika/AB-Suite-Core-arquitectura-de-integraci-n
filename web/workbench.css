@@ -1454,3 +1454,21 @@ body.vision-workspace {
     margin: 8px 0;
   }
 }
+
+.vision-connection-help {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.vision-connection-help button {
+  flex: 1;
+}
+.suite-guide[aria-label='Credenciales de cámara IP'] label {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0;
+}
+.suite-guide[aria-label='Credenciales de cámara IP'] input {
+  padding: 9px;
+  width: 100%;
+}

@@ -63,6 +63,8 @@ jobs:
           python-version: '3.13'
       - run: node scripts/setup.mjs
       - run: npm install --ignore-scripts
+      - name: Type-check public contract consumers
+        run: npm run test:contracts
       - run: npx --no-install playwright install --with-deps chromium
       - name: Start suite and wait for native engines
         run: |

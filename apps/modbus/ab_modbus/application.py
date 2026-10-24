@@ -36,8 +36,14 @@ class Application:
             if set(body) != {"profile", "allow_lan"} or type(body["allow_lan"]) is not bool:
                 raise ProtocolError("Lectura: perfil y autorización de red explícitos requeridos")
             profile = validate_profile(body["profile"])
-            return self.client.read(**{k: v for k, v in profile.items() if k != "name"},
-                                    allow_lan=body["allow_lan"])
+            try:
+                return self.client.read(**{k: v for k, v in profile.items() if k != "name"},
+                                        allow_lan=body["allow_lan"])
+            except OSError as error:
+                reason = "Tiempo de espera agotado" if isinstance(error, TimeoutError) else "No se pudo conectar o completar la lectura"
+                raise ProtocolError(f"{reason} en {profile['host']}:{profile['port']}. "
+                                    "Comprueba que el servidor Modbus esté iniciado, su puerto TCP y las reglas del firewall. "
+                                    "Para practicar sin equipo externo, inicia el Laboratorio local.") from error
         if path == "/api/simulator/start":
             if set(body) != {"port", "unit"}:
                 raise ProtocolError("Se requieren puerto y unidad")

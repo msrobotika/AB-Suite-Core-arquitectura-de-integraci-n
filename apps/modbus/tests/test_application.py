@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
 from ab_modbus.application import Application, LocalHTTPServer
 from ab_modbus.profiles import DEFAULT, Profiles
@@ -12,6 +13,16 @@ from ab_modbus.protocol import ProtocolError
 
 
 class ApplicationTests(unittest.TestCase):
+    def test_network_error_explains_destination_and_next_action(self):
+        for failure in (ConnectionRefusedError('internal detail'),TimeoutError('internal detail')):
+            with self.subTest(failure=type(failure).__name__),patch.object(self.app.client,'read',side_effect=failure):
+                status,_,raw=self.request('POST','/api/read',{'profile':DEFAULT,'allow_lan':False})
+                message=json.loads(raw)['error']
+                self.assertEqual(status,400)
+                self.assertIn(str(DEFAULT['port']),message)
+                self.assertIn('Laboratorio local',message)
+                self.assertNotIn('internal detail',message)
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.app = Application(Path(self.directory.name))

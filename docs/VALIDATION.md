@@ -8,14 +8,14 @@ Validación local realizada en Windows, Node 24 y Python 3.13, con Chromium head
 node scripts/check-workspace.mjs
 ```
 
-La comprobación analiza la sintaxis de JavaScript y ejecuta **214 pruebas Node** del bus, contratos, HMI, almacenamiento de CPU y motores PLC/KOP/SCL/GRAFCET/Vision/SCADA histórico. Las 62 pruebas del PLC incluyen ejecución determinista y uso de una misma CPU desde HTTP/Modbus/Core.
+La comprobación analiza la sintaxis de JavaScript y ejecuta **216 pruebas Node** del bus, contratos, HMI, almacenamiento de CPU y motores PLC/KOP/SCL/GRAFCET/Vision/SCADA histórico. Las 62 pruebas del PLC incluyen ejecución determinista y uso de una misma CPU desde HTTP/Modbus/Core.
 
 ```sh
 python -m pip install pytest==9.1.1 httpx==0.28.1
 python scripts/verify-python.py
 ```
 
-Usar el intérprete preparado de `.venv`. Se ejecutan **133 pruebas Python**: 44 Modbus, 17 Serial, 13 Vision y 59 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
+Usar el intérprete preparado de `.venv`. Se ejecutan **136 pruebas Python**: 45 Modbus, 17 Serial, 15 Vision y 59 BI. Las nuevas pruebas BI verifican inicio vacío, migración de datos anteriores, aislamiento entre espacios, importación de varios archivos sin resultados parciales, recuperación, espacios de ejemplo y bloqueo de escrituras de una pestaña con otro espacio activo.
 
 Las pruebas Python históricas de navegador no se incluyen en este comando. La nueva distribución se recorre mediante las pruebas de navegador comunes; no se contabilizan pruebas omitidas como aprobadas. FastAPI/Starlette emite un aviso de deprecación de su adaptador httpx de pruebas; no produjo fallos.
 
@@ -51,3 +51,9 @@ Se revisan el catálogo, las nueve herramientas, el HMI vinculado y un análisis
 Los recorridos cubren los flujos descritos, no todas las combinaciones posibles de proyectos, archivos y dispositivos. No se probaron cámaras físicas, adaptadores serie, PLC externos ni instalación en un PC de usuario sin runtimes. La instalación automatizada y la matriz de CI permiten reproducir la validación en otros entornos. El catálogo y las guías mantienen los límites de cada motor explícitos.
 
 La difusión sigue aplazada según [RELEASE_READINESS.md](RELEASE_READINESS.md). CI valida el código en su matriz, pero no sustituye la instalación manual en equipos limpios ni una auditoría de accesibilidad.
+
+## Seguimiento 0.4.1
+
+CI de 0.4.0 detectó desbordamiento real en el panel IP de Vision sobre Linux. Las credenciales opcionales se trasladan a un diálogo; se mantiene la aserción sin scroll y se prueba que la contraseña no entra en el documento. Se añaden contratos públicos tipados, compilación de consumidores en CI, pruebas de identidad de validadores y errores de red accionables. No se cuenta el CI anterior fallido como aprobado.
+
+Tras instalar dependencias de desarrollo, `npm run test:contracts` verifica consumidores TypeScript. El runtime continúa usando los validadores originales; los tipos no sustituyen permisos, límites ni validación de datos recibidos.

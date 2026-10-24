@@ -76,7 +76,7 @@ export function mountVisionWorkspace() {
   const ip = place(groups[2], '#ip-camera-panel');
   ip.open = true;
   const ipInfo = ip.querySelector('.small-muted');
-  const infoButton = make('button', 'Formatos de cámara y límites');
+  const infoButton = make('button', 'Formatos y límites');
   infoButton.type = 'button';
   const infoDialog = make('dialog', undefined, 'suite-guide');
   infoDialog.setAttribute('aria-label', 'Conexión de cámara');
@@ -87,6 +87,29 @@ export function mountVisionWorkspace() {
   document.body.append(infoDialog);
   infoButton.onclick = () => infoDialog.showModal();
   groups[2].append(infoButton);
+  const credentials = make('dialog', undefined, 'suite-guide');
+  credentials.setAttribute('aria-label', 'Credenciales de cámara IP');
+  const credentialsOpen = make('button', 'Usuario y contraseña');
+  credentialsOpen.type = 'button';
+  credentialsOpen.id = 'vision-ip-credentials';
+  const credentialsClose = make('button', 'Guardar y volver');
+  credentialsClose.type = 'button';
+  credentialsClose.onclick = () => credentials.close();
+  credentials.append(
+    make('h2', 'Acceso a la cámara'),
+    make(
+      'p',
+      'Opcional: solo para cámaras con autenticación HTTP Basic. Estos campos permanecen en esta sesión y no se guardan en el proyecto.'
+    ),
+    $('#ip-user').parentElement,
+    $('#ip-password').parentElement,
+    credentialsClose
+  );
+  document.body.append(credentials);
+  credentialsOpen.onclick = () => credentials.showModal();
+  const connectionHelp = make('div', undefined, 'vision-connection-help');
+  connectionHelp.append(credentialsOpen, infoButton);
+  groups[2].append(connectionHelp);
   sourceType.onchange = () => {
     hint.hidden = sourceType.value !== 'file';
     for (const group of groups)
