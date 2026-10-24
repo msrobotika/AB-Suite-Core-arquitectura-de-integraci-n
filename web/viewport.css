@@ -1017,3 +1017,31 @@
     overflow: auto;
   }
 }
+
+@media (min-width: 1001px) {
+  .viewport-app .ab-editor-scl .pipeline > div {
+    padding: 6px 0;
+    gap: 6px;
+  }
+  .viewport-app .ab-editor-scl .pipeline b {
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .viewport-app .ab-editor-scl .pipeline small {
+    font-size: 9px;
+    line-height: 1.35;
+    margin-top: 3px;
+  }
+  .viewport-app .ab-editor-scl .pipeline .step-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .viewport-app .ab-editor-scl .conversion-result {
+    margin: 8px 10px;
+    padding: 10px;
+  }
+  .viewport-app .ab-editor-scl .conversion-actions {
+    margin: 8px 10px;
+  }
+}
