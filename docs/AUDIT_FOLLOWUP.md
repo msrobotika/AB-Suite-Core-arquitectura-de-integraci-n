@@ -5,7 +5,7 @@ Alcance: código y documentación de esta distribución, pruebas locales y CI de
 | Recomendación | Evidencia encontrada | Acción y estado |
 | --- | --- | --- |
 | CONTRIBUTING y SECURITY | Ya existían en la raíz y en varios motores | Actualizados: distinguían mal el antiguo Core y la suite persistente. Canal de reporte explicado sin inventar correo o SLA |
-| Estilos comunes | Barra y tokens en shell.css; taller central en workbench.css | Mantener y probar. CI detectó que Fuente IP de Vision desbordaba 31 px en Linux a 1280×720; credenciales opcionales pasan a diálogo sin rebajar la prueba |
+| Estilos comunes | Barra y tokens en shell.css; taller central en workbench.css | Mantener y probar. CI detectó que Fuente IP de Vision desbordaba 31 px en Linux a 1280×720; credenciales opcionales pasan a diálogo y Medición separa escala/tolerancias sin rebajar la prueba |
 | Contratos compartidos | Core ya valida emisor/tema/tipos/tamaño; navegador valida señales y caducidad | Añadido submódulo público contracts con interfaces TypeScript y los mismos validadores. CI compila consumidores válidos y errores esperados. Sin duplicar la CPU ni crear otro repositorio |
 | SSRF | Vision valida RFC1918 literal/aprobación, bloquea DNS/loopback/link-local/públicas y redirects; Modbus limita destinos y FC01–04 | Añadidas pruebas de bloqueo antes de abrir red en Vision. Mantener límites: RFC1918 autorizado no demuestra identidad del equipo; quedan endurecimientos de recursos y plazo total de Vision |
 | Errores accionables | Modbus podía mostrar OSError del sistema; cámara daba un mensaje genérico | API Modbus indica destino, puerto y pasos; Vision indica conectividad y JPEG/MJPEG. Se prueban mensajes sin credenciales ni detalle interno |

@@ -1472,3 +1472,14 @@ body.vision-workspace {
   padding: 9px;
   width: 100%;
 }
+
+.vision-task-panel #vision-measure-mode {
+  margin-bottom: 10px;
+}
+.vision-task-panel .cal-actions {
+  flex-wrap: nowrap;
+}
+.vision-task-panel .cal-actions button {
+  flex: 1;
+  white-space: nowrap;
+}

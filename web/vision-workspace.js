@@ -138,6 +138,45 @@ export function mountVisionWorkspace() {
   );
   const calibration = place(measure, '#calibration-panel');
   calibration.open = true;
+  const measurementMode = make('select');
+  measurementMode.id = 'vision-measure-mode';
+  measurementMode.setAttribute('aria-label', 'Configurar medición');
+  const measurementGroups = [];
+  for (const [id, label, fields] of [
+    ['scale', 'Escala y patrón', ['reference-mm', 'distance-mm']],
+    [
+      'limits',
+      'Dimensiones y tolerancia',
+      [
+        'nominal-width',
+        'nominal-height',
+        'dimension-tolerance',
+        'piece-threshold'
+      ]
+    ]
+  ]) {
+    const option = make('option', label);
+    option.value = id;
+    measurementMode.append(option);
+    const group = make('div', undefined, 'cal-grid');
+    group.dataset.measure = id;
+    for (const field of fields) group.append($('#' + field).parentElement);
+    measurementGroups.push(group);
+  }
+  calibration
+    .querySelector('.cal-grid')
+    .replaceWith(measurementMode, ...measurementGroups);
+  const calibrationActions = calibration.querySelector('.cal-actions');
+  measurementMode.onchange = () => {
+    for (const group of measurementGroups)
+      group.hidden = group.dataset.measure !== measurementMode.value;
+    calibrationActions.hidden = measurementMode.value !== 'scale';
+  };
+  measurementMode.onchange();
+  $('#mark-scale').textContent = 'Marcar patrón';
+  $('#mark-scale').title =
+    'Marcar los centros CIAN → MAGENTA de longitud conocida';
+  $('#clear-scale').textContent = 'Borrar escala';
   const audit = calibration.querySelector('.camera-audit');
   const explanation = calibration.querySelector('.small-muted');
   const help = make('button', 'Cómo calibrar y qué se verifica');
@@ -159,12 +198,7 @@ export function mountVisionWorkspace() {
   document.body.append(calibrationHelp);
   help.onclick = () => calibrationHelp.showModal();
   measure.append(help);
-  measure.prepend(
-    make(
-      'p',
-      'Las dimensiones requieren un patrón visible y verificación. En producto continuo se analiza el fotograma; no se calcula la longitud acumulada.'
-    )
-  );
+  measure.prepend(make('p', 'Medición por fotograma con patrón verificado.'));
   place(files, '.recipe-actions');
   files.prepend(
     make('h3', 'Conserva tu configuración'),

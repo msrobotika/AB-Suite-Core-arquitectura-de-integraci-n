@@ -391,6 +391,17 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
                   JSON.stringify(size)
                 );
               }
+              await p.locator('#vision-task').selectOption('measure');
+              for (const mode of ['scale', 'limits']) {
+                await p.locator('#vision-measure-mode').selectOption(mode);
+                assert.ok(
+                  await p
+                    .locator('#vision-panel-measure')
+                    .evaluate((e) => e.scrollHeight <= e.clientHeight + 1),
+                  'Medición ' + mode + ' desborda'
+                );
+              }
+              await p.locator('#vision-measure-mode').selectOption('scale');
               await p.locator('#vision-task').selectOption('recipe');
               await p.screenshot({
                 path: path.join(dir, 'vision-taller-' + width + '.png')
