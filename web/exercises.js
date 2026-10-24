@@ -35,7 +35,7 @@ const message = (text) => {
 };
 const folded = (value) =>
   value.normalize('NFD').replace(/\p{M}/gu, '').toLocaleLowerCase('es');
-const time = (value) => new Date(value).toLocaleString('es-ES');
+const time = (value) => new Date(value).toLocaleString(window.ABSuiteI18n?.language === 'en' ? 'en-GB' : 'es-ES');
 const setActive = (id) => {
   active = id;
   history.replaceState(null, '', '?id=' + id);
@@ -104,6 +104,7 @@ async function render() {
   const record = records.find((x) => x.id === active),
     retired = Boolean(record?.archivedAt);
   $('exercise-title').textContent = record?.name ?? 'Empieza un ejercicio';
+  $('exercise-title').toggleAttribute('data-i18n-skip', Boolean(record));
   $('exercise-export').disabled = !record || busy;
   for (const id of [
     'exercise-rename',

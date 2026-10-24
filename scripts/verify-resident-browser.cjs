@@ -13,7 +13,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/resident';
       ? { executablePath: process.env.AB_SUITE_BROWSER }
       : {})
   });
-  const context = await browser.newContext({
+  const context = await browser.newContext({locale: 'es-ES',
       viewport: { width: 1440, height: 1000 }
     }),
     plc = await context.newPage(),
@@ -87,6 +87,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/resident';
       await hmi
         .locator('#widget-label')
         .fill(type === 'indicator' ? 'Salida Q0.0' : 'CPU residente · ciclos');
+      await hmi.locator('#properties .viewport-task').selectOption('1');
       for (const [field, value] of Object.entries({
         x: type === 'indicator' ? 160 : 800,
         y: 300,
@@ -94,6 +95,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/resident';
         height: 260
       }))
         await hmi.locator('#widget-' + field).fill(String(value));
+      await hmi.locator('#properties .viewport-task').selectOption('0');
       await hmi.locator('#widget-source').selectOption('plc');
       await hmi.locator('#widget-tag').fill(tag);
       await hmi.locator('#properties button[type=submit]').click();

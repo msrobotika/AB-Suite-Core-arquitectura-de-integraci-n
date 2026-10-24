@@ -27,3 +27,7 @@ body[data-suite-app] .kop-studio .kop-inspector{border-radius:0!important}
 .suite-exercise-capture{max-width:560px}.suite-exercise-capture .suite-exercise-actions{border:0;margin-top:20px;padding:0}.suite-exercise-capture .suite-exercise-actions h3{font-size:22px}.suite-exercise-capture .suite-exercise-actions label{font-size:12px;color:#becbe0}
 .suite-exercise-capture>button:first-child{float:none;display:block;margin-left:auto}
 .suite-exercise-capture .suite-exercise-actions input{height:auto;min-height:42px;font:14px/1.4 'Segoe UI',sans-serif;padding:10px}
+
+/* Shared language preference: part of the toolbar, never over the work canvas. */
+.suite-language{display:inline-flex;align-items:center;flex-shrink:0}.suite-language select{font:inherit;font-size:11px;color:#edf2fa;background:#202938;border:1px solid #40516a;border-radius:7px;padding:6px;max-width:94px}.suite-language select:focus-visible{outline:2px solid #77dfc7;outline-offset:2px}.exercise-header .suite-language{margin-left:auto}
+@media(max-width:700px){.home-header{gap:10px}.home-utilities{flex-wrap:wrap}.suite-language select{padding:5px;font-size:10px}}

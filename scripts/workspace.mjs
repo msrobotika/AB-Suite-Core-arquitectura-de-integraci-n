@@ -27,7 +27,17 @@ let child = null,
   lastSaved = '',
   saving = false;
 const biToken = randomBytes(32).toString('hex');
-const dataDirectory = resolve(root, '.suite-data');
+const dataDirectory = resolve(process.env.AB_SUITE_DATA_DIR || resolve(root, '.suite-data'));
+// The desktop launcher owns this pipe. No HTTP endpoint can stop the suite.
+if (process.env.AB_SUITE_DESKTOP === '1') {
+  process.stdin.setEncoding('utf8');
+  let input = '';
+  process.stdin.on('data', (chunk) => {
+    input += chunk;
+    if (input.includes('shutdown\n')) stop().then(() => process.exit(0));
+  });
+  process.stdin.on('end', () => stop().then(() => process.exit(0)));
+}
 async function saveChanged() {
   if (!live || saving) return;
   const key = JSON.stringify([live.cpu.scenario, live.cpu.program]);

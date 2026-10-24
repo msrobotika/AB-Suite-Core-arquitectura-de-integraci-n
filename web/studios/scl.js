@@ -116,7 +116,7 @@ export async function mount(sdk) {
   });
   truth();
   const go = button('Ir al error', 'scl-go-error', () => {
-    const match = byId('notice').textContent.match(/l[ií]nea\s+(\d+)/i);
+    const match = byId('notice').textContent.match(/(?:l[ií]nea|line)\s+(\d+)/i);
     if (!match) return;
     const t = byId('source'),
       line = Number(match[1]),

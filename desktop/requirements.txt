@@ -1,0 +1,2 @@
+-r ../apps/bi/requirements.txt
+pyserial==3.5

@@ -49,4 +49,4 @@ setInterval(()=>{
 },1200);
 window.addEventListener('storage',checkTransfer);checkTransfer();
 
-const workspaceStyle=document.createElement('link');workspaceStyle.rel='stylesheet';workspaceStyle.href='/suite/workbench.css';document.head.append(workspaceStyle);await import('/suite/studio-features.js');await import('/suite/workbench.js');await import('/suite/documents.js');
+const workspaceStyle=document.createElement('link');workspaceStyle.rel='stylesheet';workspaceStyle.href='/suite/workbench.css';document.head.append(workspaceStyle);await import('/suite/studio-features.js');await import('/suite/workbench.js');await import('/suite/documents.js');await import('/suite/viewport.js');

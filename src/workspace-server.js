@@ -1,6 +1,6 @@
 /** Single local origin for the nine native tools. No runtime dependency. MIT. */
 import { createServer, request as httpRequest } from 'node:http';
-import { readFile, stat, realpath } from 'node:fs/promises';
+import { readFile, stat, realpath, readdir } from 'node:fs/promises';
 import { resolve, extname, sep, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { timingSafeEqual } from 'node:crypto';
@@ -34,7 +34,7 @@ const mime = {
 export function integrateHTML(html, id) {
   // Native backends use root-relative assets. Keep all browser requests on the suite origin.
   html = html.replace(/(src|href|action)=(['"])\/(?!\/)/g, `$1=$2/apps/${id}/`);
-  const resources = `<link rel="stylesheet" href="/suite/shell.css"><script src="/apps/${id}/suite-session.js"></script><script src="/suite/boot.js" data-app="${id}"></script>`;
+  const resources = `<link rel="stylesheet" href="/suite/shell.css"><script type="module" src="/suite/i18n.js"></script><script src="/apps/${id}/suite-session.js"></script><script src="/suite/boot.js" data-app="${id}"></script>`;
   return html.replace(/<head[^>]*>/i, (match) => match + resources);
 }
 export async function startWorkspace({
@@ -47,6 +47,8 @@ export async function startWorkspace({
   if (!Number.isInteger(port) || port < 0 || port > 65535)
     throw Error('Puerto inválido');
   const sockets = new Set();
+  const distributionDirectory = resolve(root, '.suite-data', 'downloads');
+  const distributionName = /^AB-Suite-\d+\.\d+\.\d+-Windows-x64-(?:Setup\.exe|Portable\.zip)$/;
   let server;
   const send = (
     res,
@@ -119,8 +121,31 @@ export async function startWorkspace({
           return send(res, 400, { error: 'Configuración inválida' });
         return send(res, 200, capture.set(data.enabled));
       }
+      if (url.pathname === '/suite/distribution') {
+        if (!['GET', 'HEAD'].includes(req.method)) return send(res, 405, { error: 'Método no permitido' });
+        const entries = await readdir(distributionDirectory, { withFileTypes: true }).catch(() => []);
+        const files = [];
+        for (const entry of entries) {
+          if (!entry.isFile() || !distributionName.test(entry.name)) continue;
+          const info = await stat(resolve(distributionDirectory, entry.name));
+          files.push({ name: entry.name, bytes: info.size, href: '/suite/download/' + entry.name });
+        }
+        return send(res, 200, { files });
+      }
+      if (url.pathname.startsWith('/suite/download/')) {
+        if (!['GET', 'HEAD'].includes(req.method)) return send(res, 405, { error: 'Método no permitido' });
+        const name = url.pathname.slice('/suite/download/'.length);
+        if (!distributionName.test(name)) return send(res, 404, { error: 'Archivo no disponible' });
+        const file = resolve(distributionDirectory, name);
+        const actual = await realpath(file);
+        if (dirname(actual) !== await realpath(distributionDirectory)) return send(res, 404, { error: 'Archivo no disponible' });
+        const data = await readFile(actual);
+        res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': data.length, 'Content-Disposition': 'attachment; filename="' + name + '"', 'X-Content-Type-Options': 'nosniff' });
+        return res.end(req.method === 'HEAD' ? undefined : data);
+      }
       if (url.pathname === '/suite/status')
         return send(res, 200, {
+          desktopSession: process.env.AB_SUITE_DESKTOP_SESSION || undefined,
           apps: appIds.map((id) => ({
             id,
             ready:

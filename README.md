@@ -1,5 +1,7 @@
 # AB Suite · MS ROBOTIKA
 
+**Windows:** instalador y portable con motores incluidos. **Idiomas:** español e inglés en las nueve herramientas. [Instalación y actualización](desktop/README.md) · [Localization and distribution](docs/LOCALIZATION_AND_INSTALLATION.md).
+
 [![CI de la suite](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml/badge.svg?branch=codex%2Fsuite-workspace)](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml) · [Licencia MIT](LICENSE) · [Contribuir](CONTRIBUTING.md) · [Seguridad](SECURITY.md)
 
 Un laboratorio local de programación y automatización con nueve herramientas propias: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. Código abierto bajo MIT; las dependencias mantienen sus licencias.
@@ -110,7 +112,7 @@ node scripts/verify-exercises-browser.cjs
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
 
-La versión 0.5.1 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
+La versión 0.6.0 sigue en desarrollo. La publicación del perfil y la difusión en redes están aplazadas; los [criterios de preparación](docs/RELEASE_READINESS.md) definen el trabajo pendiente antes de proponer un lanzamiento.
 
 ## Procedencia y núcleo de integración
 

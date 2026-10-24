@@ -31,3 +31,11 @@ No presentar una prueba omitida o un error HTTP esperado como un éxito general.
 Mantener actualizados README, matriz de capacidades y evidencia de validación. No versionar `.suite-data`, `.venv`, credenciales, proyectos del usuario o resultados temporales.
 
 La biblioteca lista metadatos sin cargar imágenes/tablas completas. Toda modificación mantiene documento e índice en una transacción; archivar es reversible. Retirar componentes conserva su contenido completo e índice de recuperación. Las migraciones IndexedDB conservan ejercicios, copias y documentos activos anteriores.
+
+## Idiomas y distribución
+
+- Español e inglés comparten una preferencia de suite. El primer uso sigue el idioma del navegador; los idiomas no admitidos usan inglés. Añadir textos a `web/locales/en.txt`, compilar con `node scripts/build-locales.mjs` y verificar el contexto real. No traducir código, direcciones, fórmulas, nombres ni datos introducidos por el usuario. No alterar los valores internos de las opciones al traducir su etiqueta.
+- La distribución Windows incluye runtimes privados con SHA-256 fijado y dependencias bloqueadas. Instala por usuario sin elevación. Los datos viven fuera de la carpeta del programa y se conservan al actualizar/desinstalar. No anunciar binarios que no existan.
+- Verificar el instalador exacto con `scripts/verify-windows-install.py`, incluyendo arranque sin PATH, actualización y desinstalación. Registrar alcance de plataforma, firma y pruebas; no afirmar validación de otras plataformas.
+
+- Cada aplicación ocupa una ventana de trabajo: no desplazar la página para encontrar mandos. A 1280×720 y 1366×768, ES/EN, los mandos de la tarea activa permanecen visibles. Distribuir propiedades en paneles o pestañas; solo el documento y las listas de datos pueden desplazarse dentro de su área. Ejecutar `verify-viewport-browser.cjs` después de cambios de geometría, incluyendo los 14 componentes HMI.

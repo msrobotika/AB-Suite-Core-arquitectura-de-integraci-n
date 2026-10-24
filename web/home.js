@@ -1,6 +1,17 @@
 import { catalog } from './catalog.js';
+import { translate } from './i18n.js';
 import { PREFIX, parseSnapshot, quality } from './signal-contract.js';
 import { createResidentSource } from './resident-source.js';
+fetch('/suite/distribution').then((response) => response.json()).then(({ files }) => {
+  const list = document.getElementById('distribution-files');
+  for (const file of files) {
+    const link = document.createElement('a');
+    link.className = 'suite-action suite-primary'; link.href = file.href;
+    link.textContent = (file.name.endsWith('Setup.exe') ? 'Instalador Windows · ' : 'Portable Windows · ') + Math.ceil(file.bytes / 1048576) + ' MB ↓';
+    link.download = file.name; list.append(link);
+  }
+  if (!files.length) document.getElementById('distribution-note').textContent = 'Esta copia no incluye archivos de distribución para descargar. Usa el instalador entregado con la revisión o descarga el código fuente.';
+}).catch(() => { document.getElementById('distribution-note').textContent = 'No se pudo consultar la descarga del instalador. Puedes usar el paquete entregado con la revisión.'; });
 const $ = (id) => document.getElementById(id),
   node = (tag, text, cls) => {
     const e = document.createElement(tag);
@@ -32,7 +43,7 @@ function render() {
     (app) =>
       (area === 'Todas' || area === app.area) &&
       (!favoritesOnly || favorites.has(app.id)) &&
-      `${app.name} ${app.area} ${app.summary} ${app.detail}`
+      `${app.name} ${app.area} ${app.summary} ${app.detail} ${translate(app.area, 'en')} ${translate(app.detail, 'en')}`
         .toLocaleLowerCase('es')
         .includes(query)
   );

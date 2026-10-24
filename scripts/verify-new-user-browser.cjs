@@ -13,7 +13,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
         ? { executablePath: process.env.AB_SUITE_BROWSER }
         : {})
     }),
-    context = await browser.newContext({
+    context = await browser.newContext({locale: 'es-ES',
       viewport: { width: 1600, height: 1000 },
       acceptDownloads: true
     });

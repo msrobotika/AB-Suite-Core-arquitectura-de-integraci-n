@@ -57,7 +57,7 @@ const form = el('form'),
 name.id = 'suite-document-name';
 name.required = true;
 name.maxLength = 80;
-name.value = 'Mi proyecto';
+name.value = window.ABSuiteI18n?.t('Mi proyecto') ?? 'Mi proyecto';
 label.htmlFor = name.id;
 label.append(name);
 const create = el(
@@ -136,7 +136,7 @@ function render() {
       text = el('div');
     text.append(
       el('strong', copy.name),
-      el('small', new Date(copy.at).toLocaleString('es-ES'))
+      el('small', new Date(copy.at).toLocaleString(window.ABSuiteI18n?.language === 'en' ? 'en-GB' : 'es-ES'))
     );
     const open = el('button', 'Recuperar', 'suite-action');
     open.type = 'button';

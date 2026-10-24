@@ -13,7 +13,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/portal';
       ? { executablePath: process.env.AB_SUITE_BROWSER }
       : {})
   });
-  const context = await browser.newContext({
+  const context = await browser.newContext({locale: 'es-ES',
     viewport: { width: 1280, height: 720 },
     acceptDownloads: true
   });
@@ -218,7 +218,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/portal';
         assert.deepEqual(unrelated, []);
       }
     );
-    libraryContext = await browser.newContext({
+    libraryContext = await browser.newContext({locale: 'es-ES',
       viewport: { width: 1280, height: 720 },
       acceptDownloads: true
     });

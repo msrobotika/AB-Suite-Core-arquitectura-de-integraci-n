@@ -44,7 +44,7 @@ export function mountVisionWorkspace() {
   }
   const hint = make(
     'p',
-    'Inspecciona piezas o fotogramas de producto lineal continuo. La detección utiliza los mismos criterios visuales.',
+    'Trabaja con imágenes de piezas, superficies o producto continuo. Define tus propios criterios visuales.',
     'vision-context'
   );
   source.append(hint);
@@ -225,7 +225,7 @@ export function mountVisionWorkspace() {
   $('.ab-document').prepend(
     make(
       'p',
-      'Piezas y producto lineal continuo · inspección por imagen',
+      'Imágenes, piezas y producto continuo · criterios propios',
       'vision-document-context'
     )
   );

@@ -312,6 +312,7 @@
   function renderInspector() {
     const root = $('inspector-content');
     root.replaceChildren();
+    const definitions = renderSignalEditor();
     const rung = model.rungs.find((r) => r.id === selected);
     if (!rung) {
       root.append(el('p', 'Selecciona una red.'));
@@ -430,6 +431,9 @@
       );
     });
     root.append(form);
+    if (!window.ABSuite) root.append(definitions);
+  }
+  function renderSignalEditor() {
     const definitions = el('div', undefined, 'signal-editor');
     definitions.append(el('h3', 'Añadir una señal'));
     const type = selectField('new-type', ['Entrada', 'Salida'], 'Entrada'),
@@ -459,11 +463,28 @@
             },
             'Señal ' + v + ' añadida'
           );
+          const feedback = document.getElementById('kop-signal-feedback');
+          if (feedback) feedback.textContent = $('notice').textContent;
         },
         'btn light'
       )
     );
-    root.append(definitions);
+    if (window.ABSuite) {
+      let dialog = document.getElementById('kop-signal-dialog');
+      if (!dialog) {
+        dialog = el('dialog', undefined, 'suite-guide');
+        dialog.id = 'kop-signal-dialog';
+        dialog.setAttribute('aria-label', 'Añadir una señal');
+        document.body.append(dialog);
+        const open = makeButton('Señales', () => dialog.showModal());
+        open.id = 'kop-signals';
+        document.querySelector('.studio-command .toolbar').append(open);
+      }
+      const close = makeButton('Cerrar ×', () => dialog.close(), 'suite-action');
+      const feedback = el('p');feedback.id = 'kop-signal-feedback';feedback.setAttribute('role', 'status');
+      dialog.replaceChildren(close, definitions, feedback);
+    }
+    return definitions;
   }
   function renderInputs() {
     const target = $('inputs');

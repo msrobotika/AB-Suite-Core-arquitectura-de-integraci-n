@@ -13,7 +13,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
       ? { executablePath: process.env.AB_SUITE_BROWSER }
       : {})
   });
-  const first = await browser.newContext({
+  const first = await browser.newContext({locale: 'es-ES',
     viewport: { width: 1440, height: 1000 },
     acceptDownloads: true
   });
@@ -361,7 +361,7 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/exercises';
         assert.deepEqual(result, ['kop', 'scl']);
       }
     );
-    second = await browser.newContext({
+    second = await browser.newContext({locale: 'es-ES',
       viewport: { width: 1280, height: 720 },
       acceptDownloads: true
     });

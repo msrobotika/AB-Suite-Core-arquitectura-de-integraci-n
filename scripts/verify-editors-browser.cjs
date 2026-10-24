@@ -13,7 +13,7 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
       ? { executablePath: process.env.AB_SUITE_BROWSER }
       : {})
   });
-  const context = await browser.newContext({
+  const context = await browser.newContext({locale: 'es-ES',
     viewport: { width: 1600, height: 1000 },
     acceptDownloads: true
   });
@@ -36,11 +36,17 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
     hmi.evaluate(() =>
       JSON.parse(localStorage.getItem('ab-suite:hmi-project:v1'))
     );
-  const input = async (id, value) =>
-    hmi.locator('#widget-' + id).fill(String(value));
+  const input = async (id, value) => {
+    const field=hmi.locator('#widget-'+id);
+    if(!await field.isVisible()) await hmi.locator('#properties .viewport-task').selectOption(['x','y','width','height','fill','stroke','strokeWidth','direction'].includes(id)?'1':'0');
+    await field.fill(String(value));
+  };
   const apply = () => hmi.locator('#properties button[type=submit]').click();
   const choose = async (id) => {
+    const layers=hmi.locator('#library>details').filter({has:hmi.locator('#layers')});
+    if(!await layers.evaluate(e=>e.open))await layers.locator('summary').first().click();
     await hmi.locator('#layers button[data-widget="' + id + '"]').click();
+    await hmi.locator('#library>details').filter({has:hmi.locator('.hmi-palette')}).locator('summary').first().click();
   };
   const upload = async (p, selector, project) => {
     await p.locator(selector).setInputFiles({
@@ -57,7 +63,7 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
   };
   try {
     await kop.goto(base + '/apps/kop/');
-    await hmi.goto(base + '/apps/scada/');await kop.locator('#project summary').click();await kop.locator('#restore').click();await kop.locator('#project summary').click();
+    await hmi.goto(base + '/apps/scada/');await kop.locator('#project>summary').click();await kop.locator('#restore').click();await kop.locator('#kop-tools>details>summary').first().click();
     await run(
       'KOP: área de trabajo principal y paneles plegables',
       async () => {
@@ -123,8 +129,9 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
           await kop.locator('.rung-title').first().textContent(),
           /R1/
         );
-        await kop.locator('#project summary').click();
+        await kop.locator('#project>summary').click();
         await kop.locator('#restore').click();
+        await kop.locator('#kop-tools>details>summary').first().click();
         await kop
           .locator('#inputs button')
           .filter({ hasText: 'START' })
@@ -143,6 +150,7 @@ const evidence = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa';
     await run(
       'KOP: archivos JSON y SVG recuperables desde el editor',
       async () => {
+        if(!await kop.locator('#project').evaluate(e=>e.open))await kop.locator('#project>summary').click();
         const json = kop.waitForEvent('download');
         await kop.locator('#export-json').click();
         const file = path.join(evidence, 'programa.kop.json');

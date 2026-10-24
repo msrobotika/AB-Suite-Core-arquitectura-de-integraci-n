@@ -1,8 +1,14 @@
-# AB Suite completa · 0.5.1 de revisión
+# AB Suite completa · 0.6.0 de revisión
 
 Esta carpeta contiene las nueve herramientas: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. No necesitas descargarlas por separado.
 
-## Descargar desde GitHub
+## Instalador Windows (recomendado)
+
+Si has recibido `AB-Suite-0.6.0-Windows-x64-Setup.exe`, ábrelo, elige Español o English y sigue el asistente. Incluye Node, Python y los motores: no tienes que prepararlos. Abre AB Suite desde Inicio. El icono de bandeja permite volver a abrirla o cerrarla. La edición portable incluye los mismos motores. [Guía bilingüe de instalación, datos y desinstalación](desktop/README.md).
+
+El idioma inicial sigue el navegador (español o inglés; inglés para otros idiomas). Puedes cambiarlo en la barra sin reiniciar ni perder el documento. Los nombres, datos y código del usuario conservan su idioma original.
+
+## Descargar el código fuente desde GitHub
 
 1. Abre [Descargar suite completa](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/codex/suite-workspace.zip).
 2. Guarda el ZIP y usa **Extraer todo**. Trabaja dentro de la carpeta extraída, nunca dentro de la vista del ZIP.

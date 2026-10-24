@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/suite/home.css" />
     <script src="/apps/plc/suite-session.js"></script>
     <script type="module" src="/suite/home.js"></script>
+    <script type="module" src="/suite/i18n.js"></script>
   </head>
   <body class="suite-home">
     <header class="home-header">
@@ -80,7 +81,7 @@
     </main>
     <footer class="home-footer">
       <span>AB Suite · MS ROBOTIKA</span
-      ><span>Local · MIT · Sin cuenta <b>0.5.1 · en desarrollo</b></span>
+      ><span>Local · MIT · Sin cuenta <b>0.6.0 · en desarrollo</b></span>
     </footer>
     <dialog id="help-dialog" class="suite-guide" aria-labelledby="help-title">
       <button class="suite-action" data-close type="button">Cerrar ×</button>
@@ -111,21 +112,24 @@
       aria-labelledby="download-title"
     >
       <button class="suite-action" data-close type="button">Cerrar ×</button>
-      <p class="suite-eyebrow">LAS NUEVE EN UNA CARPETA</p>
+      <p class="suite-eyebrow">LAS NUEVE EN UN PAQUETE</p>
       <h2 id="download-title">Instalación de AB Suite</h2>
       <p>
-        Descarga el ZIP completo y usa Extraer todo. Abre iniciar.bat en Windows
-        o ejecuta sh iniciar.sh en macOS/Linux. No abras los HTML sueltos.
+        Windows 10/11 de 64 bits: instala AB Suite y ábrela desde Inicio.
+        El instalador incluye los motores; no necesitas instalar Node.js ni Python.
       </p>
+      <div id="distribution-files" aria-live="polite"></div>
+      <p id="distribution-note" role="status"></p>
+      <h3>Código fuente · Windows, macOS y Linux</h3>
       <p>
-        Requiere Node.js 20+ y Python 3.11+. La primera preparación necesita
-        Internet para instalar dependencias. Los runtimes todavía no están
-        incluidos.
+        La edición de código fuente requiere Node.js 20+ y Python 3.11+.
+        Extrae el ZIP y abre iniciar.bat o ejecuta sh iniciar.sh.
+        La primera preparación del código fuente necesita Internet.
       </p>
       <a
         class="suite-action suite-primary"
         href="https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/codex/suite-workspace.zip"
-        >Descargar suite completa ↓</a
+        >Descargar código fuente completo ↓</a
       ><a
         class="suite-action"
         href="/docs/EXERCISES.md"

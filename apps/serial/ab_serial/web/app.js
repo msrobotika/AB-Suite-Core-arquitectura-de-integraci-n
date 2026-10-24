@@ -408,9 +408,11 @@ window.ABSuite?.register({
         doc.state.events.length > 500
       )
         throw Error('Archivo Serial inválido');
-      if (options.automatic || doc.live) {
+      // Explicit recovery always opens the saved frames. A former live flag
+      // must never replace them with a now-empty server capture.
+      if (options.automatic) {
         const current = await api('/api/state');
-        if (current.mode !== 'detenido' || doc.live) {
+        if (current.mode !== 'detenido') {
           sessionName = doc.name || 'Captura RTU';
           archivedState = null;
           renderState(current);
@@ -474,7 +476,9 @@ function renderState(state) {
 async function refresh() {
   try {
     const state = archivedState ?? (await api('/api/state'));
-    renderState(state);
+    // A request issued before a restore may resolve after it. The restored
+    // document remains authoritative until the user starts a new capture.
+    renderState(archivedState ?? state);
     hasError = false;
   } catch (error) {
     suiteStats = null;

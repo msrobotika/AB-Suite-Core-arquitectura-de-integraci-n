@@ -1,9 +1,9 @@
 {
   "name": "@msrobotika/ab-suite-core",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "type": "module",
   "private": false,
-  "description": "AB Suite · laboratorio local de programación, HMI, comunicaciones y datos",
+  "description": "AB Suite Ã‚Â· laboratorio local de programaciÃƒÂ³n, HMI, comunicaciones y datos",
   "exports": {
     ".": "./src/index.js",
     "./protocol": "./src/protocol.js",
@@ -25,8 +25,9 @@
     "bus": "node scripts/serve.mjs",
     "setup": "node scripts/setup.mjs",
     "test:workspace": "node --test tests/workspace*.test.mjs",
-    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs && node scripts/verify-editors-browser.cjs && node scripts/verify-new-user-browser.cjs && node scripts/verify-resident-browser.cjs && node scripts/verify-exercises-browser.cjs && node scripts/verify-portal-browser.cjs",
-    "test:contracts": "tsc --project tests/contracts/tsconfig.json"
+    "test:browser": "node scripts/verify-browser.cjs && node scripts/verify-bi-browser.cjs && node scripts/verify-editors-browser.cjs && node scripts/verify-new-user-browser.cjs && node scripts/verify-resident-browser.cjs && node scripts/verify-exercises-browser.cjs && node scripts/verify-portal-browser.cjs && node scripts/verify-i18n-browser.cjs && node scripts/verify-viewport-browser.cjs",
+    "test:contracts": "tsc --project tests/contracts/tsconfig.json",
+    "locales": "node scripts/build-locales.mjs"
   },
   "files": [
     "src/",

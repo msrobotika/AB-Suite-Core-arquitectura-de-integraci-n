@@ -2,7 +2,7 @@ const {chromium}=require(process.env.AB_SUITE_PLAYWRIGHT||'playwright');
 const assert=require('node:assert/strict');
 const fs=require('node:fs/promises'),path=require('node:path');
 const base=process.env.AB_SUITE_URL||'http://127.0.0.1:4170',output=process.env.AB_SUITE_EVIDENCE||'.suite-data/qa';
-(async()=>{const browser=await chromium.launch({headless:true,...(process.env.AB_SUITE_BROWSER?{executablePath:process.env.AB_SUITE_BROWSER}:{})});const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});const p=await context.newPage(),errors=[];let expectedInvalidImport=false;p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error'&&!(expectedInvalidImport&&m.text().includes('422')))errors.push(m.text())});
+(async()=>{const browser=await chromium.launch({headless:true,...(process.env.AB_SUITE_BROWSER?{executablePath:process.env.AB_SUITE_BROWSER}:{})});const context=await browser.newContext({locale: 'es-ES',viewport:{width:1440,height:1000},acceptDownloads:true});const p=await context.newPage(),errors=[];let expectedInvalidImport=false;p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error'&&!(expectedInvalidImport&&m.text().includes('422')))errors.push(m.text())});
  const model=()=>p.evaluate(async()=>await (await ABSuite.fetch('/api/model')).json());
  try{
   await p.goto(base+'/apps/bi/');await p.locator('#new-workspace').waitFor();
