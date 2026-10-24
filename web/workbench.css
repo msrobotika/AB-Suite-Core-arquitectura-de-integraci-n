@@ -1407,7 +1407,7 @@ body.vision-workspace {
     display: none;
   }
 }
-@media (max-height: 750px) {
+@media (max-height: 850px) {
   .vision-workspace .vision-task-panel {
     padding: 8px 10px;
     gap: 7px;
@@ -1443,7 +1443,7 @@ body.vision-workspace {
   pointer-events: none;
   z-index: 2;
 }
-@media (max-height: 750px) {
+@media (max-height: 850px) {
   .vision-workspace .vision-task-panel {
     gap: 5px;
   }
