@@ -1066,3 +1066,15 @@
     line-height: 1.25;
   }
 }
+
+@media (min-width: 1001px) {
+  .viewport-app .hmi-library .hmi-palette button {
+    height: 34px;
+    min-height: 34px;
+    padding: 4px;
+    line-height: 12px;
+  }
+  .viewport-app .hmi-library .hmi-palette b {
+    line-height: 18px;
+  }
+}
