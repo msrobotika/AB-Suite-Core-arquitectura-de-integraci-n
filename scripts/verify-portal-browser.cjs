@@ -449,10 +449,19 @@ const dir = process.env.AB_SUITE_EVIDENCE || '.suite-data/qa/portal';
       'Búsqueda, cambios desde otra pestaña y vista móvil mantienen selección y datos',
       async () => {
         await library.locator('#exercise-search').fill('organizada');
+        await library.waitForFunction(
+          () => document.querySelectorAll('#exercise-list button').length === 1
+        );
         assert.equal(await library.locator('#exercise-list button').count(), 1);
         await library.locator('#exercise-search').fill('inexistente');
+        await library.waitForFunction(
+          () => document.querySelectorAll('#exercise-list button').length === 0
+        );
         assert.equal(await library.locator('#exercise-list button').count(), 0);
         await library.locator('#exercise-search').fill('');
+        await library.waitForFunction(
+          () => document.querySelectorAll('#exercise-list button').length === 2
+        );
         const other = watch(await libraryContext.newPage());
         await other.goto(base + '/suite/exercises.html');
         await other.evaluate(async (id) => {
