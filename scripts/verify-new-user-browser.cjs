@@ -601,6 +601,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
       'VISION: cámara, directo sin registrar, captura, análisis y desconexión',
       async () => {
         const ctx = await browser.newContext({
+          locale: 'es-ES',
           permissions: ['camera'],
           viewport: { width: 1280, height: 720 }
         });
@@ -675,7 +676,7 @@ const base = process.env.AB_SUITE_URL || 'http://127.0.0.1:4170',
     await run(
       'VISION: permiso de cámara denegado conserva imagen y permite reintentar',
       async () => {
-        const ctx = await browser.newContext();
+        const ctx = await browser.newContext({locale: 'es-ES'});
         await ctx.addInitScript(() => {
           navigator.mediaDevices.getUserMedia = async () => {
             throw new DOMException('Permission denied', 'NotAllowedError');
