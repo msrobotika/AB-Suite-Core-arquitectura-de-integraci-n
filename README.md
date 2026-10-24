@@ -2,34 +2,33 @@
 
 **Windows:** instalador y portable con motores incluidos. **Idiomas:** español e inglés en las nueve herramientas. [Instalación y actualización](desktop/README.md) · [Localization and distribution](docs/LOCALIZATION_AND_INSTALLATION.md).
 
-[![CI de la suite](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml/badge.svg?branch=codex%2Fsuite-workspace)](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml) · [Licencia MIT](LICENSE) · [Contribuir](CONTRIBUTING.md) · [Seguridad](SECURITY.md)
+[![CI de la suite](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/workflows/ci.yml) · [Licencia MIT](LICENSE) · [Contribuir](CONTRIBUTING.md) · [Seguridad](SECURITY.md)
 
 Un laboratorio local de programación y automatización con nueve herramientas propias: PLC, KOP, SCL, GRAFCET, SCADA, Modbus, Serial, Vision y BI. Código abierto bajo MIT; las dependencias mantienen sus licencias.
 
 **Una entrada:** abre el catálogo y pulsa **Abrir herramienta**. Los editores, simuladores y herramientas con backend se presentan en la misma dirección y comparten navegación, guía y lenguaje visual. Exportar un proyecto es una operación separada.
 
-## Descargar toda la suite
+## Descargar e instalar
 
-**[Descargar AB Suite completa · ZIP de revisión](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/codex/suite-workspace.zip)**
+**Versión de revisión: 0.6.1.** Las nueve herramientas se distribuyen juntas y puedes usar solo las que necesites.
 
-Esta rama contiene las nueve herramientas integradas. Descarga un solo ZIP, pulsa **Extraer todo** y abre `iniciar.bat` dentro de la carpeta extraída. No abras los HTML sueltos ni descargues nueve repositorios. La revisión sigue en desarrollo; el [cambio completo está en la PR #4](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/pull/4).
+- **Windows, sin preparar runtimes:** descarga el artefacto **[windows-review-distribution](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/runs/40115275379/artifacts/12567902552)** de la ejecución verificada. GitHub pide iniciar sesión para descargar artefactos. Extrae el ZIP y ejecuta `AB-Suite-0.6.1-Windows-x64-Setup.exe`, o extrae la edición `Portable.zip` completa. Incluyen Node, Python y los motores.
+- **Código fuente:** [descargar la rama principal completa](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/main.zip). Extrae el ZIP; en Windows abre `iniciar.bat`, en macOS/Linux ejecuta `sh iniciar.sh`. Esta modalidad requiere Node.js 20+ y Python 3.11+; la primera preparación de dependencias necesita Internet.
 
-Consulta [LEEME-PRIMERO.md](LEEME-PRIMERO.md) para instalación, requisitos y solución de problemas.
+No abras los HTML sueltos ni descargues nueve repositorios. [Guía de instalación](LEEME-PRIMERO.md) · [English / Español](docs/LOCALIZATION_AND_INSTALLATION.md) · [Distribución, commit y alcance verificados](docs/NATIVE_DISTRIBUTION.md).
 
-## Empezar
+El instalador es una revisión sin firma digital; aún no hay lanzamiento público estable. El artefacto de GitHub está sujeto a su plazo de conservación. Los proyectos y datos del usuario no se incluyen en la descarga.
 
-Requisitos: **Node.js 20+**, **Python 3.11+** y un navegador moderno. No se requiere npm para ejecutar los motores. La primera preparación necesita Internet para las dependencias Python de BI.
+![Catálogo actual con las nueve herramientas](docs/screenshots/suite.png)
 
-En Windows, abre **`iniciar.bat`**. En macOS/Linux, ejecuta `sh iniciar.sh`. Preparan el entorno local cuando falta y abren el catálogo. La consola debe permanecer abierta durante la sesión.
-
-También puedes hacerlo desde terminal:
+## Empezar desde el código fuente
 
 ```sh
 node scripts/setup.mjs
 node scripts/workspace.mjs
 ```
 
-Abre **[AB Suite local](http://127.0.0.1:4170)**. Ctrl+C detiene la suite. `AB_SUITE_PORT` permite elegir otro puerto y `AB_SUITE_PYTHON` un intérprete ya preparado. Si falta Python, las herramientas de navegador siguen disponibles y el catálogo identifica los motores pendientes.
+Abre **[AB Suite local](http://127.0.0.1:4170)**. Mantén la consola abierta; Ctrl+C detiene el servidor de desarrollo. La edición instalada se cierra desde su icono de bandeja. `AB_SUITE_PORT` permite elegir otro puerto y `AB_SUITE_PYTHON` un intérprete preparado.
 
 ## Tú eliges las herramientas
 
@@ -60,7 +59,7 @@ Importar valida el conjunto y crea una entrada nueva. Abrir un componente conser
 | SCADA Studio | Lienzo libre, figuras, símbolos industriales y navegación | Vinculación de señales, tendencias y alarmas de umbral |
 | Modbus Studio | Lecturas FC01–04 y examen de tramas TCP | «Leer CPU de la suite» consulta la CPU residente |
 | Serial Analyzer | Captura RTU de laboratorio, CRC y filtros | Estado de sesión para HMI; exportación CSV para BI |
-| Vision Inspector | Imágenes, regiones, umbrales y recetas | Resultados para HMI; CSV para BI; adaptador IP opcional |
+| Vision Inspector | Imagen propia, cámara USB/IP, directo, captura, rango y recetas | Resultados para HMI; CSV para BI; adaptador IP opcional |
 | AB BI | Espacios vacíos o importados, SQL, expresiones y gráficos | Captura explícita de CPU en `SuitePLC`; importación de datos |
 
 Los límites de cada motor se explican en su guía y documentación. La suite se centra en automatización, lógica, comunicaciones y análisis; no implementa todos los lenguajes de programación ni los runtimes de fabricantes de PLC.
@@ -108,6 +107,9 @@ node scripts/verify-editors-browser.cjs
 node scripts/verify-new-user-browser.cjs
 node scripts/verify-resident-browser.cjs
 node scripts/verify-exercises-browser.cjs
+node scripts/verify-portal-browser.cjs
+node scripts/verify-i18n-browser.cjs
+node scripts/verify-viewport-browser.cjs
 ```
 
 Consulta [auditoría por herramienta](docs/SUITE_AUDIT.md), [estándar de producto](docs/PRODUCT_STANDARD.md), [arquitectura integrada](docs/WORKSPACE_ARCHITECTURE.md), [validación y límites](docs/VALIDATION.md) y [reglas de desarrollo](AGENTS.md).
@@ -118,4 +120,6 @@ La versión 0.6.1 sigue en desarrollo. La publicación del perfil y la difusión
 
 Las fuentes de las nueve aplicaciones son proyectos propios de MS ROBOTIKA incorporados con sus licencias y revisión original en [apps/sources.json](apps/sources.json). Esta es la fuente de la distribución integrada; los repositorios independientes no se actualizan automáticamente con estos cambios.
 
-El bus Core v1 mantiene sus contratos y exportaciones de biblioteca. Para iniciarlo por separado, usa `node scripts/serve.mjs` o `npm run bus`. Su documentación anterior se conserva en [Core v0.1](docs/CORE_README_v0.1.md).
+El bus Core v1 mantiene sus contratos y exportaciones de biblioteca. Para iniciarlo por separado, usa `node scripts/serve.mjs` o `npm run bus`. Sus contratos y uso actual se describen en [Protocolo](docs/PROTOCOL.md) y [Arquitectura del Core](docs/ARCHITECTURE.md).
+
+La documentación vigente está en el [índice de la suite](docs/README.md). Las [capturas actuales](docs/SCREENSHOTS.md) corresponden a la instalación de revisión, no a las interfaces independientes anteriores.

@@ -38,7 +38,7 @@ def main():
             break
     else:
         raise RuntimeError("Falta licencia y excepción de PyInstaller")
-    for filename in ("LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md", "DEPENDENCIES.md", "README.md", "ROADMAP.md", "SECURITY.md"):
+    for filename in ("LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md", "DEPENDENCIES.md", "README.md", "SECURITY.md"):
         shutil.copyfile(ROOT / filename, ROOT / "dist" / filename)
     versions = {name: importlib.metadata.version(name) for name in
                 ("pyinstaller", "pyinstaller-hooks-contrib", "altgraph", "packaging", "setuptools")}

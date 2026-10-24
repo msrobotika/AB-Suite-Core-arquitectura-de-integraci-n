@@ -1,13 +1,15 @@
 # KOP Studio · AB Suite
 
-Abre la herramienta desde el [catálogo de AB Suite](../../README.md). La distribución integrada usa `/apps/kop/`; abrir no descarga código.
+Esta es la versión integrada de **AB Suite 0.6.1**, mantenida en este repositorio. [Descargar e instalar toda la suite](../../README.md#descargar-e-instalar). Se puede usar esta herramienta sin abrir las demás.
 
-Editor de lógica Ladder con un área central de dibujo, banco de señales e inspector plegables. Nuevo crea un programa propio; el ejemplo de marcha-paro es opcional mediante Restaurar ejemplo. Edita contactos NO/NC, ramas, bobinas COIL/SET/RESET y TON; cambia el orden de las redes y observa su traza al ejecutar ciclos.
+Redes Ladder NO/NC, ramas, bobinas COIL/SET/RESET y TON. Eliminar red o Supr permite borrar también la última red; Deshacer y recarga conservan el trabajo.
 
-El TON avanza por ciclos educativos. El laboratorio local no programa equipos físicos. La barra común permite transferir el proyecto validado al PLC virtual de la suite.
+**Uso:** abre el catálogo en `http://127.0.0.1:4170`, elige KOP Studio y pulsa Nuevo para crear trabajo propio. Los ejemplos son opcionales. Nuevo conserva un punto anterior en Proyectos. No abras los HTML aislados.
 
-El proyecto se guarda en el navegador y se puede exportar/importar como JSON. SVG exporta el esquema vectorial estático; CSV guarda el historial y HTML el informe. Nuevo, importación y restauración admiten Deshacer. Las ediciones reinician el estado del motor.
+**Límite real:** Subconjunto Ladder; TON se mide en ciclos.
 
-Consulta la [guía de edición](../../docs/EDITORS.md) y las [pruebas reproducibles](../../docs/VALIDATION.md).
+![Interfaz actual de KOP Studio](../../docs/screenshots/kop.png)
 
-MIT · MS ROBOTIKA. El [documento histórico independiente](docs/LEGACY_README.md) conserva el alcance y las capturas anteriores; no describe esta interfaz.
+[Primer uso y recuperación](../../docs/NEW_USER_WORKFLOW.md) · [Instalación ES/EN](../../docs/LOCALIZATION_AND_INSTALLATION.md) · [Validación de la suite](../../docs/VALIDATION.md) · [Capturas actuales](../../docs/SCREENSHOTS.md) · [MIT](LICENSE).
+
+English: this tool belongs to the integrated AB Suite. Use the shared launcher and installation guide; the original standalone repository is recorded in [sources.json](../sources.json).

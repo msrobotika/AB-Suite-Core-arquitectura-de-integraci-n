@@ -4,13 +4,13 @@ Esta carpeta contiene las nueve herramientas: PLC, KOP, SCL, GRAFCET, SCADA, Mod
 
 ## Instalador Windows (recomendado)
 
-Si has recibido `AB-Suite-0.6.1-Windows-x64-Setup.exe`, ábrelo, elige Español o English y sigue el asistente. Incluye Node, Python y los motores: no tienes que prepararlos. Abre AB Suite desde Inicio. El icono de bandeja permite volver a abrirla o cerrarla. La edición portable incluye los mismos motores. [Guía bilingüe de instalación, datos y desinstalación](desktop/README.md).
+Descarga el artefacto [windows-review-distribution](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/runs/40115275379/artifacts/12567902552) de la ejecución verificada (requiere iniciar sesión en GitHub). Extrae el ZIP y abre `AB-Suite-0.6.1-Windows-x64-Setup.exe`, elige Español o English y sigue el asistente. Incluye Node, Python y los motores: no tienes que prepararlos. Abre AB Suite desde Inicio. El icono de bandeja permite volver a abrirla o cerrarla. La edición portable incluye los mismos motores. [Guía bilingüe de instalación, datos y desinstalación](desktop/README.md).
 
 El idioma inicial sigue el navegador (español o inglés; inglés para otros idiomas). Puedes cambiarlo en la barra sin reiniciar ni perder el documento. Los nombres, datos y código del usuario conservan su idioma original.
 
 ## Descargar el código fuente desde GitHub
 
-1. Abre [Descargar suite completa](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/codex/suite-workspace.zip).
+1. Abre [Descargar suite completa](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/archive/refs/heads/main.zip).
 2. Guarda el ZIP y usa **Extraer todo**. Trabaja dentro de la carpeta extraída, nunca dentro de la vista del ZIP.
 3. En Windows abre **iniciar.bat**. En macOS/Linux abre una terminal en esa carpeta y ejecuta `sh iniciar.sh`.
 4. Se abrirá el catálogo en **http://127.0.0.1:4170**. Mantén abierta la consola mientras trabajas. Si el navegador no se abre, copia esa dirección.

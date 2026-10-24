@@ -11,13 +11,13 @@ Alcance: código y documentación de esta distribución, pruebas locales y CI de
 | Errores accionables | Modbus podía mostrar OSError del sistema; cámara daba un mensaje genérico | API Modbus indica destino, puerto y pasos; Vision indica conectividad y JPEG/MJPEG. Se prueban mensajes sin credenciales ni detalle interno |
 | Flujo completo | CPU/Modbus y captura BI ya se verifican, pero INTEGRATIONS seguía describiendo adaptadores antiguos | Actualizada la matriz y añadida práctica PLC → Modbus → BI. No afirmar que todas las herramientas utilizan SSE |
 | Badges | CI único cubre motores y navegador de la suite | Badge real y enlaces a licencia, contribución y seguridad en README. Un badge de la suite no acredita el CI independiente de nueve repositorios |
-| Distribución binaria | ZIP completo requiere Node/Python | Evaluación documentada. PyInstaller solo resuelve parte del sistema; no se anuncia `.exe` ni ahorro porcentual sin pruebas |
+| Distribución binaria | Windows x64 incluye instalador y portable con Node/Python privados | Verificados arranque con PATH vacío, actualización y desinstalación conservando datos. Código fuente mantiene requisitos propios; firma y paquetes nativos macOS/Linux siguen pendientes |
 | Nombres de repositorio | Nombres históricos inconsistentes, preservados en procedencia y enlaces | Preparar una migración coordinada con mapa de URLs, consumidores, dependencias Git fijadas y CI. No renombrar repositorios como un cambio cosmético aislado |
 | GIF/video | Recomendación de documentación, no evidencia de producto | Prioridad: recorrido reproducible y resultado comprobable. Una grabación futura deberá mostrar la ejecución real y no autoriza difusión en redes |
 
 ## Prioridad siguiente
 
-Cerrar el fallo de UX reproducido por CI y comprobar el commit final. Después, prueba con usuarios ajenos al desarrollo e instalación en equipos limpios. El endurecimiento de recursos de Vision y la distribución autocontenida necesitan diseño y pruebas propios; no se marcan como resueltos por añadir documentación.
+Las correcciones de interfaz y la distribución Windows están verificadas en 0.6.1. Siguen pendientes usuarios externos, accesibilidad completa, cámaras físicas, sesiones prolongadas y paquetes nativos macOS/Linux. El endurecimiento adicional de Vision conserva sus propios criterios; el paquete Windows no acredita esas tareas.
 
 El estándar sigue siendo [RELEASE_READINESS.md](RELEASE_READINESS.md): no hay certificación, lanzamiento estable ni anuncio autorizado por esta revisión.
 

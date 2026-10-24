@@ -12,6 +12,8 @@ El programa ocupa el centro. Explorador abre el banco de señales y los archivos
 6. Una red verde intensa con **● CONDUCE** muestra conducción; **○ SIN PASO** indica que la condición no conduce. La selección tiene otro estilo. Después de un ciclo, la representación usa la traza capturada durante ese ciclo, respetando el orden de las redes. Cambiar una entrada muestra **TRAZA PENDIENTE** y retira el estado de conducción hasta ejecutar otro ciclo. Consulta el diagnóstico para detectar dependencias entre redes.
 7. El inspector conserva los campos que estés escribiendo al conmutar entradas o ejecutar ciclos. **Guardar cambios** aplica el programa y reinicia su simulación.
 
+Selecciona una red y pulsa **Eliminar red** en la barra o **Supr** dentro del lienzo. Se puede borrar la última red, deshacer y recargar el programa vacío. Supr dentro de un campo sigue editando texto.
+
 Ctrl+Z y Ctrl+Mayús+Z deshacen/rehacen fuera de los campos de texto. El JSON conserva el programa; el SVG es un esquema estático vectorial, no una captura de la ejecución. El informe HTML y el historial CSV son exportaciones separadas.
 
 TON mide ciclos educativos, no tiempo real. ESTOP_OK es una entrada del ejercicio, no un circuito de seguridad. Enviar al PLC transfiere el proyecto a la CPU virtual de AB Suite.

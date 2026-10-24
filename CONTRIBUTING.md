@@ -10,7 +10,7 @@ Lee [AGENTS.md](AGENTS.md), el [estándar de producto](docs/PRODUCT_STANDARD.md)
 
 1. Ejecuta `node scripts/check-workspace.mjs`.
 2. Usa el Python de `.venv` para `python scripts/verify-python.py` cuando afecten motores Python.
-3. Para navegación, estilos o integración ejecuta los cuatro recorridos de [VALIDATION.md](docs/VALIDATION.md) y revisa capturas de escritorio y móvil.
+3. Para navegación, estilos o integración ejecuta los nueve scripts de navegador de [VALIDATION.md](docs/VALIDATION.md) y revisa capturas de escritorio y móvil.
 4. Para contratos, instala desarrollo con `npm install --ignore-scripts` y ejecuta `npm run test:contracts`. CI compila consumidores y prueba los validadores reales.
 5. Actualiza capacidades y límites. Toda aplicación debe permitir crear trabajo propio, comprobar un resultado y recuperarlo, usando el mismo proyecto/motor.
 

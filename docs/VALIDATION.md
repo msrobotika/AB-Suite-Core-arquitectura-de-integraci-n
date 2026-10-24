@@ -2,6 +2,10 @@
 
 Validación local realizada en Windows, Node 24 y Python 3.13, con Chromium headless. No equivale a una validación de hardware físico ni a una auditoría de accesibilidad completa. Los jobs adicionales de Linux/macOS/Windows están configurados en GitHub Actions; su resultado se consulta en cada ejecución.
 
+## Referencia verificada 0.6.1
+
+Código de la entrega probada: `e82d432fc6b97e0af6281cbe42221c47f3f60577`. [Los ocho jobs de GitHub Actions pasaron](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n/actions/runs/40115275379). La entrega local se recorrió instalada: 123 casos y cinco comprobaciones del ciclo de instalador, incluidos PATH vacío, actualización y desinstalación conservando datos. Las capturas actuales se reúnen en [SCREENSHOTS.md](SCREENSHOTS.md). La limpieza documental posterior no se presenta como una nueva versión del motor ni como otra certificación de hardware.
+
 ## Comprobaciones reproducibles
 
 ```sh
@@ -37,9 +41,9 @@ El primer script verifica **14 recorridos**: apertura de las nueve herramientas,
 
 El segundo verifica **8 recorridos específicos de BI**: crear un espacio vacío; importar datos propios en otro espacio; consultar SQL; crear una visualización; cambiar y reabrir; conservar el análisis anterior; rechazar una importación inválida sin sustituir el trabajo; capturar opcionalmente la CPU en el modelo nativo. También prueba el renombrado. La respuesta HTTP 422 del caso inválido es intencional y su mensaje se verifica; no es un error de ejecución JavaScript.
 
-El tercer script verifica **14 recorridos de edición KOP/HMI**: área de trabajo y paneles plegables; programa KOP propio con NC, ejecución y recuperación; ramas, copia, orden y rechazo de errores; archivos JSON/SVG; creación de los 14 tipos HMI; límite de objetos conservando selección; arrastre, rejilla y tamaño; propiedades, teclado y capas; almacenamiento lleno con recuperación por exportación; composición propia e importación reversible; Probar sin recorte y persistencia; pantallas independientes; navegación con teclado manteniendo el foco durante las actualizaciones; y uso móvil con paneles desplegables.
+El tercer script verifica **15 recorridos de edición KOP/HMI**, incluyendo eliminar la última red, deshacer y recargar el vacío: área de trabajo y paneles plegables; programa KOP propio con NC, ejecución y recuperación; ramas, copia, orden y rechazo de errores; archivos JSON/SVG; creación de los 14 tipos HMI; límite de objetos conservando selección; arrastre, rejilla y tamaño; propiedades, teclado y capas; almacenamiento lleno con recuperación por exportación; composición propia e importación reversible; Probar sin recorte y persistencia; pantallas independientes; navegación con teclado manteniendo el foco durante las actualizaciones; y uso móvil con paneles desplegables.
 
-El cuarto script añade **29 recorridos de primer uso**: inicio sin demo; trabajo propio y resultado en cada herramienta; reemplazo, recuperación y recarga/móvil en las nueve; y Vision con imagen permanente, cinco paneles sin desplazamiento a 1280×720, 1366×768 y 1920×1080, región por coordenadas, ayuda y ampliación.
+El cuarto script añade **32 recorridos de primer uso**, incluyendo rango, cámara sintética y permiso denegado: inicio sin demo; trabajo propio y resultado en cada herramienta; reemplazo, recuperación y recarga/móvil en las nueve; y Vision con imagen permanente, cinco paneles sin desplazamiento a 1280×720, 1366×768 y 1920×1080, región por coordenadas, ayuda y ampliación.
 
 En total son **123 recorridos de navegador** (14 generales + 8 BI + 15 editores + 32 primer uso + 4 CPU residente + 17 ejercicios portables + 10 portal y biblioteca + 14 idiomas + 9 ventana). Se revisan capturas a 1600 × 1000 y 390 × 844 de los nuevos editores. Los tests de modelo comprueban la adaptación de los 30 componentes de un proyecto HMI v1 anterior, límites geométricos, escalas, colores y referencias de navegación.
 
@@ -65,7 +69,7 @@ Tras instalar dependencias de desarrollo, `npm run test:contracts` verifica cons
 
 Cuatro pruebas de motor/HTTP comprueban proyección del estado ejecutado, autorización, Origin, lectura sin comandos, error 503 y que una caída no refresca timestamps. Cuatro recorridos de navegador comprueban salida/ciclo reales, cerrar PLC manteniendo CPU y HMI, caída/caducidad sin recurrir a datos de otra pestaña y recarga de SCADA sin reabrir PLC.
 
-El resto de motores de navegador conservan su alcance de pestaña. El histórico SCADA persistente y la distribución con runtimes incluidos continúan pendientes.
+El resto de motores de navegador conservan su alcance de pestaña. El histórico SCADA persistente continúa pendiente. La distribución Windows incluye runtimes privados y cuenta con prueba de instalación, actualización y desinstalación; véase [distribución actual](NATIVE_DISTRIBUTION.md).
 
 ## Ejercicios portables 0.5.0
 

@@ -1,15 +1,15 @@
 # SCADA Studio · AB Suite
 
-Abre la herramienta desde el [catálogo de AB Suite](../../README.md). La distribución integrada usa `/apps/scada/`; abrir no descarga código.
+Esta es la versión integrada de **AB Suite 0.6.1**, mantenida en este repositorio. [Descargar e instalar toda la suite](../../README.md#descargar-e-instalar). Se puede usar esta herramienta sin abrir las demás.
 
-Editor de pantallas HMI sobre un lienzo libre. Biblioteca de 14 tipos: rectángulo, elipse, línea, texto, tubería, depósito, bomba, válvula, motor, indicador, valor, tendencia, alarma y navegación entre pantallas.
+Lienzo libre con 14 tipos de figuras/componentes, pantallas y navegación. Vincula señales y supervisa la CPU residente.
 
-Permite arrastrar, redimensionar, editar coordenadas, dimensiones, colores y trazo, ordenar capas, duplicar y deshacer/rehacer. Rejilla opcional de 10 px, zoom y ajuste al área disponible. El inspector y la biblioteca son plegables; en móvil se abren como paneles.
+**Uso:** abre el catálogo en `http://127.0.0.1:4170`, elige SCADA Studio y pulsa Nuevo para crear trabajo propio. Los ejemplos son opcionales. Nuevo conserva un punto anterior en Proyectos. No abras los HTML aislados.
 
-Los componentes de supervisión leen la CPU residente de AB Suite sin necesitar su pestaña abierta. Las demás fuentes de navegador necesitan su pestaña para publicar. El depósito visualiza un valor según su escala; no simula un proceso hidráulico. Una señal desconocida o caducada nunca se convierte en cero. Probar conserva la composición y permite utilizar la navegación; no escribe sobre hardware.
+**Límite real:** No impone una fábrica ni controla hardware; los históricos se acotan a la sesión.
 
-Los proyectos `.hmi.json` guardan pantallas, objetos, capas y enlaces. Los proyectos v1 anteriores reciben geometría predeterminada al abrirse. Límite: 12 pantallas, 30 objetos por pantalla y 120 por proyecto; lienzos de hasta 3840 × 2160. No incluye scripting, grupos, importación de SVG externo ni conexiones automáticas entre tuberías.
+![Interfaz actual de SCADA Studio](../../docs/screenshots/scada.png)
 
-Consulta la [guía de edición](../../docs/EDITORS.md) y las [pruebas reproducibles](../../docs/VALIDATION.md).
+[Primer uso y recuperación](../../docs/NEW_USER_WORKFLOW.md) · [Instalación ES/EN](../../docs/LOCALIZATION_AND_INSTALLATION.md) · [Validación de la suite](../../docs/VALIDATION.md) · [Capturas actuales](../../docs/SCREENSHOTS.md) · [MIT](LICENSE).
 
-MIT · MS ROBOTIKA. El [documento histórico independiente](docs/LEGACY_README.md) conserva el alcance y las capturas anteriores; no describe esta interfaz.
+English: this tool belongs to the integrated AB Suite. Use the shared launcher and installation guide; the original standalone repository is recorded in [sources.json](../sources.json).

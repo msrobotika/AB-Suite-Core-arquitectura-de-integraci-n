@@ -1,4 +1,4 @@
-# Crear, comprobar y recuperar · AB Suite 0.4
+# Crear, comprobar y recuperar · AB Suite 0.6.1
 
 ## Patrón común
 
@@ -22,11 +22,11 @@ Si falla el almacenamiento, se indica el problema; la copia temporal no sobreviv
 
 ## Vision: imagen permanente
 
-La imagen ocupa el centro. **Inspector** pliega los controles; **Ampliar imagen** oculta paneles y pestañas; Escape vuelve. El selector del inspector muestra una tarea cada vez: Fuente, Detección, Región, Medición o Archivos. Fuente permite configurar Archivo/USB/IP sin mezclar sus campos. La explicación extensa de calibración se abre en un diálogo, sin alargar el taller.
+La imagen ocupa el centro. **Inspector** pliega los controles; **Ampliar imagen** oculta paneles y pestañas; Escape vuelve. Las pestañas del inspector muestran una tarea cada vez: Fuente, Detección, Región, Medición o Archivos. Fuente permite configurar Archivo/USB/IP sin mezclar sus campos. La explicación extensa de calibración se abre en un diálogo, sin alargar el taller.
 
 La geometría se comprueba a 1280×720, 1366×768 y 1920×1080: no requiere desplazamiento de la página ni de los paneles de configuración. En pantallas más pequeñas los controles se abren como panel superpuesto; las tablas e historiales tienen desplazamiento interno cuando el contenido lo necesita. No se comprimen datos ilimitados hasta hacerlos ilegibles.
 
-La aplicación se refiere a **piezas y producto lineal continuo**. Una cámara permite inspección periódica de fotogramas; una foto estática no simula un flujo. No hay acumulación de longitud, sincronización con encoder ni control automático de rechazo. La medición dimensional exige patrón y verificación por fotograma; un resultado visual OK no certifica dimensiones.
+La aplicación se refiere a **piezas y producto lineal continuo**. Conectar cámara abre la configuración USB; Directo muestra la máscara sin registrar, Capturar congela y Analizar registra. El rango de luminosidad usa dos límites inclusivos de 0 a 255. Una cámara permite inspección periódica de fotogramas; una foto estática no simula un flujo. No hay acumulación de longitud, sincronización con encoder ni control automático de rechazo. La medición dimensional exige patrón y verificación por fotograma; un resultado visual OK no certifica dimensiones.
 
 ## Qué se conserva
 

@@ -10,11 +10,11 @@ La entrada de la plataforma presenta las nueve herramientas como productos indep
 | --- | --- | --- |
 | 1. Fiabilidad del trabajo propio | Nuevo, edición, ejecución, resultado y recuperación en las nueve herramientas | Un usuario completa una práctica sin cargar ejemplos ni perder el trabajo anterior |
 | 2. Integración residente | Una CPU; PLC, Modbus, HMI y captura BI observan el mismo estado | Cerrar la vista PLC no detiene la CPU; SCADA sigue viendo nuevos ciclos y cambios. Si falla el servicio, muestra caducidad y no datos prefijados |
-| 3. Documento conjunto e históricos | Diseñar `.absuite` e historial persistente de tendencias | Validar todos los componentes antes de aplicar; recuperación completa; no exportar tokens ni contraseñas; distinguir configuración, ejecución y muestras |
-| 4. Distribución sencilla | Runtimes incluidos y un lanzador por sistema | Arrancar en equipo limpio sin Node/Python instalados; comprobar permisos, actualización, cierre y recuperación |
+| 3. Documento conjunto e históricos | Mantener `.absuite` implementado; diseñar el histórico persistente | Validar todos los componentes antes de aplicar; recuperación completa; no exportar tokens ni contraseñas; distinguir configuración, ejecución y muestras |
+| 4. Distribución sencilla | Windows entregado; preparar lanzadores nativos macOS/Linux | Arrancar en equipo limpio sin Node/Python instalados; comprobar permisos, actualización, cierre y recuperación |
 | 5. Adopción | Prácticas breves y evaluación con usuarios nuevos | Instalan, crean y explican un resultado sin ayuda. Después se decide difusión con el propietario |
 
-Las prioridades 1 y parte de 2 ya tienen evidencia. La revisión 0.4.2 completa la lectura residente de PLC desde SCADA. La revisión 0.5.0 añade ejercicios portables `.absuite` mediante copias explícitas y apertura recuperable por componente; no restaura las nueve herramientas en una única operación. Históricos persistentes, instalación con runtimes y evaluación con usuarios continúan pendientes.
+Las prioridades 1 y parte de 2 ya tienen evidencia. La revisión 0.4.2 completa la lectura residente de PLC desde SCADA. La revisión 0.5.0 añade ejercicios portables `.absuite` mediante copias explícitas y apertura recuperable por componente; no restaura las nueve herramientas en una única operación. La revisión 0.6.1 incluye instalador y portable Windows con runtimes privados, ES/EN y verificación de actualización/desinstalación. Históricos persistentes, paquetes nativos macOS/Linux y evaluación con usuarios continúan pendientes.
 
 ## Afirmaciones que requieren corrección
 
@@ -33,7 +33,7 @@ Entregado en 0.5.0: biblioteca transaccional del navegador, componentes completo
 
 Criterios para futuras ampliaciones:
 
-Definir un manifiesto versionado que identifique documentos nativos, capacidades y límites. Incluir programa/escenario PLC, pantallas HMI, recetas y datos opcionales de Vision y contenido portable de BI, no solo el identificador de su espacio. Separar datos sensibles, imágenes opcionales e históricos voluminosos. No reanudar automáticamente RUN, cámaras o permisos LAN al importar.
+Mantener el manifiesto versionado existente y validar las ampliaciones de documentos, capacidades y límites. El formato ya incluye programa/escenario PLC, pantallas HMI, imagen/receta de Vision y datos BI completos, no solo identificadores de espacios. Separar datos sensibles, imágenes opcionales e históricos voluminosos. No reanudar automáticamente RUN, cámaras o permisos LAN al importar.
 
 La importación debe preparar y validar todo antes de sustituir, conservar una copia del conjunto anterior y explicar cualquier incompatibilidad. Un ZIP que solo reúne referencias de localStorage no equivale a guardar toda la suite. La URL de compartir es una función aparte, con límites de tamaño y contenido; no debe confundirse con un enlace público que otro equipo pueda abrir sin instalar la suite.
 

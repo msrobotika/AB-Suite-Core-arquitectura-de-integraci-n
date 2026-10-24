@@ -17,7 +17,7 @@ Estado: **desarrollo; lanzamiento y difusión del perfil aplazados** por decisi�
 
 ## Evidencia actual y pendientes
 
-La distribución tiene pruebas de motores, contratos e integración; recorridos de las nueve herramientas, BI con datos propios y recorridos de edición KOP/HMI y creación desde cero en las nueve herramientas. Vision se comprueba con imagen permanente y paneles de tarea sin desplazamiento de página en tres tamaños de escritorio. `VALIDATION.md` identifica comandos y alcance. Las capturas se generan ejecutando los editores.
+Windows x64 ya cuenta con instalador y portable autocontenidos, arranque sin PATH y actualización/desinstalación conservando datos. No tienen firma digital. La distribución tiene pruebas de motores, contratos e integración; recorridos de las nueve herramientas, BI con datos propios y recorridos de edición KOP/HMI y creación desde cero en las nueve herramientas. Vision se comprueba con imagen permanente y paneles de tarea sin desplazamiento de página en tres tamaños de escritorio. `VALIDATION.md` identifica comandos y alcance. Las capturas se generan ejecutando los editores.
 
 Quedan pendientes la auditoría de accesibilidad completa, el estudio con usuarios ajenos al desarrollo, las instalaciones en equipos limpios de los tres sistemas, sesiones prolongadas/carga máxima y validación manual de navegadores adicionales. La revisión 0.4 aplica este criterio a SCL, GRAFCET, comunicaciones, visión, PLC y BI, con recorridos propios y recuperación. Aún falta contrastar esa ergonomía con usuarios ajenos al desarrollo. La prueba automatizada actual no sustituye esas actividades.
 
